@@ -16,7 +16,7 @@ Komponen: **$ARGUMENTS**
 
 ## 2. Token dulu
 - Semua nilai harus berasal dari `lib/core/theme` (`AppColors`, `AppText`, `AppSpace`, `AppRadius`) sesuai `docs/design-tokens.md`.
-- Kalau komponen butuh nilai yang belum ada di token tapi ada sebagai variabel Figma: tambahkan ke token dengan nama variabel Figma. Kalau nilainya tidak ada di variabel Figma: tanya Bayu.
+- Kalau komponen butuh nilai yang belum ada di token tapi ada sebagai variabel Figma: tambahkan ke token dengan nama variabel Figma. Kalau nilainya tidak ada di variabel Figma: tanya Bayu, lalu catat di `docs/catatan-figma.md`. Varian atau keadaan yang belum didesain (misalnya Disabled, Hover) juga dicatat di sana.
 
 ## 3. Tulis widget
 - Satu komponen Figma = satu widget di `lib/core/ui/<nama_snake>.dart`, nama kelas `App<Nama>` atau sesuai nama Figma (misalnya `TaskItem`, `AppButton`).

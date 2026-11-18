@@ -15,7 +15,7 @@ Kalau plugin Figma terpasang, muat juga skill `figma-design-to-code` dari plugin
 2. Baca bagian layar ini di `docs/design-notes.md` §6 dan cek tabel §7 (elemen yang disembunyikan di MVP).
 3. Baca baris rutenya di `docs/navigasi.md`: rute, dari mana dibuka, ke mana kembali, pop-up apa saja.
 4. Panggil `get_screenshot` dan `get_design_context` untuk frame layar, lalu untuk setiap frame keadaan (E/K/G) dan pop-up (P/H) yang terkait.
-5. Kalau ada yang tidak jelas atau bertentangan, berhenti dan tanya Bayu.
+5. Kalau ada yang tidak jelas atau bertentangan, berhenti dan tanya Bayu. Catat juga di `docs/catatan-figma.md` supaya Figma diperbaiki nanti.
 
 ## 2. Petakan ke komponen
 1. Daftar setiap elemen di frame → widget `lib/core/ui` yang sesuai (nama komponen Figma = nama widget).

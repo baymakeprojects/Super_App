@@ -13,6 +13,7 @@ dan sambil belajar Flutter, jadi jelaskan keputusan teknis dengan singkat dan je
 - docs/navigasi.md — semua rute go_router dan pop-up MVP. Jangan menambah rute di luar tabel itu.
 - docs/figma-frames.md — node id tiap frame Figma MVP.
 - docs/backlog.md — daftar tugas MVP (W1-01 … W4-08) beserta statusnya.
+- docs/catatan-figma.md — desain Figma yang salah/kurang/tidak ada, untuk diperbaiki nanti.
 - docs/pengujian-rilis.md — definition of done dan checklist rilis.
 
 ## Desain: Figma adalah sumber kebenaran
@@ -25,6 +26,10 @@ dan sambil belajar Flutter, jadi jelaskan keputusan teknis dengan singkat dan je
   yang tidak ada di Figma. Kalau desain tidak jelas, saling bertentangan,
   atau tampak salah, berhenti dan tanya. Jangan menebak.
 - Elemen yang ditandai "Perlu keputusan" di docs: tanya dulu.
+- Setiap menemukan desain Figma yang salah, kurang, tidak konsisten, atau
+  tidak ada (termasuk keadaan atau varian yang belum didesain), catat di
+  docs/catatan-figma.md supaya Figma diperbaiki nanti. Tetap tanya dulu
+  kalau memengaruhi kode.
 - Teks di layar disalin persis dari Figma (Bahasa Indonesia).
 - Hanya mode gelap. Jangan membuat tema terang.
 - Warna, font, spasi, dan sudut hanya dari lib/core/theme

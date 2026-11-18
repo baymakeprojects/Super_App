@@ -32,3 +32,5 @@ Periksa satu per satu:
 
 ## 4. Laporan
 Tabel: Bagian · Figma · App · Tingkat (besar/kecil) · Perbaikan. Perbaiki yang besar langsung kalau masih dalam lingkup tugas; sisanya serahkan ke Bayu. Kalau tidak ada selisih, katakan begitu dan sebutkan apa saja yang sudah dicek.
+
+Kalau selisihnya karena **Figma** yang salah, kurang, tidak konsisten, atau tidak ada (bukan kesalahan kode), tambahkan ke `docs/catatan-figma.md`.

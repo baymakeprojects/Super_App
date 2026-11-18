@@ -29,6 +29,8 @@ Tulis rencana singkat (5–10 baris) ke Bayu: file yang dibuat/diubah, komponen 
   - `supabase-tabel` untuk tabel, migrasi, drift, dan repository.
 - Ikuti semua aturan di `CLAUDE.md`.
 - Jangan mengerjakan hal di luar baris backlog ini. Kalau menemukan masalah lain, catat sebagai saran di laporan akhir.
+- Setiap desain Figma yang salah, kurang, tidak konsisten, atau tidak ada (varian, keadaan, atau nilai yang belum didesain): tambah baris di `docs/catatan-figma.md` (nomor F-berikutnya, tugas, node, jenis, masalah, solusi sementara di kode, usulan, status `Terbuka`). Tetap tanya Bayu dulu kalau memengaruhi kode.
+- Kalau ada catatan berstatus `Diubah di Figma` untuk bagian yang disentuh tugas ini, selaraskan kodenya dan ubah statusnya jadi `Selesai`.
 
 ## 5. Periksa
 1. `dart format .`, `flutter analyze`, `flutter test` — semua bersih.
@@ -40,4 +42,4 @@ Tulis rencana singkat (5–10 baris) ke Bayu: file yang dibuat/diubah, komponen 
 1. Ubah status di `docs/backlog.md` jadi `Selesai` (atau tetap `Jalan` dengan catatan kalau ada yang tertunda).
 2. Commit kecil dengan pesan Bahasa Indonesia, awali dengan ID: `W2-03: layar Tugas dengan filter dan urungkan`.
 3. Jangan push atau merge tanpa diminta.
-4. Laporan ke Bayu: apa yang selesai, cara mengujinya di HP, selisih desain yang tersisa, dan tugas berikutnya.
+4. Laporan ke Bayu: apa yang selesai, cara mengujinya di HP, selisih desain yang tersisa, catatan Figma baru (nomor F-…), dan tugas berikutnya.
