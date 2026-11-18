@@ -1,0 +1,27 @@
+# Rahasia — jangan pernah masuk Git
+env/*.json
+!env/*.example.json
+*.jks
+*.keystore
+android/key.properties
+
+# Flutter / Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+coverage/
+
+# Supabase lokal
+supabase/.branches
+supabase/.temp
+
+# Claude Code (pengaturan pribadi, bukan untuk repo)
+.claude/settings.local.json
+
+# Editor & OS
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
