@@ -70,18 +70,20 @@ test/  integration_test/
 
 Semua tabel punya `id` (uuid, dibuat di HP), `user_id`, `created_at`, `updated_at`, dan `deleted_at`. Hapus berarti mengisi `deleted_at`, supaya perangkat lain ikut tahu.
 
-| Tabel | Kolom utama |
+Nama kolom memakai bahasa Inggris (keputusan Bayu di W1-07), sama dengan nama tabel dan nama variabel Dart. Skema lengkapnya ada di `supabase/migrations/`.
+
+| Tabel | Kolom utama (arti) |
 | --- | --- |
-| profiles | nama, avatar_url |
-| semesters | nama, mulai, selesai, aktif |
-| courses | semester_id, nama, kode, sks, dosen, ruang, warna |
-| class_sessions | course_id, hari (1–7), jam_mulai, jam_selesai, ruang |
-| tasks | course_id (opsional), judul, catatan, deadline, prioritas, status, selesai_at |
-| subtasks | task_id, judul, selesai, urutan |
-| wallets | nama, jenis (tunai, bank, e-wallet), saldo_awal |
-| categories | nama, jenis (masuk, keluar), ikon |
-| transactions | wallet_id, category_id, jenis, nominal, catatan, tanggal |
-| sync_queue (hanya di HP) | nama_tabel, id_baris, operasi, dibuat |
+| profiles | name (nama), avatar_url — dibuat otomatis saat akun pertama kali login |
+| semesters | name, starts_on (mulai), ends_on (selesai), is_active (aktif) |
+| courses | semester_id, name, code (kode), credits (sks), lecturer (dosen), room (ruang), color (warna) |
+| class_sessions | course_id, weekday (hari 1–7, Senin = 1), starts_at (jam mulai), ends_at (jam selesai), room |
+| tasks | course_id (opsional), title (judul), notes (catatan), due_at (deadline), priority (low, medium, high), status (active, done), completed_at (selesai pada) |
+| subtasks | task_id, title, is_done (selesai), position (urutan) |
+| wallets | name, kind (cash, bank, ewallet), opening_balance (saldo awal) |
+| categories | name, kind (income, expense), icon (ikon) |
+| transactions | wallet_id, category_id, kind (income, expense), amount (nominal, selalu > 0), notes, occurred_at (tanggal dan jam) |
+| sync_queue (hanya di HP) | table_name, row_id, operation, created_at |
 
 Nominal disimpan sebagai bilangan bulat rupiah (`bigint`), tanpa desimal. Saldo dompet tidak disimpan; dihitung dari saldo awal ditambah semua transaksinya.
 

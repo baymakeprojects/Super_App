@@ -18,7 +18,7 @@ Node id frame ada di `figma-frames.md`.
 | W1-04 | Ekspor 39 ikon SVG jadi widget `AppIcon` | Components [01] 5:7 | komponen-ui | Semua ikon tampil 24px dan bisa diwarnai | Selesai |
 | W1-05 | Button, FAB, Input, Checkbox, Switch, Chip, Badge | Components [02] 6:2, [03] 6:30 | komponen-ui | Golden test untuk setiap varian | Selesai |
 | W1-06 | Card, Stat Card, Progress Bar, Nav Item, Bottom Nav, Top App Bar, Section Header | Components [04]–[06] | komponen-ui | Golden test untuk setiap varian | Selesai |
-| W1-07 | Proyek Supabase dev, login Google aktif, migrasi semua tabel MVP + RLS | spesifikasi-teknis › Model data, Keamanan data | supabase-tabel | Uji dua akun: A tidak bisa membaca data B | Belum |
+| W1-07 | Proyek Supabase dev, login Google aktif, migrasi semua tabel MVP + RLS | spesifikasi-teknis › Model data, Keamanan data | supabase-tabel | Uji dua akun: A tidak bisa membaca data B | Jalan |
 | W1-08 | Database drift (tabel MVP + `sync_queue`) dan pola repository | spesifikasi-teknis › Arsitektur | supabase-tabel | Unit test simpan dan baca lokal | Belum |
 | W1-09 | `go_router` dengan shell 5 tab dan semua rute (layar masih kosong berjudul) | navigasi | — | Semua rute bisa dibuka, Back sesuai aturan | Belum |
 | W1-10 | Login Google dari 00d, kunci sidik jari 01, PIN H06, G1 sesi berakhir | 00d, 01, H06, G1 | flutter-screen | Buka app → sidik jari → Beranda kosong | Belum |
