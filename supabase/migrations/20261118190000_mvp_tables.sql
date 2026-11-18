@@ -50,14 +50,17 @@ create table public.semesters (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   deleted_at timestamptz,
-  constraint semesters_dates_check check (ends_on is null or starts_on is null or ends_on >= starts_on)
+  constraint semesters_dates_check check (ends_on is null or starts_on is null or ends_on >= starts_on),
+  -- Target foreign key komposit: anak hanya boleh menunjuk induk milik
+  -- pengguna yang sama (RLS saja tidak memeriksa kolom relasi).
+  constraint semesters_id_user_id_key unique (id, user_id)
 );
 
 create table public.courses (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null default auth.uid()
     references auth.users (id) on delete cascade,
-  semester_id uuid not null references public.semesters (id) on delete cascade,
+  semester_id uuid not null,
   name text not null,
   code text,
   credits smallint check (credits >= 0),
@@ -66,14 +69,17 @@ create table public.courses (
   color text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  deleted_at timestamptz
+  deleted_at timestamptz,
+  constraint courses_id_user_id_key unique (id, user_id),
+  constraint courses_semester_fkey foreign key (semester_id, user_id)
+    references public.semesters (id, user_id) on delete cascade
 );
 
 create table public.class_sessions (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null default auth.uid()
     references auth.users (id) on delete cascade,
-  course_id uuid not null references public.courses (id) on delete cascade,
+  course_id uuid not null,
   -- 1 = Senin … 7 = Minggu (ISO 8601).
   weekday smallint not null check (weekday between 1 and 7),
   starts_at time not null,
@@ -82,7 +88,9 @@ create table public.class_sessions (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   deleted_at timestamptz,
-  constraint class_sessions_times_check check (ends_at > starts_at)
+  constraint class_sessions_times_check check (ends_at > starts_at),
+  constraint class_sessions_course_fkey foreign key (course_id, user_id)
+    references public.courses (id, user_id) on delete cascade
 );
 
 create table public.tasks (
@@ -90,7 +98,7 @@ create table public.tasks (
   user_id uuid not null default auth.uid()
     references auth.users (id) on delete cascade,
   -- Opsional: tugas tanpa mata kuliah.
-  course_id uuid references public.courses (id) on delete set null,
+  course_id uuid,
   title text not null,
   notes text,
   due_at timestamptz,
@@ -99,20 +107,26 @@ create table public.tasks (
   completed_at timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  deleted_at timestamptz
+  deleted_at timestamptz,
+  constraint tasks_id_user_id_key unique (id, user_id),
+  -- Kalau mata kuliah dihapus permanen, hanya course_id yang dikosongkan.
+  constraint tasks_course_fkey foreign key (course_id, user_id)
+    references public.courses (id, user_id) on delete set null (course_id)
 );
 
 create table public.subtasks (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null default auth.uid()
     references auth.users (id) on delete cascade,
-  task_id uuid not null references public.tasks (id) on delete cascade,
+  task_id uuid not null,
   title text not null,
   is_done boolean not null default false,
   position integer not null default 0,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  deleted_at timestamptz
+  deleted_at timestamptz,
+  constraint subtasks_task_fkey foreign key (task_id, user_id)
+    references public.tasks (id, user_id) on delete cascade
 );
 
 create table public.wallets (
@@ -125,7 +139,8 @@ create table public.wallets (
   opening_balance bigint not null default 0,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  deleted_at timestamptz
+  deleted_at timestamptz,
+  constraint wallets_id_user_id_key unique (id, user_id)
 );
 
 create table public.categories (
@@ -137,15 +152,16 @@ create table public.categories (
   icon text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  deleted_at timestamptz
+  deleted_at timestamptz,
+  constraint categories_id_user_id_key unique (id, user_id)
 );
 
 create table public.transactions (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null default auth.uid()
     references auth.users (id) on delete cascade,
-  wallet_id uuid not null references public.wallets (id) on delete cascade,
-  category_id uuid references public.categories (id) on delete set null,
+  wallet_id uuid not null,
+  category_id uuid,
   kind text not null check (kind in ('income', 'expense')),
   -- Rupiah, selalu positif; arah uang ditentukan oleh kind.
   amount bigint not null check (amount > 0),
@@ -153,7 +169,11 @@ create table public.transactions (
   occurred_at timestamptz not null default now(),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  deleted_at timestamptz
+  deleted_at timestamptz,
+  constraint transactions_wallet_fkey foreign key (wallet_id, user_id)
+    references public.wallets (id, user_id) on delete cascade,
+  constraint transactions_category_fkey foreign key (category_id, user_id)
+    references public.categories (id, user_id) on delete set null (category_id)
 );
 
 -- Index untuk kolom relasi (mempercepat join dan penghapusan berantai).

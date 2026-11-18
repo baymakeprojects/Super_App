@@ -80,6 +80,22 @@ begin
     when insufficient_privilege then null; -- ditolak RLS: benar
   end;
 
+  -- A tidak boleh menempelkan barisnya ke induk milik B (foreign key
+  -- komposit id + user_id), misalnya mata kuliah di semester B atau
+  -- transaksi di dompet B.
+  begin
+    insert into public.courses (semester_id, name) values (semester_b, 'Numpang');
+    raise exception 'GAGAL: A bisa membuat mata kuliah di semester B';
+  exception
+    when foreign_key_violation then null; -- ditolak: benar
+  end;
+  begin
+    insert into public.transactions (wallet_id, kind, amount) values (wallet_b, 'income', 1);
+    raise exception 'GAGAL: A bisa mencatat transaksi di dompet B';
+  exception
+    when foreign_key_violation then null; -- ditolak: benar
+  end;
+
   -- ===== Kembali sebagai B: datanya masih utuh =====
   perform set_config('request.jwt.claims', json_build_object('sub', b, 'role', 'authenticated')::text, true);
 
@@ -96,4 +112,4 @@ $$;
 rollback;
 
 -- Baris ini hanya tercapai kalau semua cek di atas lulus.
-select 'LULUS: A tidak bisa membaca, mengubah, menghapus, atau menulis data B.' as hasil;
+select 'LULUS: A tidak bisa membaca, mengubah, menghapus, menulis, atau menumpang ke data B.' as hasil;
