@@ -84,10 +84,9 @@ flutter:
       fonts:
         - asset: assets/fonts/GeistMono-Variable.ttf
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    # 39 ikon SVG dari Figma Components [01] (node 5:7).
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
