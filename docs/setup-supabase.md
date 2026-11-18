@@ -32,6 +32,8 @@ npx supabase link --project-ref nyzktdlyfuqjxumlicgf
 npx supabase db push
 ```
 
+Status dev: migrasi `20261118234355_mvp_tables` sudah diterapkan oleh Claude Code lewat Supabase MCP (19 Nov 2026), dan uji RLS dua akun sudah LULUS. `db push` berikutnya cukup mengirim migrasi baru.
+
 ## 2. Uji RLS dua akun
 
 Buka Dashboard → **superapp-dev** → SQL Editor, tempel seluruh isi `supabase/tests/rls_dua_akun.sql`, lalu Run. Hasil yang benar: satu baris berbunyi **LULUS**. Semua akun dan data uji dibatalkan otomatis (rollback).

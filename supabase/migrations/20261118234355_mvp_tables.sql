@@ -176,13 +176,14 @@ create table public.transactions (
     references public.categories (id, user_id) on delete set null (category_id)
 );
 
--- Index untuk kolom relasi (mempercepat join dan penghapusan berantai).
-create index courses_semester_id_idx on public.courses (semester_id);
-create index class_sessions_course_id_idx on public.class_sessions (course_id);
-create index tasks_course_id_idx on public.tasks (course_id);
-create index subtasks_task_id_idx on public.subtasks (task_id);
-create index transactions_wallet_id_idx on public.transactions (wallet_id);
-create index transactions_category_id_idx on public.transactions (category_id);
+-- Index untuk foreign key komposit (mempercepat join dan penghapusan
+-- berantai). Urutan kolomnya sama dengan foreign key-nya.
+create index courses_semester_id_user_id_idx on public.courses (semester_id, user_id);
+create index class_sessions_course_id_user_id_idx on public.class_sessions (course_id, user_id);
+create index tasks_course_id_user_id_idx on public.tasks (course_id, user_id);
+create index subtasks_task_id_user_id_idx on public.subtasks (task_id, user_id);
+create index transactions_wallet_id_user_id_idx on public.transactions (wallet_id, user_id);
+create index transactions_category_id_user_id_idx on public.transactions (category_id, user_id);
 
 -- ---------------------------------------------------------------------------
 -- Aturan yang sama untuk semua tabel: index sinkron, trigger updated_at,
