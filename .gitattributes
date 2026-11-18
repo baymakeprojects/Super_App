@@ -1,0 +1,5 @@
+# Normalisasi akhir baris: LF di repo, sesuai OS di working copy.
+* text=auto
+
+# Skrip shell wajib LF, kalau tidak bash di Git Bash gagal membaca "\r".
+*.sh text eol=lf

@@ -8,7 +8,7 @@ Desain: [Figma Super App](https://www.figma.com/design/kK09B05WOCxXSf5dvukX41) Â
 
 | Alat | Versi / catatan |
 | --- | --- |
-| Flutter SDK | 3.47 stable (Dart 3.13); cek dengan `flutter doctor` |
+| Flutter SDK | 3.50 stable (Dart 3.14), dipasang di `C:\dev\flutter`; cek dengan `flutter doctor` |
 | Android Studio | Untuk Android SDK dan emulator |
 | VS Code | Ekstensi Flutter dan Dart |
 | Git + akun GitHub | Repo pribadi |
@@ -19,7 +19,7 @@ Desain: [Figma Super App](https://www.figma.com/design/kK09B05WOCxXSf5dvukX41) Â
 
 ## Langkah pertama kali
 
-1. **Ambil kode:** `git clone <url-repo>` lalu `cd super_app`.
+1. **Ambil kode:** `git clone https://github.com/baymakeprojects/Super_App.git super_app` lalu `cd super_app`. Simpan di path tanpa spasi (misalnya `C:\dev\super_app`) supaya build native tidak bermasalah.
 2. **Pasang paket:** `flutter pub get`.
 3. **Buat kode turunan** (drift, freezed, json): `dart run build_runner build --delete-conflicting-outputs`.
 4. **Siapkan Supabase dev:**

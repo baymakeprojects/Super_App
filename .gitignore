@@ -12,6 +12,18 @@ build/
 .flutter-plugins
 .flutter-plugins-dependencies
 coverage/
+.pub-cache/
+.pub/
+**/doc/api/
+migrate_working_dir/
+*.log
+# Simbol dan peta obfuscation dari build release
+app.*.symbols
+app.*.map.json
+# Hasil build Android Studio
+/android/app/debug
+/android/app/profile
+/android/app/release
 
 # Supabase lokal
 supabase/.branches
