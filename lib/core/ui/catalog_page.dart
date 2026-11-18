@@ -18,12 +18,24 @@ class _CatalogPageState extends State<CatalogPage> {
   bool _checked = true;
   bool _switchOn = true;
   int _selectedChip = 0;
+  int _tab = 0;
 
   static const _chips = ['Semua', 'Hari ini', 'Minggu ini', 'Selesai'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppTopAppBar(
+        title: 'Katalog komponen',
+        leadingIcon: AppIcons.arrowLeft,
+        onLeadingPressed: () {},
+        trailingIcon: AppIcons.search,
+        onTrailingPressed: () {},
+      ),
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: _tab,
+        onTap: (index) => setState(() => _tab = index),
+      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(AppSpace.s16),
@@ -106,6 +118,44 @@ class _CatalogPageState extends State<CatalogPage> {
                 AppBadge(label: 'Terlambat', type: AppBadgeType.danger),
               ],
             ),
+            const _Section('Section Header'),
+            AppSectionHeader(
+              title: 'Tugas hari ini',
+              actionLabel: 'Lihat semua →',
+              onActionPressed: () {},
+            ),
+            const _Section('Card · Stat Card'),
+            const AppCard(
+              eyebrow: '[01] Label',
+              title: 'Judul kartu',
+              body:
+                  'Isi kartu singkat, maksimal dua baris supaya tetap ringkas.',
+            ),
+            const SizedBox(height: AppSpace.s12),
+            const Row(
+              spacing: AppSpace.s12,
+              children: [
+                Expanded(
+                  child: AppStatCard(
+                    label: 'Tugas aktif',
+                    value: '5',
+                    caption: '2 jatuh tempo hari ini',
+                  ),
+                ),
+                Expanded(
+                  child: AppStatCard(
+                    label: 'Saldo',
+                    value: 'Rp1,25jt',
+                    caption: '3 dompet',
+                  ),
+                ),
+              ],
+            ),
+            const _Section('Progress Bar'),
+            for (final value in const [0.0, 30.0, 60.0, 100.0]) ...[
+              AppProgressBar(value: value),
+              const SizedBox(height: AppSpace.s12),
+            ],
           ],
         ),
       ),
