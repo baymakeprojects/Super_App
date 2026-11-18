@@ -19,7 +19,8 @@ Nama di kode mengikuti nama variabel di halaman Foundations (node 0:1), supaya o
 | Status/Success | #4FAE68 | `AppColors.success` | Pemasukan, selesai |
 | Status/Warning | #E3C46A | `AppColors.warning` | Deadline dekat, budget hampir habis |
 | Status/Danger | #FF5A5F | `AppColors.danger` | Pengeluaran, terlambat, error |
-| Gradient/Sand, Flame, Red | #D9C3AB, #F16001, #C10801 | `AppColors.gradientBranding` | Paint style Gradient/Branding |
+| Gradient/Sand, Flame, Red | #D9C3AB, #F16001, #C10801 | `AppColors.gradientSand`, `gradientFlame`, `gradientRed` | Warna gradasi; Flame untuk hover, Red untuk ditekan |
+| Gradient/Branding (paint style) | Sand 0% → Flame 22% → Red 55% → Primary 100%, kiri ke kanan | `AppColors.gradientBranding` | Kartu Total saldo dan tempat lain yang ada di Figma |
 
 ## Teks — `lib/core/theme/app_text.dart`
 
