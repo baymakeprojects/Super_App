@@ -16,7 +16,7 @@ Node id frame ada di `figma-frames.md`.
 | W1-02 | Pasang paket MVP dan aturan lint | spesifikasi-teknis › Library | — | `flutter analyze` bersih | Selesai |
 | W1-03 | Token tema (`AppColors`, `AppText`, `AppSpace`, `AppRadius`), font sebagai aset, `ThemeData` gelap | Foundations 0:1, design-tokens | komponen-ui | Golden test halaman token sama dengan Foundations | Selesai |
 | W1-04 | Ekspor 39 ikon SVG jadi widget `AppIcon` | Components [01] 5:7 | komponen-ui | Semua ikon tampil 24px dan bisa diwarnai | Selesai |
-| W1-05 | Button, FAB, Input, Checkbox, Switch, Chip, Badge | Components [02] 6:2, [03] 6:30 | komponen-ui | Golden test untuk setiap varian | Belum |
+| W1-05 | Button, FAB, Input, Checkbox, Switch, Chip, Badge | Components [02] 6:2, [03] 6:30 | komponen-ui | Golden test untuk setiap varian | Selesai |
 | W1-06 | Card, Stat Card, Progress Bar, Nav Item, Bottom Nav, Top App Bar, Section Header | Components [04]–[06] | komponen-ui | Golden test untuk setiap varian | Belum |
 | W1-07 | Proyek Supabase dev, login Google aktif, migrasi semua tabel MVP + RLS | spesifikasi-teknis › Model data, Keamanan data | supabase-tabel | Uji dua akun: A tidak bisa membaca data B | Belum |
 | W1-08 | Database drift (tabel MVP + `sync_queue`) dan pola repository | spesifikasi-teknis › Arsitektur | supabase-tabel | Unit test simpan dan baca lokal | Belum |
@@ -70,4 +70,4 @@ Tunda dulu, sesuai urutan: W4-06 Pencarian, W4-03 Intro 00a–00c, W4-01 Setup a
 
 Fase 1 paling berat karena hampir semua komponen dibuat di sana. Kalau terasa terlalu lama sebelum ada layar yang bisa dilihat, komponen yang belum dipakai boleh dipindah ke fase saat layarnya dibuat.
 
-Posisi saat ini (19 Nov 2026): W1-04 selesai; berikutnya W1-05.
+Posisi saat ini (19 Nov 2026): W1-05 selesai; berikutnya W1-06.
