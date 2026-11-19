@@ -60,7 +60,7 @@ void main() {
     AppRoutes.tugasEdit('t1'): 'Edit tugas',
     AppRoutes.kuliah: 'Kuliah',
     AppRoutes.kuliahJadwalBaru: 'Jadwal baru',
-    AppRoutes.kuliahDetail('c1'): 'Detail mata kuliah',
+    AppRoutes.kuliahDetail('c1'): 'Mata kuliah',
     AppRoutes.kuliahEdit('c1'): 'Ubah jadwal',
     AppRoutes.keuangan: 'Keuangan',
     AppRoutes.keuanganTransaksiBaru: 'Transaksi baru',

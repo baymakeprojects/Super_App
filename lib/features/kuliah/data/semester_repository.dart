@@ -47,6 +47,16 @@ class SemesterRepository {
 
   Future<Semester?> getActiveSemester() => _activeQuery().getSingleOrNull();
 
+  /// Satu semester (label "3 SKS · Semester 7" di layar 20). `null` kalau
+  /// tidak ada atau sudah dihapus.
+  Stream<Semester?> watchSemester(String id) {
+    final query = _database.select(_database.semesters)
+      ..where(
+        (s) => s.userId.equals(userId) & s.id.equals(id) & s.deletedAt.isNull(),
+      );
+    return query.watchSingleOrNull();
+  }
+
   /// Semua semester yang belum dihapus, yang terbaru dulu.
   Future<List<Semester>> getSemesters() {
     final query = _database.select(_database.semesters)

@@ -7,6 +7,7 @@ import 'package:super_app/app/placeholder_screen.dart';
 import 'package:super_app/app/routes.dart';
 import 'package:super_app/core/ui/catalog_page.dart';
 import 'package:super_app/core/ui/ui.dart';
+import 'package:super_app/features/kuliah/presentation/course_detail_screen.dart';
 import 'package:super_app/features/kuliah/presentation/course_form_screen.dart';
 import 'package:super_app/features/kuliah/presentation/kuliah_screen.dart';
 import 'package:super_app/features/tugas/presentation/task_detail_screen.dart';
@@ -145,9 +146,11 @@ GoRouter buildAppRouter({String initialLocation = AppRoutes.beranda}) {
                 'Jadwal baru',
                 screen: const CourseFormScreen(),
               ),
-              fullScreen(
-                ':id',
-                'Detail mata kuliah',
+              GoRoute(
+                path: ':id',
+                parentNavigatorKey: rootNavigatorKey,
+                builder: (context, state) =>
+                    CourseDetailScreen(courseId: state.pathParameters['id']!),
                 routes: [
                   GoRoute(
                     path: 'edit',
