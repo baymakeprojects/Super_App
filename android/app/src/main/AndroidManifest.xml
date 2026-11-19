@@ -2,7 +2,7 @@
     <!-- Login email + kode dan sinkron Supabase (W1-10). -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="super_app"
+        android:label="Super App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

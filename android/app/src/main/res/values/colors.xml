@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Branding/Orange dan Primary dari Figma (W4-03). -->
+    <color name="ic_launcher_background">#E85002</color>
+    <color name="splash_background">#000000</color>
+</resources>
