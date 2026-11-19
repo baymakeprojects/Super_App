@@ -106,6 +106,17 @@ class Transactions extends Table with SyncedColumns {
   DateTimeColumn get occurredAt => dateTime()();
 }
 
+/// Batas tarikan sinkron per tabel: perubahan Supabase dengan `updated_at`
+/// setelah [pulledUntil] belum ditarik. Hanya ada di HP.
+@DataClassName('SyncCursor')
+class SyncCursors extends Table {
+  TextColumn get syncedTable => text().named('table_name')();
+  DateTimeColumn get pulledUntil => dateTime()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {syncedTable};
+}
+
 /// Antrean perubahan yang belum dikirim ke Supabase. Hanya ada di HP.
 @DataClassName('SyncQueueEntry')
 class SyncQueue extends Table {

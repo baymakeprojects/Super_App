@@ -42,8 +42,11 @@ void main() {
         table.actualTableName: {for (final c in table.$columns) c.name},
     };
 
-    // sync_queue hanya ada di HP.
-    expect(local.keys.toSet()..remove('sync_queue'), supabase.keys.toSet());
+    // sync_queue dan sync_cursors hanya ada di HP.
+    expect(
+      local.keys.toSet()..removeAll(['sync_queue', 'sync_cursors']),
+      supabase.keys.toSet(),
+    );
     for (final name in supabase.keys) {
       expect(local[name], supabase[name], reason: 'kolom tabel $name');
     }

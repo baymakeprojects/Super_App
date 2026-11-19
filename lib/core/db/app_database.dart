@@ -20,6 +20,7 @@ part 'app_database.g.dart';
     Categories,
     Transactions,
     SyncQueue,
+    SyncCursors,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -29,5 +30,13 @@ class AppDatabase extends _$AppDatabase {
 
   /// Naikkan saat struktur tabel berubah, lalu tulis langkah migrasinya.
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onUpgrade: (m, from, to) async {
+      // v2 (W3-07): batas tarikan sinkron per tabel.
+      if (from < 2) await m.createTable(syncCursors);
+    },
+  );
 }

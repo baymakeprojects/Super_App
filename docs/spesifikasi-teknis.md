@@ -111,6 +111,13 @@ App hanya memegang kunci publik Supabase. Kunci service role tidak pernah masuk 
 
 Kalau membuat sinkron sendiri terasa terlalu berat, PowerSync atau paket syncable (drift + Supabase) bisa dipakai sebagai gantinya — tanya Bayu dulu sebelum menambah paket.
 
+Implementasi (W3-07, tanpa paket baru):
+
+- `lib/core/sync/sync_engine.dart`: kirim antrean (baris yang sama dikirim sekali, versi terbarunya), lalu tarik per tabel (induk dulu: profiles → semesters → courses → class_sessions → tasks → subtasks → wallets → categories → transactions). Batas tarikan per tabel disimpan di tabel lokal `sync_cursors` (skema drift v2). Baris dengan perubahan lokal yang belum terkirim tidak ditimpa tarikan.
+- `lib/core/sync/remote_store.dart`: antarmuka server; `SupabaseRemoteStore` untuk app, versi palsu untuk uji integrasi offline → online.
+- `lib/core/sync/sync_controller.dart`: jalan saat app dibuka, 2 detik setelah ada perubahan di antrean, rutin tiap 5 menit, dan coba ulang setelah gagal (30 detik, berlipat, maks. 15 menit). Status (`SyncPhase`) dipakai banner E5/G8.
+- Sinkron **mati** sampai login ada (W1-10): `remoteStoreProvider` dan `syncUserIdProvider` diisi setelah masuk dengan email + kode.
+
 ## Lingkungan
 
 - Dua proyek Supabase: `superapp-dev` untuk mencoba dan `superapp-prod` untuk data asli.
