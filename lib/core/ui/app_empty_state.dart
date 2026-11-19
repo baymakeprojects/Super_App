@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:super_app/core/theme/theme.dart';
 import 'package:super_app/core/ui/app_button.dart';
 import 'package:super_app/core/ui/app_icon.dart';
+import 'package:super_app/core/ui/app_label_text.dart';
 
 /// Pola keadaan kosong E2, E3, K1 (design-notes §6): ikon oranye dalam
 /// lingkaran, judul "Belum ada …", satu kalimat, satu tombol.
@@ -15,6 +16,8 @@ class AppEmptyState extends StatelessWidget {
     required this.message,
     required this.actionLabel,
     required this.onAction,
+    this.linkLabel,
+    this.onLink,
   });
 
   // Ukuran tetap dari Figma (bukan variabel Figma).
@@ -29,8 +32,14 @@ class AppEmptyState extends StatelessWidget {
   final String actionLabel;
   final VoidCallback? onAction;
 
+  /// Tautan teks oranye di bawah tombol, misalnya "Atau isi lewat setup
+  /// awal" di K1. `null` = disembunyikan.
+  final String? linkLabel;
+  final VoidCallback? onLink;
+
   @override
   Widget build(BuildContext context) {
+    final linkLabel = this.linkLabel;
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpace.s24,
@@ -72,6 +81,20 @@ class AppEmptyState extends StatelessWidget {
             ),
           ),
           AppButton(label: actionLabel, expand: false, onPressed: onAction),
+          if (linkLabel != null)
+            Semantics(
+              button: true,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: onLink,
+                child: AppLabelText(
+                  linkLabel,
+                  style: AppText.labelMedium.copyWith(
+                    color: AppColors.accentText,
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );

@@ -34,7 +34,7 @@ Node id frame ada di `figma-frames.md`.
 | W2-05 | 15 Tugas baru dengan P01, P02, P03 dan error kolom | 15, P01–P03, G2 | flutter-screen | Kriteria PRD Tugas poin 1–2 | Selesai |
 | W2-06 | 16 Detail tugas, H01 Edit tugas, hapus dengan P05 + Urungkan | 16, H01, P05 | flutter-screen | Ubah dan hapus tersimpan | Selesai |
 | W2-07 | Repository semester, mata kuliah, jadwal | spesifikasi-teknis › Model data | — | Unit test | Selesai |
-| W2-08 | 04 Kuliah: Day Pill, jadwal per hari, status Now dan Done menurut jam | 04 | flutter-screen | Kriteria PRD Kuliah poin 1 | Belum |
+| W2-08 | 04 Kuliah: Day Pill, jadwal per hari, status Now dan Done menurut jam | 04 | flutter-screen | Kriteria PRD Kuliah poin 1 | Selesai (K1 ikut dibangun) |
 | W2-09 | H02 Jadwal baru (juga mode ubah) dengan P20 | H02, P20 | flutter-screen | Jadwal baru tampil di 04 | Belum |
 | W2-10 | 20 Detail mata kuliah (MVP) dan K1 | Frame "20 Detail Mata Kuliah (MVP)", K1 | flutter-screen | Kriteria PRD Kuliah poin 2–3 | Belum |
 
@@ -70,4 +70,4 @@ Tunda dulu, sesuai urutan: W4-06 Pencarian, W4-03 Intro 00a–00c, W4-01 Setup a
 
 Fase 1 paling berat karena hampir semua komponen dibuat di sana. Kalau terasa terlalu lama sebelum ada layar yang bisa dilihat, komponen yang belum dipakai boleh dipindah ke fase saat layarnya dibuat.
 
-Posisi saat ini (19 Nov 2026): W2-07 selesai (W1-07 tinggal aktifkan email OTP; W1-10 menunggu desain layar masuk email, F-12); berikutnya W2-08. Sebelum login ada, build debug memakai akun sementara `dev-lokal`. Login diganti dari Google ke email + kode verifikasi.
+Posisi saat ini (19 Nov 2026): W2-08 selesai (W1-07 tinggal aktifkan email OTP; W1-10 menunggu desain layar masuk email, F-12); berikutnya W2-09. Sebelum login ada, build debug memakai akun sementara `dev-lokal`. Login diganti dari Google ke email + kode verifikasi.

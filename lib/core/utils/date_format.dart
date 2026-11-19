@@ -22,6 +22,21 @@ abstract final class AppDateFormat {
     'Min',
   ];
 
+  static const List<String> _months = [
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember',
+  ];
+
   static const List<String> _monthsShort = [
     'Jan',
     'Feb',
@@ -54,6 +69,14 @@ abstract final class AppDateFormat {
   /// "Jumat 6 Nov".
   static String weekdayDayMonth(DateTime date) =>
       '${weekday(date)} ${dayMonthShort(date)}';
+
+  /// "Jumat, 6 November" (judul hari di 04 Kuliah).
+  static String weekdayCommaDayMonthLong(DateTime date) =>
+      '${weekday(date)}, ${date.day} ${_months[date.month - 1]}';
+
+  /// "Sep 2026" (periode semester di P20).
+  static String monthYearShort(DateTime date) =>
+      '${_monthsShort[date.month - 1]} ${date.year}';
 
   /// "Jumat, 6 Nov" (baris tanggal di 16 Detail tugas).
   static String weekdayCommaDayMonth(DateTime date) =>
