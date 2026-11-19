@@ -174,7 +174,13 @@ GoRouter buildAppRouter({String initialLocation = AppRoutes.beranda}) {
                 'Transaksi baru',
                 screen: const TransactionFormScreen(),
               ),
-              fullScreen('transaksi/:id', 'Ubah transaksi'),
+              GoRoute(
+                path: 'transaksi/:id',
+                parentNavigatorKey: rootNavigatorKey,
+                builder: (context, state) => TransactionFormScreen(
+                  transactionId: state.pathParameters['id'],
+                ),
+              ),
             ],
           ),
           tab(AppRoutes.lainnya, 'Lainnya', showDebugRoutes: true),

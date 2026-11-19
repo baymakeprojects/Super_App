@@ -10,7 +10,9 @@ import 'package:super_app/core/theme/theme.dart';
 import 'package:super_app/core/ui/ui.dart';
 import 'package:super_app/core/utils/clock.dart';
 import 'package:super_app/core/utils/date_format.dart';
+import 'package:super_app/core/utils/money_format.dart';
 import 'package:super_app/core/utils/rupiah_input_formatter.dart';
+import 'package:super_app/features/keuangan/application/finance_snackbar.dart';
 import 'package:super_app/features/keuangan/application/keuangan_providers.dart';
 import 'package:super_app/features/keuangan/application/transaction_form_controller.dart';
 import 'package:super_app/features/keuangan/data/finance_repository.dart';
@@ -20,13 +22,10 @@ import 'package:super_app/features/keuangan/presentation/wallet_sheets.dart';
 /// P07 Dompet baru, P01 tanggal, dan P02 jam. Juga H11 Ubah transaksi
 /// (W3-05) lewat [transactionId].
 class TransactionFormScreen extends ConsumerWidget {
-  const TransactionFormScreen({super.key, this.transactionId, this.onDelete});
+  const TransactionFormScreen({super.key, this.transactionId});
 
   /// `null` = Transaksi baru.
   final String? transactionId;
-
-  /// H11: ikon Hapus di kanan atas. `null` = disembunyikan.
-  final VoidCallback? onDelete;
 
   static const String newTitle = 'Transaksi baru';
   static const String editTitle = 'Ubah transaksi';
@@ -49,15 +48,14 @@ class TransactionFormScreen extends ConsumerWidget {
         ),
       );
     }
-    return _TransactionForm(transactionId: id, onDelete: onDelete);
+    return _TransactionForm(transactionId: id);
   }
 }
 
 class _TransactionForm extends ConsumerStatefulWidget {
-  const _TransactionForm({required this.transactionId, this.onDelete});
+  const _TransactionForm({required this.transactionId});
 
   final String? transactionId;
-  final VoidCallback? onDelete;
 
   @override
   ConsumerState<_TransactionForm> createState() => _TransactionFormState();
@@ -131,6 +129,27 @@ class _TransactionFormState extends ConsumerState<_TransactionForm> {
     if (result != null) _form.setTime(result.hour, result.minute);
   }
 
+  /// P47 Hapus transaksi, lalu kembali ke 05 dengan snackbar Urungkan.
+  Future<void> _confirmDelete() async {
+    _unfocus();
+    final id = widget.transactionId;
+    final item = id == null
+        ? null
+        : ref.read(transactionEditSourceProvider(id)).value;
+    if (id == null || item == null) return;
+    final row = transactionRowOf(item, ref.read(clockProvider)());
+    final confirmed = await showAppBottomSheet<bool>(
+      context: context,
+      builder: (_) => DeleteTransactionSheet(
+        message: deleteTransactionMessage(item, row.title),
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+    final snackbar = ref.read(financeSnackbarProvider.notifier);
+    context.pop();
+    await snackbar.delete(id, row.title);
+  }
+
   /// "Hari ini" seperti Figma; tanggal lain "Jum, 6 Nov".
   String _dateLabel(DateTime date) {
     final today = ref.read(clockProvider)();
@@ -177,9 +196,10 @@ class _TransactionFormState extends ConsumerState<_TransactionForm> {
         leadingIcon: AppIcons.close,
         leadingSemanticLabel: 'Tutup',
         onLeadingPressed: () => context.pop(),
-        trailingIcon: widget.onDelete == null ? null : AppIcons.trash,
+        // H11: ikon Hapus di kanan atas membuka P47.
+        trailingIcon: _isEdit ? AppIcons.trash : null,
         trailingSemanticLabel: 'Hapus transaksi',
-        onTrailingPressed: widget.onDelete,
+        onTrailingPressed: _confirmDelete,
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
@@ -366,6 +386,55 @@ class _AmountFieldState extends State<_AmountField> {
             'Nominal wajib diisi',
             style: AppText.bodySmall.copyWith(color: AppColors.danger),
           ),
+      ],
+    );
+  }
+}
+
+/// Teks P47 (Figma 185:13574). "dari HP dan desktop" dihapus karena
+/// desktop baru Tahap 2 (keputusan Bayu, W3-05, F-44).
+String deleteTransactionMessage(TransactionListItem item, String title) {
+  final t = item.transaction;
+  final income = t.kind == MoneyKind.income;
+  final amount = AppMoneyFormat.rupiah(t.amount);
+  final wallet = item.walletName;
+  final balance = wallet == null
+      ? ''
+      : ', dan saldo $wallet ${income ? 'berkurang' : 'bertambah lagi'} '
+            '$amount';
+  return '“$title” (${AppMoneyFormat.signed(t.amount, income: income)}) '
+      'akan dihapus$balance. Setelah dihapus, kamu masih bisa '
+      'mengurungkannya dari snackbar.';
+}
+
+/// P47: tanpa tombol tutup, Batal + Hapus transaksi (Danger). Mengembalikan
+/// `true` kalau Hapus transaksi diketuk.
+class DeleteTransactionSheet extends StatelessWidget {
+  const DeleteTransactionSheet({super.key, required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
+    return AppBottomSheet(
+      title: 'Hapus transaksi ini?',
+      showClose: false,
+      body: Text(
+        message,
+        style: AppText.bodyLarge.copyWith(color: AppColors.lightGray),
+      ),
+      footer: [
+        AppButton(
+          label: 'Batal',
+          style: AppButtonStyle.ghost,
+          onPressed: () => navigator.pop(false),
+        ),
+        AppButton(
+          label: 'Hapus transaksi',
+          style: AppButtonStyle.danger,
+          onPressed: () => navigator.pop(true),
+        ),
       ],
     );
   }

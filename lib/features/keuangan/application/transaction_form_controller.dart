@@ -75,10 +75,9 @@ class TransactionFormState {
 
 /// Isian awal H11, dibaca sekali. `null` = tidak ada atau dihapus.
 final transactionEditSourceProvider = FutureProvider.autoDispose
-    .family<MoneyTransaction?, String>((ref, id) async {
-      final item = await ref.read(financeRepositoryProvider).getTransaction(id);
-      return item?.transaction;
-    });
+    .family<TransactionListItem?, String>(
+      (ref, id) => ref.read(financeRepositoryProvider).getTransaction(id),
+    );
 
 /// Kategori bawaan dibuat sekali sebelum form dipakai.
 final defaultCategoriesProvider = FutureProvider.autoDispose<void>(
@@ -108,7 +107,10 @@ class TransactionFormController extends Notifier<TransactionFormState> {
   TransactionFormState build() {
     final id = transactionId;
     if (id != null) {
-      final source = ref.read(transactionEditSourceProvider(id)).value;
+      final source = ref
+          .read(transactionEditSourceProvider(id))
+          .value
+          ?.transaction;
       if (source != null) {
         final at = source.occurredAt.toLocal();
         return TransactionFormState(

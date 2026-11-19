@@ -157,11 +157,12 @@ void main() {
 
     testWidgets('panah kiri di Top App Bar sama dengan Back', (tester) async {
       final router = await _pumpApp(tester);
-      await _go(tester, router, AppRoutes.keuanganTransaksi('x1'));
+      // Layar sementara (H04 Pencarian belum dibuat) punya panah kiri.
+      await _go(tester, router, AppRoutes.tugasCari);
 
       await tester.tap(find.bySemanticsLabel('Kembali'));
       await tester.pumpAndSettle();
-      expect(_location(router), AppRoutes.keuangan);
+      expect(_location(router), AppRoutes.tugas);
     });
   });
 }

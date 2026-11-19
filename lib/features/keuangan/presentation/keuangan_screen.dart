@@ -8,6 +8,7 @@ import 'package:super_app/core/ui/ui.dart';
 import 'package:super_app/core/utils/clock.dart';
 import 'package:super_app/core/utils/date_format.dart';
 import 'package:super_app/core/utils/money_format.dart';
+import 'package:super_app/features/keuangan/application/finance_snackbar.dart';
 import 'package:super_app/features/keuangan/application/keuangan_providers.dart';
 import 'package:super_app/features/keuangan/data/finance_repository.dart';
 import 'package:super_app/features/keuangan/presentation/wallet_sheets.dart';
@@ -59,18 +60,47 @@ class KeuanganScreen extends ConsumerWidget {
                     ),
                   ),
                   // E3 tanpa FAB: transaksi butuh dompet.
-                  if (wallets.isNotEmpty)
-                    Positioned(
-                      right: AppSpace.s20,
-                      bottom: AppSpace.s20,
-                      child: AppFab(
-                        semanticLabel: 'Transaksi baru',
-                        onPressed: () =>
-                            context.push(AppRoutes.keuanganTransaksiBaru),
-                      ),
-                    ),
+                  if (wallets.isNotEmpty) const _FabAndSnackbar(),
                 ],
               ),
+      ),
+    );
+  }
+}
+
+/// FAB Transaksi baru dan snackbar Urungkan (pola E4: snackbar 12 di atas
+/// Bottom Nav, FAB 16 di atas snackbar; tanpa snackbar FAB 20 di atas).
+class _FabAndSnackbar extends ConsumerWidget {
+  const _FabAndSnackbar();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final snack = ref.watch(financeSnackbarProvider);
+    return Positioned(
+      left: AppSpace.s20,
+      right: AppSpace.s20,
+      bottom: snack == null ? AppSpace.s20 : AppSpace.s12,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        spacing: AppSpace.s16,
+        children: [
+          AppFab(
+            semanticLabel: 'Transaksi baru',
+            onPressed: () => context.push(AppRoutes.keuanganTransaksiBaru),
+          ),
+          if (snack != null)
+            SizedBox(
+              width: double.infinity,
+              child: AppSnackbar(
+                message: snack.message,
+                icon: AppIcons.trash,
+                iconColor: AppColors.lightGray,
+                actionLabel: 'Urungkan',
+                onAction: ref.read(financeSnackbarProvider.notifier).undo,
+              ),
+            ),
+        ],
       ),
     );
   }
