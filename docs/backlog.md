@@ -28,7 +28,7 @@ Node id frame ada di `figma-frames.md`.
 | ID | Tugas | Acuan | Skill | Selesai bila | Status |
 | --- | --- | --- | --- | --- | --- |
 | W2-01 | Task Item, Class Item, Day Pill, Segmented Control, Select, Checklist Item, Action Bar, Overlay Header, Option Item, Date Picker, Time Picker, Snackbar | Components [06], [07], [09], [11] | komponen-ui | Golden test untuk setiap varian | Selesai |
-| W2-02 | Repository tugas dan sub-tugas | spesifikasi-teknis › Model data | — | Unit test tambah, ubah, hapus, selesai | Belum |
+| W2-02 | Repository tugas dan sub-tugas | spesifikasi-teknis › Model data | — | Unit test tambah, ubah, hapus, selesai | Selesai |
 | W2-03 | 03 Tugas: kelompok, chip filter, tandai selesai + snackbar Urungkan | 03, E4 | flutter-screen | Kriteria PRD Tugas poin 3–4 | Belum |
 | W2-04 | E2 Tugas kosong | E2 | flutter-screen | Akun baru melihat E2 | Belum |
 | W2-05 | 15 Tugas baru dengan P01, P02, P03 dan error kolom | 15, P01–P03, G2 | flutter-screen | Kriteria PRD Tugas poin 1–2 | Belum |
@@ -70,4 +70,4 @@ Tunda dulu, sesuai urutan: W4-06 Pencarian, W4-03 Intro 00a–00c, W4-01 Setup a
 
 Fase 1 paling berat karena hampir semua komponen dibuat di sana. Kalau terasa terlalu lama sebelum ada layar yang bisa dilihat, komponen yang belum dipakai boleh dipindah ke fase saat layarnya dibuat.
 
-Posisi saat ini (19 Nov 2026): W2-01 selesai (W1-07 tinggal aktifkan email OTP; W1-10 menunggu desain layar masuk email, F-12); berikutnya W2-02. Login diganti dari Google ke email + kode verifikasi.
+Posisi saat ini (19 Nov 2026): W2-02 selesai (W1-07 tinggal aktifkan email OTP; W1-10 menunggu desain layar masuk email, F-12); berikutnya W2-03. Sebelum login ada, build debug memakai akun sementara `dev-lokal`. Login diganti dari Google ke email + kode verifikasi.
