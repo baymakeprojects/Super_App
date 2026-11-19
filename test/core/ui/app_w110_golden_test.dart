@@ -113,6 +113,15 @@ void main() {
     );
   });
 
+  testWidgets('Skeleton E7: daftar memuat (68:2334)', (tester) async {
+    await _golden(
+      tester,
+      'app_skeleton_list',
+      const Size(412, 300),
+      const SizedBox(width: 372, child: AppSkeletonList()),
+    );
+  });
+
   testWidgets('Keypad mengirim angka, hapus, dan sidik jari', (tester) async {
     final typed = <String>[];
     var deleted = 0;

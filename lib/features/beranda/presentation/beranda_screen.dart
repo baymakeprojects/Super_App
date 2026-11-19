@@ -46,6 +46,8 @@ class BerandaScreen extends ConsumerWidget {
         ref.watch(recentTransactionsProvider).value ?? const [];
 
     final checklist = ref.watch(setupChecklistProvider);
+    // E7 Memuat: data HP belum terbaca (biasanya hanya sekejap).
+    final loading = checklist == null || !ref.watch(walletsProvider).hasValue;
     final setupOpen =
         checklist != null && setupChecklistDone(checklist) < _SetupCard.steps;
 
@@ -72,96 +74,101 @@ class BerandaScreen extends ConsumerWidget {
             ),
             // E5 offline / G8 sinkron gagal: di bawah header, di atas isi.
             const SyncStatusBanner(spacing: AppSpace.s24),
-            if (setupOpen) ...[
+            if (loading) ...[
               const SizedBox(height: AppSpace.s24),
-              _SetupCard(checklist: checklist),
-            ],
-            if (nextClass != null) ...[
-              const SizedBox(height: AppSpace.s24),
-              _NextClassCard(next: nextClass),
-            ],
-            if (!setupOpen) ...[
-              const SizedBox(height: AppSpace.s24),
-              const _Stats(),
-            ],
-            if (setupOpen && todayRows.isEmpty) ...[
-              const SizedBox(height: AppSpace.s24),
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                spacing: AppSpace.s12,
-                children: [
-                  AppSectionHeader(title: 'Tugas hari ini'),
-                  _NoTasksBox(),
-                ],
-              ),
-            ],
-            if (todayRows.isNotEmpty) ...[
-              const SizedBox(height: AppSpace.s24),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                spacing: AppSpace.s12,
-                children: [
-                  AppSectionHeader(
-                    title: 'Tugas hari ini',
-                    actionLabel: 'Lihat semua →',
-                    onActionPressed: () => context.go(AppRoutes.tugas),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    spacing: AppSpace.s8,
-                    children: [
-                      for (final row in todayRows.take(_taskLimit))
-                        AppTaskItem(
-                          key: ValueKey(row.id),
-                          title: row.title,
-                          meta: row.meta,
-                          done: row.done,
-                          badge: row.badgeLabel == null
-                              ? null
-                              : AppBadge(
-                                  label: row.badgeLabel!,
-                                  type: row.badgeType,
-                                ),
-                          // Snackbar Urungkan hanya di 03; di sini tugas
-                          // langsung selesai (sama dengan layar 20, F-40).
-                          onDoneChanged: (done) => ref
-                              .read(taskRepositoryProvider)
-                              .setDone(row.id, done: done),
-                          onTap: () =>
-                              context.push(AppRoutes.tugasDetail(row.id)),
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-            if (transactions.isNotEmpty) ...[
-              const SizedBox(height: AppSpace.s24),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                spacing: AppSpace.s4,
-                children: [
-                  AppSectionHeader(
-                    title: 'Transaksi terakhir',
-                    actionLabel: 'Lihat semua →',
-                    onActionPressed: () => context.go(AppRoutes.keuangan),
-                  ),
-                  for (final row in transactions.take(_transactionLimit))
-                    AppTransactionItem(
-                      key: ValueKey(row.id),
-                      title: row.title,
-                      meta: row.meta,
-                      amount: row.amount,
-                      type: row.type,
-                      onTap: () =>
-                          context.push(AppRoutes.keuanganTransaksi(row.id)),
+              const _Loading(),
+            ] else ...[
+              if (setupOpen) ...[
+                const SizedBox(height: AppSpace.s24),
+                _SetupCard(checklist: checklist),
+              ],
+              if (nextClass != null) ...[
+                const SizedBox(height: AppSpace.s24),
+                _NextClassCard(next: nextClass),
+              ],
+              if (!setupOpen) ...[
+                const SizedBox(height: AppSpace.s24),
+                const _Stats(),
+              ],
+              if (setupOpen && todayRows.isEmpty) ...[
+                const SizedBox(height: AppSpace.s24),
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: AppSpace.s12,
+                  children: [
+                    AppSectionHeader(title: 'Tugas hari ini'),
+                    _NoTasksBox(),
+                  ],
+                ),
+              ],
+              if (todayRows.isNotEmpty) ...[
+                const SizedBox(height: AppSpace.s24),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: AppSpace.s12,
+                  children: [
+                    AppSectionHeader(
+                      title: 'Tugas hari ini',
+                      actionLabel: 'Lihat semua →',
+                      onActionPressed: () => context.go(AppRoutes.tugas),
                     ),
-                ],
-              ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: AppSpace.s8,
+                      children: [
+                        for (final row in todayRows.take(_taskLimit))
+                          AppTaskItem(
+                            key: ValueKey(row.id),
+                            title: row.title,
+                            meta: row.meta,
+                            done: row.done,
+                            badge: row.badgeLabel == null
+                                ? null
+                                : AppBadge(
+                                    label: row.badgeLabel!,
+                                    type: row.badgeType,
+                                  ),
+                            // Snackbar Urungkan hanya di 03; di sini tugas
+                            // langsung selesai (sama dengan layar 20, F-40).
+                            onDoneChanged: (done) => ref
+                                .read(taskRepositoryProvider)
+                                .setDone(row.id, done: done),
+                            onTap: () =>
+                                context.push(AppRoutes.tugasDetail(row.id)),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+              if (transactions.isNotEmpty) ...[
+                const SizedBox(height: AppSpace.s24),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: AppSpace.s4,
+                  children: [
+                    AppSectionHeader(
+                      title: 'Transaksi terakhir',
+                      actionLabel: 'Lihat semua →',
+                      onActionPressed: () => context.go(AppRoutes.keuangan),
+                    ),
+                    for (final row in transactions.take(_transactionLimit))
+                      AppTransactionItem(
+                        key: ValueKey(row.id),
+                        title: row.title,
+                        meta: row.meta,
+                        amount: row.amount,
+                        type: row.type,
+                        onTap: () =>
+                            context.push(AppRoutes.keuanganTransaksi(row.id)),
+                      ),
+                  ],
+                ),
+              ],
             ],
           ],
         ),
@@ -472,6 +479,36 @@ class _NoTasksBox extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// E7 Memuat (Figma 68:2289): kotak abu di posisi kartu kelas, dua Stat
+/// Card, dan daftar.
+class _Loading extends StatelessWidget {
+  const _Loading();
+
+  // Tinggi kotak di Figma (bukan variabel Figma).
+  static const double _cardHeight = 124;
+  static const double _statHeight = 110;
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      spacing: AppSpace.s24,
+      children: [
+        AppSkeleton(height: _cardHeight),
+        Row(
+          spacing: AppSpace.s12,
+          children: [
+            Expanded(child: AppSkeleton(height: _statHeight)),
+            Expanded(child: AppSkeleton(height: _statHeight)),
+          ],
+        ),
+        AppSkeletonList(),
+      ],
     );
   }
 }

@@ -30,6 +30,8 @@ class TugasScreen extends ConsumerWidget {
         bottom: false,
         child: Stack(
           children: [
+            // E7 Memuat (F-56).
+            if (view == null) const Positioned.fill(child: AppSkeletonPage()),
             if (view != null)
               Positioned.fill(
                 child: ListView(

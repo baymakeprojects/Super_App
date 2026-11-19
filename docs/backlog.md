@@ -59,7 +59,7 @@ Node id frame ada di `figma-frames.md`.
 | W4-02 | E1 Beranda kosong dengan checklist Siapkan Super App | E1 | flutter-screen | Checklist tercentang otomatis dan hilang setelah selesai | Selesai |
 | W4-03 | Splash native, ikon app adaptif, Intro 00a–00c | 00, Ikon app, 00a–00c | flutter-screen | Tampil di HP sesuai frame | Jalan (splash dan ikon selesai; Intro 00a–00c ditunda, keputusan Bayu 20 Nov 2026) |
 | W4-04 | 06 Lainnya (MVP), 14 Pengaturan (MVP), P37, P38, H05 | Frame "06 Lainnya (MVP)", 14, P37, P38, H05 | flutter-screen | Keluar akun dan ganti PIN berjalan | Selesai |
-| W4-05 | E7 memuat pada layar yang membaca data | E7 | flutter-screen | Tampil saat data belum siap | Belum |
+| W4-05 | E7 memuat pada layar yang membaca data | E7 | flutter-screen | Tampil saat data belum siap | Selesai |
 | W4-06 | H04 Pencarian tugas (kalau sempat) | H04 | flutter-screen | Cari judul tugas | Belum |
 | W4-07 | Uji integrasi alur utama, uji RLS, cek visual semua layar MVP terhadap Figma | pengujian-rilis | cek-desain | Semua lulus, selisih desain dicatat dan diperbaiki | Belum |
 | W4-08 | Proyek Supabase prod, keystore, build APK release, pasang di HP | pengujian-rilis › Checklist rilis Android | — | MVP terpasang di HP dan dipakai sehari-hari | Belum |
@@ -70,4 +70,4 @@ Tunda dulu, sesuai urutan: W4-06 Pencarian, W4-03 Intro 00a–00c, W4-01 Setup a
 
 Fase 1 paling berat karena hampir semua komponen dibuat di sana. Kalau terasa terlalu lama sebelum ada layar yang bisa dilihat, komponen yang belum dipakai boleh dipindah ke fase saat layarnya dibuat.
 
-Posisi saat ini (20 Nov 2026): Fase 1–3 selesai, termasuk login W1-10 (W1-07 tinggal aktifkan email OTP di dashboard); W4-01 dan W4-02 selesai, W4-03 splash dan ikon selesai (intro 00a–00c ditunda), W4-04 selesai; berikutnya W4-05. Tanpa file env, build debug memakai akun sementara `dev-lokal`; datanya dipindahkan ke akun asli saat login pertama. Login diganti dari Google ke email + kode verifikasi.
+Posisi saat ini (20 Nov 2026): Fase 1–3 selesai, termasuk login W1-10 (W1-07 tinggal aktifkan email OTP di dashboard); W4-01 dan W4-02 selesai, W4-03 splash dan ikon selesai (intro 00a–00c ditunda), W4-04 dan W4-05 selesai; berikutnya W4-06. Tanpa file env, build debug memakai akun sementara `dev-lokal`; datanya dipindahkan ke akun asli saat login pertama. Login diganti dari Google ke email + kode verifikasi.

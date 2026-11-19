@@ -31,7 +31,8 @@ class KuliahScreen extends ConsumerWidget {
       child: SafeArea(
         bottom: false,
         child: view == null
-            ? const SizedBox.expand()
+            // E7 Memuat (F-56).
+            ? const AppSkeletonPage()
             : view.isEmpty
             // K1: blok kosong di tengah sisa layar; di layar pendek ikut
             // digulir supaya tidak terpotong.

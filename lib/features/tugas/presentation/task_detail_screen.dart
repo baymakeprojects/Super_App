@@ -29,7 +29,8 @@ class TaskDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final item = ref.watch(taskDetailProvider(taskId)).value;
+    final itemAsync = ref.watch(taskDetailProvider(taskId));
+    final item = itemAsync.value;
     final subtasks = ref.watch(taskSubtasksProvider(taskId)).value ?? const [];
     final now = ref.watch(clockProvider)();
 
@@ -44,10 +45,10 @@ class TaskDetailScreen extends ConsumerWidget {
         trailingSemanticLabel: 'Edit tugas',
         onTrailingPressed: () => context.push(AppRoutes.tugasEdit(taskId)),
       ),
-      // Data lokal: biasanya langsung ada. Selama belum ada (atau tugas
-      // sudah dihapus) hanya bar atas yang tampil.
+      // Data lokal: biasanya langsung ada. Selama dimuat: E7 (F-56). Tugas
+      // yang sudah dihapus: hanya bar atas.
       body: item == null
-          ? null
+          ? (itemAsync.isLoading ? const AppSkeletonPage() : null)
           : _DetailBody(item: item, subtasks: subtasks, now: now),
       bottomNavigationBar: item == null
           ? null

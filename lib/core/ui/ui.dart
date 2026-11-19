@@ -35,6 +35,7 @@ export 'package:super_app/core/ui/app_progress_bar.dart';
 export 'package:super_app/core/ui/app_section_header.dart';
 export 'package:super_app/core/ui/app_segmented_control.dart';
 export 'package:super_app/core/ui/app_select.dart';
+export 'package:super_app/core/ui/app_skeleton.dart';
 export 'package:super_app/core/ui/app_snackbar.dart';
 export 'package:super_app/core/ui/app_stat_card.dart';
 export 'package:super_app/core/ui/app_switch.dart';

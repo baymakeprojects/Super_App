@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:drift/drift.dart' show Value;
@@ -19,6 +20,7 @@ import 'package:super_app/core/ui/ui.dart';
 import 'package:super_app/core/utils/clock.dart';
 import 'package:super_app/features/auth/application/current_user_id_provider.dart';
 import 'package:super_app/features/beranda/application/beranda_view.dart';
+import 'package:super_app/features/keuangan/application/keuangan_providers.dart';
 import 'package:super_app/features/keuangan/data/finance_repository.dart';
 import 'package:super_app/features/kuliah/data/course_repository.dart';
 import 'package:super_app/features/kuliah/data/semester_repository.dart';
@@ -55,6 +57,7 @@ Future<GoRouter> _pump(
   WidgetTester tester, {
   Future<void> Function(AppDatabase db)? seed,
   _FakeSync? sync,
+  bool loading = false,
 }) async {
   tester.view
     ..physicalSize = _phone
@@ -74,6 +77,11 @@ Future<GoRouter> _pump(
       appRouterProvider.overrideWithValue(router),
       appDatabaseProvider.overrideWithValue(database),
       clockProvider.overrideWithValue(() => _now),
+      // Dompet tidak pernah selesai dimuat → E7.
+      if (loading)
+        walletsProvider.overrideWith(
+          (ref) => StreamController<List<WalletBalance>>().stream,
+        ),
       if (sync != null) ...[
         syncControllerProvider.overrideWith(() => sync),
         // Seperti frame: 3 perubahan menunggu.
@@ -87,7 +95,11 @@ Future<GoRouter> _pump(
   await tester.pumpWidget(
     UncontrolledProviderScope(container: container, child: const SuperApp()),
   );
-  await tester.pumpAndSettle();
+  if (loading) {
+    await tester.pump();
+  } else {
+    await tester.pumpAndSettle();
+  }
   return router;
 }
 
@@ -265,6 +277,16 @@ void main() {
     await expectLater(
       find.byType(MaterialApp),
       matchesGoldenFile('goldens/beranda_02.png'),
+    );
+  });
+
+  testWidgets('E7 Memuat (Figma 68:2289)', (tester) async {
+    await _pump(tester, seed: _seedE1, loading: true);
+    expect(find.byType(AppSkeletonList), findsOneWidget);
+    expect(find.text('Siapkan Super App kamu'), findsNothing);
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/beranda_e7_memuat.png'),
     );
   });
 

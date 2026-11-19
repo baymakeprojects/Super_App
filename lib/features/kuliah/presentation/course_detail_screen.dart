@@ -21,7 +21,8 @@ class CourseDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final course = ref.watch(courseDetailProvider(courseId)).value;
+    final courseAsync = ref.watch(courseDetailProvider(courseId));
+    final course = courseAsync.value;
 
     return Scaffold(
       backgroundColor: AppColors.primary,
@@ -34,8 +35,10 @@ class CourseDetailScreen extends ConsumerWidget {
         trailingSemanticLabel: 'Ubah jadwal',
         onTrailingPressed: () => context.push(AppRoutes.kuliahEdit(courseId)),
       ),
-      // Selama data belum ada (atau mata kuliah dihapus) hanya bar atas.
-      body: course == null ? null : _DetailBody(course: course),
+      // Selama dimuat: E7 (F-56). Mata kuliah yang dihapus: hanya bar atas.
+      body: course == null
+          ? (courseAsync.isLoading ? const AppSkeletonPage() : null)
+          : _DetailBody(course: course),
     );
   }
 }

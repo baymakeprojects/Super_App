@@ -34,7 +34,8 @@ class KeuanganScreen extends ConsumerWidget {
       child: SafeArea(
         bottom: false,
         child: wallets == null
-            ? const SizedBox.expand()
+            // E7 Memuat (F-56).
+            ? const AppSkeletonPage()
             : Stack(
                 children: [
                   Positioned.fill(
