@@ -100,4 +100,90 @@ void main() {
     expect(options.semesterName, isNull);
     expect(options.courses.map((c) => c.name), ['Algoritma', 'Basis Data']);
   });
+
+  CourseInput input({
+    String name = 'Interaksi Manusia dan Komputer',
+    int weekday = DateTime.thursday,
+    String startsAt = '13:00',
+    String endsAt = '14:40',
+  }) => (
+    name: name,
+    lecturer: 'Bu Maya',
+    room: 'Lab 2, Gedung C',
+    credits: 3,
+    weekday: weekday,
+    startsAt: startsAt,
+    endsAt: endsAt,
+  );
+
+  test('tambah mata kuliah + jadwal, tampil di jadwal semesternya', () async {
+    await semester('s7', 'Semester 7', active: true);
+    final id = await repository.addCourse(semesterId: 's7', input: input());
+    await repository.addCourse(
+      semesterId: 's7',
+      input: input(name: 'Pagi', weekday: DateTime.monday, startsAt: '07:00'),
+    );
+    await repository.addCourse(
+      semesterId: 's6',
+      input: input(name: 'Lama'),
+    );
+
+    final course = await repository.getCourse(id);
+    expect(
+      (course!.name, course.lecturer, course.room, course.credits),
+      ('Interaksi Manusia dan Komputer', 'Bu Maya', 'Lab 2, Gedung C', 3),
+    );
+    final schedule = await repository.watchSchedule('s7').first;
+    expect(
+      schedule.map(
+        (e) => (e.course.name, e.session.weekday, e.session.startsAt, e.room),
+      ),
+      [
+        ('Pagi', DateTime.monday, '07:00', 'Lab 2, Gedung C'),
+        (
+          'Interaksi Manusia dan Komputer',
+          DateTime.thursday,
+          '13:00',
+          'Lab 2, Gedung C',
+        ),
+      ],
+    );
+    final queue = await db.select(db.syncQueue).get();
+    expect(queue.map((q) => q.targetTable).toSet(), {
+      'courses',
+      'class_sessions',
+    });
+  });
+
+  test('ubah mata kuliah mengganti jadwal pertamanya', () async {
+    final id = await repository.addCourse(semesterId: 's7', input: input());
+    await repository.updateCourse(
+      id,
+      input: input(name: 'IMK', weekday: DateTime.friday, startsAt: '08:00'),
+    );
+
+    expect((await repository.getCourse(id))!.name, 'IMK');
+    final sessions = await repository.getSessions(id);
+    expect(sessions.single.weekday, DateTime.friday);
+    expect(sessions.single.startsAt, '08:00');
+  });
+
+  test('ubah mata kuliah tanpa jadwal menambah jadwal', () async {
+    await course('lama', 'Tanpa jadwal');
+    await repository.updateCourse('lama', input: input(name: 'Ada jadwal'));
+    expect((await repository.getSessions('lama')).single.startsAt, '13:00');
+  });
+
+  test('ubah mata kuliah akun lain = error', () async {
+    await course('b', 'Milik B', userId: 'user-b');
+    await expectLater(
+      repository.updateCourse('b', input: input()),
+      throwsStateError,
+    );
+  });
+
+  test('nama hari dan jam tampilan', () {
+    expect(CourseRepository.weekdayName(DateTime.friday), 'Jumat');
+    expect(CourseRepository.displayTime('08:00'), '08.00');
+  });
 }

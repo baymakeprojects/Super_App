@@ -1,7 +1,10 @@
 import 'package:drift/drift.dart';
 
 import 'package:super_app/core/db/app_database.dart';
+import 'package:super_app/core/db/enums.dart';
+import 'package:super_app/core/sync/sync_queue_writer.dart';
 import 'package:super_app/core/utils/date_format.dart';
+import 'package:super_app/core/utils/uuid.dart';
 
 /// Satu mata kuliah di pop-up P03 Pilih mata kuliah.
 class CourseOption {
@@ -24,15 +27,238 @@ class CourseOptions {
   final List<CourseOption> courses;
 }
 
-/// Data mata kuliah. Untuk sekarang hanya bacaan untuk P03; tambah, ubah,
-/// dan hapus menyusul di W2-07.
+/// Satu kelas di jadwal 04: jadwal (hari + jam) beserta mata kuliahnya.
+class ScheduleEntry {
+  const ScheduleEntry({required this.session, required this.course});
+
+  final ClassSession session;
+  final Course course;
+
+  /// Ruang kelas: ruang di jadwal, atau ruang mata kuliah.
+  String? get room => session.room ?? course.room;
+}
+
+/// Isi H02 Jadwal baru: satu mata kuliah dengan satu jadwal mingguan.
+/// [weekday] 1 = Senin … 7 = Minggu; jam berformat `HH:mm`.
+typedef CourseInput = ({
+  String name,
+  String? lecturer,
+  String? room,
+  int? credits,
+  int weekday,
+  String startsAt,
+  String endsAt,
+});
+
+/// Data mata kuliah dan jadwalnya. Pola sama dengan `TaskRepository`: baca
+/// disaring per akun dan `deleted_at`, tulis + antrean sinkron dalam satu
+/// transaksi.
 class CourseRepository {
-  CourseRepository(this._database, {required this.userId});
+  CourseRepository(
+    this._database, {
+    required this.userId,
+    SyncQueueWriter? queue,
+    DateTime Function()? now,
+    String Function()? newId,
+  }) : _queue = queue ?? SyncQueueWriter(_database, now: now),
+       _now = now ?? DateTime.now,
+       _newId = newId ?? newUuidV4;
 
   final AppDatabase _database;
+  final SyncQueueWriter _queue;
+  final DateTime Function() _now;
+  final String Function() _newId;
 
   /// Pemilik data (akun yang sedang login).
   final String userId;
+
+  static const String _coursesTable = 'courses';
+  static const String _sessionsTable = 'class_sessions';
+
+  // ---------------------------------------------------------------------------
+  // Baca
+  // ---------------------------------------------------------------------------
+
+  /// Semua kelas mingguan di semester [semesterId], urut hari lalu jam
+  /// (layar 04 Kuliah).
+  Stream<List<ScheduleEntry>> watchSchedule(String semesterId) {
+    final sessions = _database.classSessions;
+    final courses = _database.courses;
+    final query =
+        _database.select(sessions).join([
+            innerJoin(courses, courses.id.equalsExp(sessions.courseId)),
+          ])
+          ..where(
+            sessions.userId.equals(userId) &
+                sessions.deletedAt.isNull() &
+                courses.userId.equals(userId) &
+                courses.deletedAt.isNull() &
+                courses.semesterId.equals(semesterId),
+          )
+          ..orderBy([
+            OrderingTerm(expression: sessions.weekday),
+            OrderingTerm(expression: sessions.startsAt),
+            OrderingTerm(expression: courses.name),
+          ]);
+    return query.watch().map(
+      (rows) => [
+        for (final row in rows)
+          ScheduleEntry(
+            session: row.readTable(sessions),
+            course: row.readTable(courses),
+          ),
+      ],
+    );
+  }
+
+  SimpleSelectStatement<$CoursesTable, Course> _courseQuery(String id) {
+    return _database.select(_database.courses)..where(
+      (c) => c.userId.equals(userId) & c.id.equals(id) & c.deletedAt.isNull(),
+    );
+  }
+
+  SimpleSelectStatement<$ClassSessionsTable, ClassSession> _sessionsQuery(
+    String courseId,
+  ) {
+    return _database.select(_database.classSessions)
+      ..where(
+        (s) =>
+            s.userId.equals(userId) &
+            s.courseId.equals(courseId) &
+            s.deletedAt.isNull(),
+      )
+      ..orderBy([
+        (s) => OrderingTerm(expression: s.weekday),
+        (s) => OrderingTerm(expression: s.startsAt),
+      ]);
+  }
+
+  /// Satu mata kuliah (layar 20). `null` kalau tidak ada atau dihapus.
+  Stream<Course?> watchCourse(String id) =>
+      _courseQuery(id).watchSingleOrNull();
+
+  Future<Course?> getCourse(String id) => _courseQuery(id).getSingleOrNull();
+
+  /// Jadwal mingguan satu mata kuliah, urut hari lalu jam.
+  Stream<List<ClassSession>> watchSessions(String courseId) =>
+      _sessionsQuery(courseId).watch();
+
+  Future<List<ClassSession>> getSessions(String courseId) =>
+      _sessionsQuery(courseId).get();
+
+  // ---------------------------------------------------------------------------
+  // Tulis
+  // ---------------------------------------------------------------------------
+
+  /// Menambah mata kuliah dengan satu jadwal mingguan (H02). Mengembalikan
+  /// id mata kuliah.
+  Future<String> addCourse({
+    required String semesterId,
+    required CourseInput input,
+  }) {
+    return _database.transaction(() async {
+      final id = _newId();
+      final now = _now();
+      await _database
+          .into(_database.courses)
+          .insert(
+            CoursesCompanion.insert(
+              id: id,
+              userId: userId,
+              semesterId: semesterId,
+              name: input.name,
+              lecturer: Value(input.lecturer),
+              room: Value(input.room),
+              credits: Value(input.credits),
+              createdAt: Value(now),
+              updatedAt: Value(now),
+            ),
+          );
+      await _queue.enqueue(
+        table: _coursesTable,
+        rowId: id,
+        operation: SyncOperation.insert,
+      );
+      await _insertSession(id, input);
+      return id;
+    });
+  }
+
+  /// Mengubah mata kuliah dan jadwal pertamanya (H02 mode ubah). Kalau
+  /// belum punya jadwal, jadwal baru ditambahkan.
+  Future<void> updateCourse(String id, {required CourseInput input}) {
+    return _database.transaction(() async {
+      final now = _now();
+      final changed =
+          await (_database.update(
+            _database.courses,
+          )..where((c) => c.userId.equals(userId) & c.id.equals(id))).write(
+            CoursesCompanion(
+              name: Value(input.name),
+              lecturer: Value(input.lecturer),
+              room: Value(input.room),
+              credits: Value(input.credits),
+              updatedAt: Value(now),
+            ),
+          );
+      if (changed == 0) throw StateError('Mata kuliah $id tidak ditemukan');
+      await _queue.enqueue(
+        table: _coursesTable,
+        rowId: id,
+        operation: SyncOperation.update,
+      );
+
+      final sessions = await getSessions(id);
+      if (sessions.isEmpty) {
+        await _insertSession(id, input);
+        return;
+      }
+      final first = sessions.first;
+      await (_database.update(
+        _database.classSessions,
+      )..where((s) => s.userId.equals(userId) & s.id.equals(first.id))).write(
+        ClassSessionsCompanion(
+          weekday: Value(input.weekday),
+          startsAt: Value(input.startsAt),
+          endsAt: Value(input.endsAt),
+          updatedAt: Value(now),
+        ),
+      );
+      await _queue.enqueue(
+        table: _sessionsTable,
+        rowId: first.id,
+        operation: SyncOperation.update,
+      );
+    });
+  }
+
+  Future<void> _insertSession(String courseId, CourseInput input) async {
+    final id = _newId();
+    final now = _now();
+    await _database
+        .into(_database.classSessions)
+        .insert(
+          ClassSessionsCompanion.insert(
+            id: id,
+            userId: userId,
+            courseId: courseId,
+            weekday: input.weekday,
+            startsAt: input.startsAt,
+            endsAt: input.endsAt,
+            createdAt: Value(now),
+            updatedAt: Value(now),
+          ),
+        );
+    await _queue.enqueue(
+      table: _sessionsTable,
+      rowId: id,
+      operation: SyncOperation.insert,
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Pilihan mata kuliah (P03 di form tugas)
+  // ---------------------------------------------------------------------------
 
   /// Mata kuliah semester aktif, kelas hari ini dulu lalu hari berikutnya
   /// (urutan contoh P03 pada hari Jumat). Kalau belum ada semester aktif,
@@ -107,16 +333,18 @@ class CourseRepository {
   static String? _caption(Course course, ClassSession? session) {
     final parts = [
       if (session != null) ...[
-        AppDateFormat.weekday(_weekdayDate(session.weekday)),
-        // Kolom jam disimpan "HH:mm"; tampilan app memakai titik.
-        session.startsAt.replaceFirst(':', '.'),
+        weekdayName(session.weekday),
+        displayTime(session.startsAt),
       ],
       ?course.lecturer,
     ];
     return parts.isEmpty ? null : parts.join(' · ');
   }
 
-  /// Tanggal mana saja dengan hari [weekday] (1 = Senin), hanya untuk
-  /// mengambil nama harinya.
-  static DateTime _weekdayDate(int weekday) => DateTime(2024, 1, weekday);
+  /// "Jumat" untuk [weekday] 5 (1 = Senin).
+  static String weekdayName(int weekday) =>
+      AppDateFormat.weekday(DateTime(2024, 1, weekday)); // 1 Jan 2024 Senin
+
+  /// "08.00" dari kolom jam `08:00`.
+  static String displayTime(String hhmm) => hhmm.replaceFirst(':', '.');
 }

@@ -223,4 +223,25 @@ void main() {
     expect(await repository.getTaskItem(id), isNull);
     expect(await repository.watchTaskItem(id).first, isNull);
   });
+
+  test('tugas aktif per mata kuliah (layar 20)', () async {
+    await repository.addTask(title: 'Lain', courseId: 'c2');
+    final done = await repository.addTask(title: 'Selesai', courseId: 'c1');
+    await repository.setDone(done, done: true);
+    final deleted = await repository.addTask(title: 'Dihapus', courseId: 'c1');
+    await repository.deleteTask(deleted);
+    await repository.addTask(
+      title: 'Kuis',
+      courseId: 'c1',
+      dueAt: DateTime(2026, 11, 9),
+    );
+    await repository.addTask(
+      title: 'Laporan',
+      courseId: 'c1',
+      dueAt: DateTime(2026, 11, 6),
+    );
+
+    final items = await repository.watchActiveTasksForCourse('c1').first;
+    expect(items.map((i) => i.task.title), ['Laporan', 'Kuis']);
+  });
 }

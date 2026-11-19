@@ -90,6 +90,18 @@ class TaskRepository {
     });
   }
 
+  /// Tugas aktif satu mata kuliah, deadline terdekat dulu (layar 20 Detail
+  /// mata kuliah).
+  Stream<List<TaskListItem>> watchActiveTasksForCourse(String courseId) {
+    final tasks = _database.tasks;
+    final query = _taskListQuery()
+      ..where(
+        tasks.courseId.equals(courseId) &
+            tasks.status.equalsValue(TaskStatus.active),
+      );
+    return query.watch().map(_toTaskListItems);
+  }
+
   /// Sama dengan [watchTaskItem], sekali baca (isian awal H01 Edit tugas).
   Future<TaskListItem?> getTaskItem(String id) async {
     final query = _taskListQuery()..where(_database.tasks.id.equals(id));
