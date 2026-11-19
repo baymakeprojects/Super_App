@@ -26,6 +26,7 @@ class AppInput extends StatefulWidget {
     this.inputFormatters,
     this.autofocus = false,
     this.enabled = true,
+    this.maxLines = 1,
     this.previewState,
   });
 
@@ -47,6 +48,10 @@ class AppInput extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool autofocus;
   final bool enabled;
+
+  /// Jumlah baris maksimum. `null` = kolom memanjang mengikuti isi
+  /// (misalnya Catatan); tingginya tetap satu baris selama isinya pendek.
+  final int? maxLines;
 
   /// Paksa tampilan keadaan tertentu. Hanya untuk katalog dan golden test;
   /// di layar biarkan `null`.
@@ -136,6 +141,7 @@ class _AppInputState extends State<AppInput> {
                 inputFormatters: widget.inputFormatters,
                 autofocus: widget.autofocus,
                 enabled: widget.enabled,
+                maxLines: widget.maxLines,
                 style: AppText.bodyLarge.copyWith(color: AppColors.white),
                 cursorColor: AppColors.brandingOrange,
                 decoration: InputDecoration.collapsed(

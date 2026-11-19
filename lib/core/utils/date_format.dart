@@ -55,6 +55,10 @@ abstract final class AppDateFormat {
   static String weekdayDayMonth(DateTime date) =>
       '${weekday(date)} ${dayMonthShort(date)}';
 
+  /// "Jum, 6 Nov" (kolom Tanggal di form 15 dan 17).
+  static String weekdayShortDayMonth(DateTime date) =>
+      '${weekdayShort(date)}, ${dayMonthShort(date)}';
+
   /// Tanggal tanpa jam (pukul 00.00), untuk membandingkan hari.
   static DateTime dateOnly(DateTime date) =>
       DateTime(date.year, date.month, date.day);

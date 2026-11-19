@@ -7,6 +7,7 @@ import 'package:super_app/app/placeholder_screen.dart';
 import 'package:super_app/app/routes.dart';
 import 'package:super_app/core/ui/catalog_page.dart';
 import 'package:super_app/core/ui/ui.dart';
+import 'package:super_app/features/tugas/presentation/task_form_screen.dart';
 import 'package:super_app/features/tugas/presentation/tugas_screen.dart';
 
 /// Router app. Rutenya persis seperti tabel di `docs/navigasi.md`.
@@ -31,11 +32,12 @@ GoRouter buildAppRouter({String initialLocation = AppRoutes.beranda}) {
     String path,
     String title, {
     List<RouteBase> routes = const [],
+    Widget? screen,
   }) {
     return GoRoute(
       path: path,
       parentNavigatorKey: rootNavigatorKey,
-      builder: (context, state) => PlaceholderScreen(title: title),
+      builder: (context, state) => screen ?? PlaceholderScreen(title: title),
       routes: routes,
     );
   }
@@ -112,7 +114,7 @@ GoRouter buildAppRouter({String initialLocation = AppRoutes.beranda}) {
             screen: const TugasScreen(),
             routes: [
               // 'baru' dan 'cari' sebelum ':id' supaya tidak dianggap id.
-              fullScreen('baru', 'Tugas baru'),
+              fullScreen('baru', 'Tugas baru', screen: const TaskFormScreen()),
               fullScreen('cari', 'Pencarian'),
               fullScreen(
                 ':id',

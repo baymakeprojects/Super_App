@@ -4,6 +4,7 @@ library;
 export 'package:super_app/core/ui/app_action_bar.dart';
 export 'package:super_app/core/ui/app_badge.dart';
 export 'package:super_app/core/ui/app_bottom_nav.dart';
+export 'package:super_app/core/ui/app_bottom_sheet.dart';
 export 'package:super_app/core/ui/app_button.dart';
 export 'package:super_app/core/ui/app_card.dart';
 export 'package:super_app/core/ui/app_checkbox.dart';

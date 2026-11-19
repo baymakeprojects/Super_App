@@ -78,7 +78,7 @@ Claude Code tidak mengarang bagian ini. Kalau sampai ke sini, berhenti dan tanya
 
 | Kebutuhan | Kenapa perlu | Usulan sementara |
 | --- | --- | --- |
-| Keluar form yang sudah diisi | Ikon Close bisa membuang isian tanpa sengaja | Tutup langsung seperti sekarang, atau tambah konfirmasi; perlu keputusan |
+| Keluar form yang sudah diisi | Ikon Close bisa membuang isian tanpa sengaja | Diputuskan Bayu (W2-05): tutup langsung tanpa konfirmasi sampai ada desain dialognya |
 | Layar masuk email dan kode (F-12) | Login diganti dari Google ke email + kode verifikasi (keputusan Bayu, 19 Nov 2026) | Bayu mendesain di Figma dulu; termasuk kode salah, kedaluwarsa, kirim ulang, dan memuat |
 | Nama pengguna (F-14) | Login email tidak memberi nama, padahal 01 dan G1 menyapa "Halo, Bayu" | Perlu keputusan: kolom Nama di layar masuk atau di setup awal |
 | Isi 14 Pengaturan versi MVP | Frame 14 berisi baris untuk fitur Tahap 2–3 (notifikasi, Data) | Tampilkan hanya kartu akun dan grup keamanan; baris lain disembunyikan |
