@@ -22,19 +22,20 @@ abstract final class AppMoneyFormat {
   static String signed(int amount, {required bool income}) =>
       '${income ? '+' : minus}${rupiah(amount.abs())}';
 
-  /// Bentuk ringkas untuk ringkasan bulan: "Rp2jt", "Rp1,5jt", "Rp750rb",
-  /// "Rp1,2M"; di bawah seribu tetap utuh ("Rp900"). Satu angka di
-  /// belakang koma, dibulatkan ke bawah supaya tidak terlihat lebih besar.
+  /// Bentuk ringkas seperti Figma: "Rp2jt", "Rp1,25jt" (02), "Rp750rb";
+  /// di bawah seribu tetap utuh ("Rp900"). Paling banyak dua angka di
+  /// belakang koma tanpa nol di akhir, dibulatkan ke bawah supaya tidak
+  /// terlihat lebih besar.
   static String compact(int amount) {
     final sign = amount < 0 ? minus : '';
     final value = amount.abs();
     final String body;
     if (value >= _billion) {
-      body = '${_oneDecimal(value, _billion)}M';
+      body = '${_twoDecimals(value, _billion)}M';
     } else if (value >= _million) {
-      body = '${_oneDecimal(value, _million)}jt';
+      body = '${_twoDecimals(value, _million)}jt';
     } else if (value >= _thousand) {
-      body = '${_oneDecimal(value, _thousand)}rb';
+      body = '${_twoDecimals(value, _thousand)}rb';
     } else {
       body = '$value';
     }
@@ -45,11 +46,12 @@ abstract final class AppMoneyFormat {
   static String signedCompact(int amount, {required bool income}) =>
       '${income ? '+' : minus}${compact(amount.abs())}';
 
-  static String _oneDecimal(int value, int unit) {
-    final tenths = value * 10 ~/ unit;
-    final whole = tenths ~/ 10;
-    final fraction = tenths % 10;
-    return fraction == 0 ? '$whole' : '$whole,$fraction';
+  static String _twoDecimals(int value, int unit) {
+    final hundredths = value * 100 ~/ unit;
+    final whole = hundredths ~/ 100;
+    final fraction = (hundredths % 100).toString().padLeft(2, '0');
+    final trimmed = fraction.replaceFirst(RegExp(r'0+$'), '');
+    return trimmed.isEmpty ? '$whole' : '$whole,$trimmed';
   }
 
   static String _groupThousands(int value) {

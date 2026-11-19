@@ -7,6 +7,7 @@ import 'package:super_app/app/placeholder_screen.dart';
 import 'package:super_app/app/routes.dart';
 import 'package:super_app/core/ui/catalog_page.dart';
 import 'package:super_app/core/ui/ui.dart';
+import 'package:super_app/features/beranda/presentation/beranda_screen.dart';
 import 'package:super_app/features/keuangan/presentation/keuangan_screen.dart';
 import 'package:super_app/features/keuangan/presentation/transaction_form_screen.dart';
 import 'package:super_app/features/kuliah/presentation/course_detail_screen.dart';
@@ -113,7 +114,7 @@ GoRouter buildAppRouter({String initialLocation = AppRoutes.beranda}) {
         builder: (context, state, navigationShell) =>
             _TabShell(navigationShell: navigationShell),
         branches: [
-          tab(AppRoutes.beranda, 'Beranda'),
+          tab(AppRoutes.beranda, 'Beranda', screen: const BerandaScreen()),
           tab(
             AppRoutes.tugas,
             'Tugas',

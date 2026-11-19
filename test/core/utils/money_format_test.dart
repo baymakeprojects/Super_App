@@ -19,10 +19,12 @@ void main() {
   test('bentuk ringkas ringkasan bulan (Masuk/Keluar di 05)', () {
     expect(AppMoneyFormat.signedCompact(2000000, income: true), '+Rp2jt');
     expect(AppMoneyFormat.signedCompact(750000, income: false), '−Rp750rb');
-    expect(AppMoneyFormat.compact(1550000), 'Rp1,5jt');
-    expect(AppMoneyFormat.compact(1999999), 'Rp1,9jt');
+    expect(AppMoneyFormat.compact(1550000), 'Rp1,55jt');
+    expect(AppMoneyFormat.compact(1250000), 'Rp1,25jt');
+    expect(AppMoneyFormat.compact(1500000), 'Rp1,5jt');
+    expect(AppMoneyFormat.compact(1999999), 'Rp1,99jt');
     expect(AppMoneyFormat.compact(2500), 'Rp2,5rb');
-    expect(AppMoneyFormat.compact(1200000000), 'Rp1,2M');
+    expect(AppMoneyFormat.compact(1205000000), 'Rp1,2M');
     expect(AppMoneyFormat.compact(900), 'Rp900');
     expect(AppMoneyFormat.compact(0), 'Rp0');
   });

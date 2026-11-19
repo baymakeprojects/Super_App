@@ -286,9 +286,14 @@ class FinanceRepository {
 
   /// Total masuk dan keluar bulan [month] (tanggal mana saja di bulan itu,
   /// waktu HP).
-  Stream<MonthSummary> watchMonthSummary(DateTime month) {
-    final start = DateTime(month.year, month.month);
-    final end = DateTime(month.year, month.month + 1);
+  Stream<MonthSummary> watchMonthSummary(DateTime month) => watchSummaryBetween(
+    DateTime(month.year, month.month),
+    DateTime(month.year, month.month + 1),
+  );
+
+  /// Total masuk dan keluar dari [start] (termasuk) sampai [end] (tidak
+  /// termasuk), misalnya minggu ini di Stat Card Saldo Beranda.
+  Stream<MonthSummary> watchSummaryBetween(DateTime start, DateTime end) {
     final t = _database.transactions;
     final total = t.amount.sum();
     final query = _database.selectOnly(t)

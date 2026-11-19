@@ -52,7 +52,7 @@ void main() {
     AppRoutes.setupJadwal: 'Jadwal semester',
     AppRoutes.setupDompet: 'Dompet & saldo awal',
     AppRoutes.setupKeamanan: 'Keamanan',
-    AppRoutes.beranda: 'Beranda',
+    AppRoutes.beranda: 'Halo',
     AppRoutes.tugas: 'Tugas',
     AppRoutes.tugasBaru: 'Tugas baru',
     AppRoutes.tugasCari: 'Pencarian',
@@ -74,7 +74,7 @@ void main() {
     final router = await _pumpApp(tester);
 
     expect(_location(router), AppRoutes.beranda);
-    expect(find.text('Beranda'), findsOneWidget);
+    expect(find.text('Halo'), findsOneWidget);
     expect(find.text('KEUANGAN'), findsOneWidget);
   });
 
