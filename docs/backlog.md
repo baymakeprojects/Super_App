@@ -21,7 +21,7 @@ Node id frame ada di `figma-frames.md`.
 | W1-07 | Proyek Supabase dev, login email + kode verifikasi aktif, migrasi semua tabel MVP + RLS | spesifikasi-teknis › Model data, Keamanan data | supabase-tabel | Uji dua akun: A tidak bisa membaca data B | Jalan (uji RLS lulus; tinggal aktifkan email OTP di dashboard oleh Bayu, lihat docs/setup-supabase.md §3) |
 | W1-08 | Database drift (tabel MVP + `sync_queue`) dan pola repository | spesifikasi-teknis › Arsitektur | supabase-tabel | Unit test simpan dan baca lokal | Selesai |
 | W1-09 | `go_router` dengan shell 5 tab dan semua rute (layar masih kosong berjudul) | navigasi | — | Semua rute bisa dibuka, Back sesuai aturan | Selesai |
-| W1-10 | Login email + kode dari 00d, kunci sidik jari 01, PIN H06, G1 sesi berakhir | 00d, layar masuk email dan kode (menunggu desain F-12), 01, H06, G1 | flutter-screen | Buka app → masuk dengan kode → sidik jari → Beranda kosong | Belum |
+| W1-10 | Login email + kode dari 00d, kunci sidik jari 01, PIN H06, G1 sesi berakhir | 00d, 00e Masuk dengan email, 00f Masukkan kode (F-12), 01, H06, G1 | flutter-screen | Buka app → masuk dengan kode → sidik jari → Beranda kosong | Belum |
 
 ## Fase 2 — Tugas & Kuliah
 

@@ -17,8 +17,8 @@ Lima tab Bottom Nav memakai `StatefulShellRoute.indexedStack` supaya posisi guli
 | Rute | Layar | Dibuka dari | Bottom nav |
 | --- | --- | --- | --- |
 | `/intro` | 00a–00d Intro (satu halaman bergeser) | Pembukaan pertama | Tidak |
-| `/masuk` | Masuk dengan email — **belum ada frame Figma (F-12), jangan dibuat dulu** | 00d › Mulai sekarang; G1 › Masuk lagi | Tidak |
-| `/masuk/kode` | Masukkan kode verifikasi — **belum ada frame Figma (F-12), jangan dibuat dulu** | `/masuk` › kirim kode | Tidak |
+| `/masuk` | 00e Masuk dengan email (frame 230:5209, F-12) | 00d › Mulai sekarang; G1 › Masuk lagi | Tidak |
+| `/masuk/kode` | 00f Masukkan kode (frame 231:5271, F-12) | `/masuk` › kirim kode | Tidak |
 | `/kunci` | 01 Kunci sidik jari | Setiap app dibuka dari keadaan tertutup | Tidak |
 | `/kunci/pin` | H06 Masukkan PIN | 01 › Pakai PIN | Tidak |
 | `/setup/jadwal` | 01a Jadwal semester | Setelah login pertama | Tidak |

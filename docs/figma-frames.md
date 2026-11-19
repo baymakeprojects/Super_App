@@ -30,6 +30,7 @@ Node id dicatat 19 Nov 2026. Kalau sebuah id tidak ditemukan, cari frame dengan 
 | [09] Overlay & input | 49:129 |
 | [10] Onboarding | 62:1773 |
 | [11] Status & umpan balik | 65:180 |
+| [14] Masuk & kode (Code Cell 229:241) | 229:228 |
 
 ## Layar HP MVP
 
@@ -38,6 +39,10 @@ Node id dicatat 19 Nov 2026. Kalau sebuah id tidak ditemukan, cari frame dengan 
 | 00 | Splash | 66:1977 |
 | — | Ikon app | 66:1983 |
 | 00a–00d | Intro 1–4 | 63:1670, 63:1778, 63:1888, 63:1997 |
+| 00e | Masuk dengan email (Section 230:5208) | 230:5209 |
+| 00e | Email tidak valid · Mengirim kode · Gagal kirim kode | 230:5235, 230:5261, 230:5287 |
+| 00f | Masukkan kode | 231:5271 |
+| 00f | Kode salah · Kode kedaluwarsa · Memeriksa kode | 231:5310, 231:5349, 231:5388 |
 | 01 | Login / Kunci sidik jari | 12:2 |
 | 01a | Jadwal semester | 66:1786 |
 | 01b | Dompet & saldo awal | 66:1852 |
