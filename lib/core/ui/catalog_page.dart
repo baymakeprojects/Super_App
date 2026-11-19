@@ -19,6 +19,15 @@ class _CatalogPageState extends State<CatalogPage> {
   bool _switchOn = true;
   int _selectedChip = 0;
   int _tab = 0;
+  bool _taskDone = false;
+  int _segment = 0;
+  int _option = 0;
+  int _dayPill = 4;
+  DateTime? _date;
+  int _hour = 23;
+  int _minute = 59;
+
+  static const _days = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum'];
 
   static const _chips = ['Semua', 'Hari ini', 'Minggu ini', 'Selesai'];
 
@@ -28,7 +37,7 @@ class _CatalogPageState extends State<CatalogPage> {
       appBar: AppTopAppBar(
         title: 'Katalog komponen',
         leadingIcon: AppIcons.arrowLeft,
-        onLeadingPressed: () {},
+        onLeadingPressed: () => Navigator.maybePop(context),
         trailingIcon: AppIcons.search,
         onTrailingPressed: () {},
       ),
@@ -156,6 +165,100 @@ class _CatalogPageState extends State<CatalogPage> {
               AppProgressBar(value: value),
               const SizedBox(height: AppSpace.s12),
             ],
+            const _Section('Task Item · Checklist Item'),
+            AppTaskItem(
+              title: 'Laporan praktikum modul 5',
+              meta: 'Pemrograman Mobile · 23.59',
+              done: _taskDone,
+              badge: _taskDone
+                  ? const AppBadge(label: 'Selesai', type: AppBadgeType.success)
+                  : const AppBadge(
+                      label: 'Hari ini',
+                      type: AppBadgeType.warning,
+                    ),
+              onDoneChanged: (value) => setState(() => _taskDone = value),
+            ),
+            AppChecklistItem(
+              label: 'Tulis analisis',
+              done: _taskDone,
+              onChanged: (value) => setState(() => _taskDone = value),
+            ),
+            const _Section('Class Item · Day Pill'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                for (var i = 0; i < _days.length; i++)
+                  AppDayPill(
+                    day: _days[i],
+                    date: '${3 + i}',
+                    selected: i == _dayPill,
+                    onTap: () => setState(() => _dayPill = i),
+                  ),
+              ],
+            ),
+            const SizedBox(height: AppSpace.s12),
+            for (final state in AppClassItemState.values) ...[
+              AppClassItem(
+                start: '08.00',
+                end: '09.40',
+                course: 'Pemrograman Mobile',
+                meta: 'Ruang 301 · Bu Rina',
+                state: state,
+              ),
+              const SizedBox(height: AppSpace.s12),
+            ],
+            const _Section('Segmented Control · Select'),
+            AppSegmentedControl(
+              firstLabel: 'Pengeluaran',
+              secondLabel: 'Pemasukan',
+              selectedIndex: _segment,
+              onChanged: (index) => setState(() => _segment = index),
+            ),
+            const SizedBox(height: AppSpace.s16),
+            AppSelect(label: 'Mata kuliah', value: null, onTap: () {}),
+            const _Section('Pop-up'),
+            const AppOverlayHeader(
+              title: 'Pilih dompet',
+              subtitle: 'Keterangan singkat',
+            ),
+            for (var i = 0; i < 3; i++)
+              AppOptionItem(
+                title: ['Tunai', 'Bank', 'E-wallet'][i],
+                icon: AppIcons.wallet,
+                selected: i == _option,
+                onTap: () => setState(() => _option = i),
+              ),
+            const SizedBox(height: AppSpace.s16),
+            AppDatePicker(
+              selected: _date,
+              onSelected: (date) => setState(() => _date = date),
+            ),
+            const SizedBox(height: AppSpace.s16),
+            AppTimePicker(
+              hour: _hour,
+              minute: _minute,
+              onChanged: (hour, minute) => setState(() {
+                _hour = hour;
+                _minute = minute;
+              }),
+            ),
+            const _Section('Snackbar · Action Bar'),
+            AppButton(
+              label: 'Tampilkan snackbar',
+              style: AppButtonStyle.ghost,
+              onPressed: () => showAppSnackbar(
+                context,
+                message: 'Tugas dihapus',
+                actionLabel: 'Urungkan',
+              ),
+            ),
+            const SizedBox(height: AppSpace.s16),
+            AppActionBar(
+              primaryLabel: 'Simpan',
+              onPrimaryPressed: () {},
+              secondaryLabel: 'Hapus',
+              onSecondaryPressed: () {},
+            ),
           ],
         ),
       ),
