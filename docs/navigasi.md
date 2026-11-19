@@ -40,6 +40,9 @@ Lima tab Bottom Nav memakai `StatefulShellRoute.indexedStack` supaya posisi guli
 | `/lainnya` | 06 Lainnya (MVP) | Tab Lainnya | Ya |
 | `/pengaturan` | 14 Pengaturan | Avatar di 02; ikon User di 06 | Tidak |
 | `/pengaturan/pin` | H05 Atur PIN cadangan | 14 › PIN cadangan; 01c › PIN cadangan | Tidak |
+| `/katalog` | Katalog komponen `core/ui` — **hanya build debug**, tidak ada di rilis (disetujui Bayu, W1-09) | Daftar "Rute debug" di tab Lainnya (debug) | Tidak |
+
+Status W1-09: semua rute di atas sudah ada dengan layar sementara berjudul, kecuali `/masuk` dan `/masuk/kode` (menunggu desain F-12). Pengalihan saat app dibuka (cek sesi → Intro/Kunci/Beranda) dibuat di W1-10; sampai saat itu app langsung membuka `/beranda`.
 
 ## Pop-up (bukan rute)
 
