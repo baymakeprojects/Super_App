@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'package:super_app/app/routes.dart';
+import 'package:super_app/core/sync/sync_status_banner.dart';
 import 'package:super_app/core/theme/theme.dart';
 import 'package:super_app/core/ui/ui.dart';
 import 'package:super_app/core/utils/clock.dart';
@@ -62,6 +63,8 @@ class BerandaScreen extends ConsumerWidget {
               date: AppDateFormat.weekdayCommaDayMonthLong(now),
               name: name,
             ),
+            // E5 offline / G8 sinkron gagal: di bawah header, di atas isi.
+            const SyncStatusBanner(spacing: AppSpace.s24),
             if (nextClass != null) ...[
               const SizedBox(height: AppSpace.s24),
               _NextClassCard(next: nextClass),

@@ -49,7 +49,7 @@ Node id frame ada di `figma-frames.md`.
 | W3-05 | H11 Ubah transaksi dan hapus dengan P47 + snackbar Urungkan | H11, P47, E4 | flutter-screen | Kriteria PRD Keuangan poin 3 | Selesai |
 | W3-06 | 02 Beranda dengan data asli: Kelas berikutnya, Stat Card, Tugas hari ini, Transaksi terakhir | 02, design-notes §6 | flutter-screen | Kriteria PRD Beranda poin 1 | Selesai |
 | W3-07 | Mesin sinkron: kirim antrean, tarik perubahan, coba ulang | spesifikasi-teknis › Sinkron offline | — | Uji integrasi offline → online lulus | Selesai (aktif setelah login W1-10) |
-| W3-08 | Banner offline E5, G3 gagal menyimpan, G8 sinkron gagal | E5, G3, G8 | flutter-screen | Ketiga keadaan bisa dipicu dan tampil sesuai frame | Belum |
+| W3-08 | Banner offline E5, G3 gagal menyimpan, G8 sinkron gagal | E5, G3, G8 | flutter-screen | Ketiga keadaan bisa dipicu dan tampil sesuai frame | Selesai (aktif setelah login W1-10) |
 
 ## Fase 4 — pertama kali, rapikan, rilis
 
@@ -70,4 +70,4 @@ Tunda dulu, sesuai urutan: W4-06 Pencarian, W4-03 Intro 00a–00c, W4-01 Setup a
 
 Fase 1 paling berat karena hampir semua komponen dibuat di sana. Kalau terasa terlalu lama sebelum ada layar yang bisa dilihat, komponen yang belum dipakai boleh dipindah ke fase saat layarnya dibuat.
 
-Posisi saat ini (19 Nov 2026): Fase 2 selesai, W3-07 selesai (W1-07 tinggal aktifkan email OTP; W1-10 menunggu desain layar masuk email, F-12); berikutnya W3-08. Sebelum login ada, build debug memakai akun sementara `dev-lokal`. Login diganti dari Google ke email + kode verifikasi.
+Posisi saat ini (19 Nov 2026): Fase 2 dan 3 selesai (W1-07 tinggal aktifkan email OTP; W1-10 siap dikerjakan, desain 00e–00f sudah ada, F-12); berikutnya W4-01. Sebelum login ada, build debug memakai akun sementara `dev-lokal`. Login diganti dari Google ke email + kode verifikasi.

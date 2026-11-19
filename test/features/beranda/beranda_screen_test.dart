@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,6 +12,9 @@ import 'package:super_app/app/routes.dart';
 import 'package:super_app/core/db/app_database.dart';
 import 'package:super_app/core/db/database_provider.dart';
 import 'package:super_app/core/db/enums.dart';
+import 'package:super_app/core/sync/sync_controller.dart';
+import 'package:super_app/core/sync/sync_engine.dart';
+import 'package:super_app/core/sync/sync_status.dart';
 import 'package:super_app/core/ui/ui.dart';
 import 'package:super_app/core/utils/clock.dart';
 import 'package:super_app/features/auth/application/current_user_id_provider.dart';
@@ -28,9 +33,28 @@ final _now = DateTime(2026, 11, 6, 7, 35);
 const Size _phone = Size(412, 917);
 const double _statusBar = 32;
 
+/// Status sinkron tetap untuk uji banner; Coba lagi dihitung.
+class _FakeSync extends SyncController {
+  _FakeSync(this.initial);
+
+  final SyncState initial;
+  int retries = 0;
+
+  @override
+  SyncState build() => initial;
+
+  @override
+  Future<SyncResult?> syncNow() async {
+    retries++;
+    state = const SyncState(phase: SyncPhase.synced);
+    return null;
+  }
+}
+
 Future<GoRouter> _pump(
   WidgetTester tester, {
   Future<void> Function(AppDatabase db)? seed,
+  _FakeSync? sync,
 }) async {
   tester.view
     ..physicalSize = _phone
@@ -50,6 +74,11 @@ Future<GoRouter> _pump(
       appRouterProvider.overrideWithValue(router),
       appDatabaseProvider.overrideWithValue(database),
       clockProvider.overrideWithValue(() => _now),
+      if (sync != null) ...[
+        syncControllerProvider.overrideWith(() => sync),
+        // Seperti frame: 3 perubahan menunggu.
+        pendingChangesProvider.overrideWith((ref) => Stream.value(3)),
+      ],
     ],
   );
   addTearDown(container.dispose);
@@ -189,6 +218,18 @@ Future<void> _seedFigma(AppDatabase db) async {
   );
 }
 
+const SyncState _offline = SyncState(
+  phase: SyncPhase.failed,
+  lastError: SocketException('Failed host lookup'),
+  failures: 1,
+);
+
+final SyncState _serverDown = SyncState(
+  phase: SyncPhase.failed,
+  lastError: Exception('503 Service Unavailable'),
+  failures: syncFailedBannerAfter,
+);
+
 void main() {
   testWidgets('golden: 02 Beranda (13:14)', (tester) async {
     await _pump(tester, seed: _seedFigma);
@@ -196,6 +237,63 @@ void main() {
       find.byType(MaterialApp),
       matchesGoldenFile('goldens/beranda_02.png'),
     );
+  });
+
+  testWidgets('golden: E5 Beranda offline (68:2132)', (tester) async {
+    await _pump(tester, seed: _seedFigma, sync: _FakeSync(_offline));
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/beranda_e5_offline.png'),
+    );
+  });
+
+  testWidgets('golden: G8 Sinkron gagal (137:4901)', (tester) async {
+    await _pump(tester, seed: _seedFigma, sync: _FakeSync(_serverDown));
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/beranda_g8_sinkron_gagal.png'),
+    );
+  });
+
+  group('banner sinkron', () {
+    testWidgets('E5: Coba lagi menyinkron; banner hilang setelah berhasil', (
+      tester,
+    ) async {
+      final sync = _FakeSync(_offline);
+      await _pump(tester, seed: _seedFigma, sync: sync);
+      expect(find.text('Kamu sedang offline'), findsOneWidget);
+      expect(
+        find.text('3 perubahan tersimpan di HP, disinkron saat online'),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.text('COBA LAGI'));
+      await tester.pumpAndSettle();
+      expect(sync.retries, 1);
+      expect(find.byType(AppBanner), findsNothing);
+    });
+
+    testWidgets('G8: teks dari frame, Coba lagi menyinkron', (tester) async {
+      final sync = _FakeSync(_serverDown);
+      await _pump(tester, seed: _seedFigma, sync: sync);
+      expect(find.text('Sinkron gagal'), findsOneWidget);
+      expect(
+        find.text('3 perubahan belum terkirim. Server sedang bermasalah.'),
+        findsOneWidget,
+      );
+      await tester.tap(find.text('COBA LAGI'));
+      await tester.pumpAndSettle();
+      expect(sync.retries, 1);
+    });
+
+    testWidgets('sinkron baik: tanpa banner', (tester) async {
+      await _pump(
+        tester,
+        seed: _seedFigma,
+        sync: _FakeSync(const SyncState(phase: SyncPhase.synced)),
+      );
+      expect(find.byType(AppBanner), findsNothing);
+    });
   });
 
   group('perilaku', () {

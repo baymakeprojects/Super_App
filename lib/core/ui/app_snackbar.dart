@@ -95,17 +95,21 @@ const Duration appSnackbarDuration = Duration(seconds: 4);
 
 /// Menampilkan [AppSnackbar] selama 4 detik di atas Bottom Nav (atau di
 /// bawah layar kalau tidak ada Bottom Nav). Snackbar sebelumnya ditutup.
+///
+/// [icon] bawaan centang; G3 gagal menyimpan memakai Refresh.
 void showAppSnackbar(
   BuildContext context, {
   required String message,
   String? actionLabel,
   VoidCallback? onAction,
+  AppIcons? icon = AppIcons.check,
 }) {
   final messenger = ScaffoldMessenger.of(context)..hideCurrentSnackBar();
   messenger.showSnackBar(
     SnackBar(
       content: AppSnackbar(
         message: message,
+        icon: icon,
         actionLabel: actionLabel,
         onAction: () {
           messenger.hideCurrentSnackBar();

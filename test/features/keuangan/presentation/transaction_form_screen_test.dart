@@ -13,6 +13,8 @@ import 'package:super_app/core/ui/ui.dart';
 import 'package:super_app/core/utils/clock.dart';
 import 'package:super_app/features/auth/application/current_user_id_provider.dart';
 import 'package:super_app/features/keuangan/data/finance_repository.dart';
+import 'package:super_app/features/keuangan/data/finance_repository_provider.dart';
+import 'package:super_app/features/keuangan/presentation/transaction_form_screen.dart';
 
 import '../../../helpers/svg.dart';
 import '../../../helpers/test_database.dart';
@@ -33,7 +35,27 @@ class _App {
       database.select(database.transactions).get();
 }
 
-Future<_App> _pump(WidgetTester tester, {bool wallets = true}) async {
+/// Server pura-pura tidak merespons untuk [failures] simpanan pertama.
+class _FlakyFinance extends FinanceRepository {
+  _FlakyFinance(super.database, {required super.userId});
+
+  int failures = 1;
+
+  @override
+  Future<String> addTransaction(TransactionInput input) {
+    if (failures > 0) {
+      failures--;
+      throw Exception('server tidak merespons');
+    }
+    return super.addTransaction(input);
+  }
+}
+
+Future<_App> _pump(
+  WidgetTester tester, {
+  bool wallets = true,
+  bool flaky = false,
+}) async {
   tester.view
     ..physicalSize = _phone
     ..devicePixelRatio = 1
@@ -64,6 +86,10 @@ Future<_App> _pump(WidgetTester tester, {bool wallets = true}) async {
       appRouterProvider.overrideWithValue(router),
       appDatabaseProvider.overrideWithValue(database),
       clockProvider.overrideWithValue(() => _now),
+      if (flaky)
+        financeRepositoryProvider.overrideWithValue(
+          _FlakyFinance(database, userId: devLocalUserId),
+        ),
     ],
   );
   addTearDown(container.dispose);
@@ -132,6 +158,36 @@ void main() {
         matchesGoldenFile('goldens/keuangan_p07_dompet_baru.png'),
       );
     });
+  });
+
+  testWidgets('golden: G3 Gagal menyimpan (137:4395)', (tester) async {
+    await _pump(tester, flaky: true);
+    await _fillFigma(tester);
+    await tester.tap(find.text('SIMPAN TRANSAKSI'));
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/keuangan_g3_gagal_menyimpan.png'),
+    );
+  });
+
+  testWidgets('G3: isian tetap, Ulangi menyimpan lalu kembali ke 05', (
+    tester,
+  ) async {
+    final app = await _pump(tester, flaky: true);
+    await _fillFigma(tester);
+    await tester.tap(find.text('SIMPAN TRANSAKSI'));
+    await tester.pumpAndSettle();
+
+    expect(find.text(saveFailedMessage), findsOneWidget);
+    expect(app.router.state.matchedLocation, AppRoutes.keuanganTransaksiBaru);
+    expect(find.text('Rp15.000'), findsOneWidget);
+    expect(await app.transactions(), isEmpty);
+
+    await tester.tap(find.text('ULANGI'));
+    await tester.pumpAndSettle();
+    expect(app.router.state.matchedLocation, AppRoutes.keuangan);
+    expect((await app.transactions()).single.amount, 15000);
   });
 
   group('perilaku', () {

@@ -170,7 +170,21 @@ class _TransactionFormState extends ConsumerState<_TransactionForm> {
       if (id == null || !mounted) return;
       _form.setWallet(id);
     }
-    final id = await _form.save(categories: categories, wallets: _wallets());
+    final String? id;
+    try {
+      id = await _form.save(categories: categories, wallets: _wallets());
+    } on Exception {
+      // G3 (Figma 137:4395): isian tetap di layar, Ulangi menyimpan lagi.
+      if (!mounted) return;
+      showAppSnackbar(
+        context,
+        message: saveFailedMessage,
+        actionLabel: 'Ulangi',
+        icon: AppIcons.refresh,
+        onAction: () => _save(categories),
+      );
+      return;
+    }
     if (id != null && mounted) context.pop();
   }
 
@@ -390,6 +404,9 @@ class _AmountFieldState extends State<_AmountField> {
     );
   }
 }
+
+/// Pesan snackbar G3 gagal menyimpan (teks persis Figma 137:4395).
+const String saveFailedMessage = 'Gagal menyimpan · server tidak merespons';
 
 /// Teks P47 (Figma 185:13574). "dari HP dan desktop" dihapus karena
 /// desktop baru Tahap 2 (keputusan Bayu, W3-05, F-44).

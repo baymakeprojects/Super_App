@@ -118,9 +118,12 @@ class SyncController extends Notifier<SyncState> {
 
     _running = true;
     _timer?.cancel();
+    // Galat terakhir disimpan selama coba ulang, supaya banner E5/G8 tidak
+    // berkedip.
     state = SyncState(
       phase: SyncPhase.syncing,
       lastSyncedAt: state.lastSyncedAt,
+      lastError: state.lastError,
       failures: state.failures,
     );
     final result = await SyncEngine(
