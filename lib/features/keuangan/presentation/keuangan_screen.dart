@@ -10,6 +10,7 @@ import 'package:super_app/core/utils/date_format.dart';
 import 'package:super_app/core/utils/money_format.dart';
 import 'package:super_app/features/keuangan/application/keuangan_providers.dart';
 import 'package:super_app/features/keuangan/data/finance_repository.dart';
+import 'package:super_app/features/keuangan/presentation/wallet_sheets.dart';
 
 /// Layar 05 Keuangan versi MVP (Figma 16:300) dengan keadaan kosong E3
 /// (67:2026).
@@ -277,8 +278,7 @@ class _Empty extends StatelessWidget {
               'Buat dompet dulu (tunai, bank, atau e-wallet) supaya saldo '
               'dan pengeluaran bisa dihitung.',
           actionLabel: '+ Buat dompet',
-          // P07 Dompet baru dibuat di W3-04; sampai itu ke setup dompet.
-          onAction: () => context.push(AppRoutes.setupDompet),
+          onAction: () => showNewWalletSheet(context),
           linkLabel: 'Atau isi lewat setup awal',
           onLink: () => context.push(AppRoutes.setupDompet),
         ),

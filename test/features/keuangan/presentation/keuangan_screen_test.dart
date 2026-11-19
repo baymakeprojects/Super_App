@@ -177,13 +177,21 @@ void main() {
       expect(router.state.matchedLocation, startsWith('/keuangan/transaksi/'));
     });
 
-    testWidgets('E3: tanpa FAB, tombol membuka setup dompet', (tester) async {
+    testWidgets('E3: tanpa FAB, tombol membuka P07 dan tautan ke setup', (
+      tester,
+    ) async {
       final router = await _pump(tester);
       expect(find.text('Belum ada dompet'), findsOneWidget);
       expect(find.byType(AppFab), findsNothing);
       await tester.tap(find.text('+ BUAT DOMPET'));
       await tester.pumpAndSettle();
-      expect(router.state.matchedLocation, AppRoutes.setupDompet);
+      expect(find.text('Dompet baru'), findsOneWidget);
+      await tester.enterText(find.byType(TextField).first, 'Tunai');
+      await tester.tap(find.text('SIMPAN DOMPET'));
+      await tester.pumpAndSettle();
+      expect(find.text('Belum ada dompet'), findsNothing);
+      expect(find.byType(AppWalletCard), findsOneWidget);
+      expect(router.state.matchedLocation, AppRoutes.keuangan);
     });
 
     testWidgets('lebih dari 3 dompet: baris digeser', (tester) async {
