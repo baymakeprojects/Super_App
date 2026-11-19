@@ -6,7 +6,8 @@ Folder ini berisi semua yang dibutuhkan Claude Code untuk mengerjakan MVP Super 
 
 ```
 CLAUDE.md                      aturan proyek, dibaca Claude Code tiap sesi
-README.md                      cara menjalankan proyek dari nol
+README.md                      penjelasan app untuk halaman GitHub
+docs/pengembangan.md           cara menjalankan proyek dari nol
 START-HERE.md                  file ini (boleh dihapus setelah setup)
 .gitignore
 .mcp.json                      MCP Dart & Flutter
@@ -64,7 +65,7 @@ Skill di `.claude/skills` otomatis terbaca saat Claude Code dibuka di akar repo.
 
 ## 3. Siapkan proyek
 
-Ikuti `README.md` › Langkah pertama kali (Supabase dev, OAuth Google, `env/dev.json`). Hook butuh `bash` (di Windows: Git Bash, sudah terpasang bersama Git).
+Ikuti `docs/pengembangan.md` › Langkah pertama kali (Supabase dev, OAuth Google, `env/dev.json`). Hook butuh `bash` (di Windows: Git Bash, sudah terpasang bersama Git).
 
 ## 4. Status backlog
 

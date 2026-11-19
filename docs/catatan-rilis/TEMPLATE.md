@@ -16,7 +16,7 @@
 2. Ketuk file-nya. Kalau diminta, izinkan **instal aplikasi tidak dikenal** untuk browser atau app File, lalu ketuk **Instal**.
 3. Sudah punya versi lama? Pasang saja di atasnya; data tidak hilang.
 
-Panduan lengkap: [Download APK di README](https://github.com/baymakeprojects/Super_App#download-apk).
+Panduan lengkap: [Download & pasang di README](https://github.com/baymakeprojects/Super_App#download--pasang).
 
 <!--
 Cara memakai template ini:
