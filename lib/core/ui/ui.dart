@@ -14,6 +14,7 @@ export 'package:super_app/core/ui/app_chip.dart';
 export 'package:super_app/core/ui/app_circle_button.dart';
 export 'package:super_app/core/ui/app_class_item.dart';
 export 'package:super_app/core/ui/app_code_cell.dart';
+export 'package:super_app/core/ui/app_dashed_border.dart';
 export 'package:super_app/core/ui/app_date_picker.dart';
 export 'package:super_app/core/ui/app_day_cell.dart';
 export 'package:super_app/core/ui/app_day_pill.dart';

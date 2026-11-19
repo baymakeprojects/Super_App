@@ -92,6 +92,35 @@ Future<GoRouter> _pump(
 }
 
 /// Isi contoh frame 02.
+/// E1 di Figma: nama Bayu, hanya jadwal yang terisi (1 dari 3).
+Future<void> _seedE1(AppDatabase db) async {
+  await db
+      .into(db.profiles)
+      .insert(
+        ProfilesCompanion.insert(
+          id: 'p1',
+          userId: devLocalUserId,
+          name: const Value('Bayu'),
+        ),
+      );
+  final semesterId = await SemesterRepository(
+    db,
+    userId: devLocalUserId,
+  ).addSemester(name: 'Semester 7', startsOn: DateTime(2026, 9), active: true);
+  await CourseRepository(db, userId: devLocalUserId).addCourse(
+    semesterId: semesterId,
+    input: (
+      name: 'Pemrograman Mobile',
+      lecturer: 'Bu Rina',
+      room: 'Ruang 301',
+      credits: 3,
+      weekday: DateTime.friday,
+      startsAt: '08:00',
+      endsAt: '09:40',
+    ),
+  );
+}
+
 Future<void> _seedFigma(AppDatabase db) async {
   await db
       .into(db.profiles)
@@ -239,6 +268,15 @@ void main() {
     );
   });
 
+  testWidgets('E1 Beranda kosong (Figma 67:1902)', (tester) async {
+    await _pump(tester, seed: _seedE1);
+    expect(find.text('[MULAI] 1 DARI 3 SELESAI'), findsOneWidget);
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/beranda_e1_kosong.png'),
+    );
+  });
+
   testWidgets('golden: E5 Beranda offline (68:2132)', (tester) async {
     await _pump(tester, seed: _seedFigma, sync: _FakeSync(_offline));
     await expectLater(
@@ -330,16 +368,32 @@ void main() {
     });
 
     testWidgets(
-      'tanpa data dan nama: Halo, avatar ikon, bagian disembunyikan',
+      'tanpa data dan nama: Halo, E1 checklist 0 dari 3, tanpa Stat Card',
       (tester) async {
         await _pump(tester);
         expect(find.text('Halo'), findsOneWidget);
-        expect(find.byType(AppStatCard), findsNWidgets(2));
-        expect(find.text('Tugas hari ini'), findsNothing);
+        expect(find.text('[MULAI] 0 DARI 3 SELESAI'), findsOneWidget);
+        expect(find.byType(AppStatCard), findsNothing);
+        expect(find.text('Belum ada tugas'), findsOneWidget);
         expect(find.text('Transaksi terakhir'), findsNothing);
         expect(find.textContaining('KELAS BERIKUTNYA'), findsNothing);
       },
     );
+
+    testWidgets('E1: checklist membuka Tugas baru, hilang setelah selesai', (
+      tester,
+    ) async {
+      final router = await _pump(tester, seed: _seedE1);
+      await tester.tap(find.text('Tambah tugas pertama'));
+      await tester.pumpAndSettle();
+      expect(router.state.matchedLocation, AppRoutes.tugasBaru);
+    });
+
+    testWidgets('E1 hilang setelah ketiga langkah selesai', (tester) async {
+      await _pump(tester, seed: _seedFigma);
+      expect(find.text('Siapkan Super App kamu'), findsNothing);
+      expect(find.byType(AppStatCard), findsNWidgets(2));
+    });
   });
 
   group('aturan', () {

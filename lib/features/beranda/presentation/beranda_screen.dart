@@ -19,9 +19,11 @@ import 'package:super_app/features/tugas/data/task_repository_provider.dart';
 
 /// Layar 02 Beranda (Figma 13:14) dengan data asli.
 ///
-/// Ikon Notifikasi (Tahap 2) disembunyikan (design-notes §7). Beranda
-/// kosong E1 dibuat di W4-02; sampai itu bagian tanpa data disembunyikan
-/// (keputusan Bayu, W3-06, F-45).
+/// Ikon Notifikasi (Tahap 2) disembunyikan (design-notes §7). Selama
+/// checklist "Siapkan Super App kamu" belum selesai, Beranda tampil
+/// seperti E1 (Figma 67:1902): kartu checklist, tanpa Stat Card, dan kotak
+/// "Belum ada tugas" kalau tidak ada tugas hari ini (W4-02). Bagian lain
+/// tanpa data disembunyikan (keputusan Bayu, W3-06, F-45).
 class BerandaScreen extends ConsumerWidget {
   const BerandaScreen({super.key});
 
@@ -42,6 +44,10 @@ class BerandaScreen extends ConsumerWidget {
     );
     final transactions =
         ref.watch(recentTransactionsProvider).value ?? const [];
+
+    final checklist = ref.watch(setupChecklistProvider);
+    final setupOpen =
+        checklist != null && setupChecklistDone(checklist) < _SetupCard.steps;
 
     final todayRows = [
       for (final group in taskView.groups)
@@ -66,12 +72,30 @@ class BerandaScreen extends ConsumerWidget {
             ),
             // E5 offline / G8 sinkron gagal: di bawah header, di atas isi.
             const SyncStatusBanner(spacing: AppSpace.s24),
+            if (setupOpen) ...[
+              const SizedBox(height: AppSpace.s24),
+              _SetupCard(checklist: checklist),
+            ],
             if (nextClass != null) ...[
               const SizedBox(height: AppSpace.s24),
               _NextClassCard(next: nextClass),
             ],
-            const SizedBox(height: AppSpace.s24),
-            const _Stats(),
+            if (!setupOpen) ...[
+              const SizedBox(height: AppSpace.s24),
+              const _Stats(),
+            ],
+            if (setupOpen && todayRows.isEmpty) ...[
+              const SizedBox(height: AppSpace.s24),
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                spacing: AppSpace.s12,
+                children: [
+                  AppSectionHeader(title: 'Tugas hari ini'),
+                  _NoTasksBox(),
+                ],
+              ),
+            ],
             if (todayRows.isNotEmpty) ...[
               const SizedBox(height: AppSpace.s24),
               Column(
@@ -326,6 +350,128 @@ class _Stats extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Kartu "Siapkan Super App kamu" (E1, Figma 67:1943). Tiap baris membuka
+/// layar untuk menyelesaikannya (navigasi.md: checklist E1).
+class _SetupCard extends StatelessWidget {
+  const _SetupCard({required this.checklist});
+
+  static const int steps = 3;
+
+  /// Progress Bar memakai kelipatan 10 (Figma: 1 dari 3 = 30).
+  static const List<double> _progress = [0, 30, 70, 100];
+
+  final SetupChecklist checklist;
+
+  @override
+  Widget build(BuildContext context) {
+    final done = setupChecklistDone(checklist);
+    Widget item(String label, bool checked, String route) => AppChecklistItem(
+      label: label,
+      done: checked,
+      // Mencentang manual tidak dipakai: tercentang otomatis dari data.
+      onChanged: checked ? null : (_) => context.push(route),
+    );
+
+    // Kerangka Card (Surface/Raised, garis Dark Gray, sudut Card) dengan
+    // isi bebas; AppCard hanya punya isi eyebrow-judul-teks.
+    return Container(
+      padding: const EdgeInsets.all(AppSpace.s20),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceRaised,
+        borderRadius: BorderRadius.circular(AppRadius.card),
+        border: Border.all(color: AppColors.darkGray),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        spacing: AppSpace.s12,
+        children: [
+          AppLabelText(
+            '[Mulai] $done dari $steps selesai',
+            style: AppText.labelSmall.copyWith(color: AppColors.accentText),
+          ),
+          Text(
+            'Siapkan Super App kamu',
+            style: AppText.titleMedium.copyWith(color: AppColors.white),
+          ),
+          AppProgressBar(value: _progress[done]),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              item(
+                'Isi jadwal kuliah',
+                checklist.schedule,
+                AppRoutes.kuliahJadwalBaru,
+              ),
+              item('Tambah tugas pertama', checklist.task, AppRoutes.tugasBaru),
+              item(
+                'Catat transaksi pertama',
+                checklist.transaction,
+                AppRoutes.keuanganTransaksiBaru,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Kotak kosong "Belum ada tugas" di E1 (Figma 67:1970).
+class _NoTasksBox extends StatelessWidget {
+  const _NoTasksBox();
+
+  // Ukuran tetap dari Figma (bukan variabel Figma).
+  static const double _circle = 72;
+  static const double _iconSize = 28;
+  static const double _messageWidth = 300;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppDashedBorder(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpace.s24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          spacing: AppSpace.s16,
+          children: [
+            Container(
+              width: _circle,
+              height: _circle,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: AppColors.surfaceRaised,
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColors.darkGray),
+              ),
+              child: const AppIcon(
+                AppIcons.task,
+                color: AppColors.brandingOrange,
+                size: _iconSize,
+              ),
+            ),
+            Text(
+              'Belum ada tugas',
+              textAlign: TextAlign.center,
+              style: AppText.headingMedium.copyWith(color: AppColors.white),
+            ),
+            SizedBox(
+              width: _messageWidth,
+              child: Text(
+                // Kalimat widget dihapus: widget bukan MVP (F-24, F-53).
+                'Tambah lewat tombol + di Tugas.',
+                textAlign: TextAlign.center,
+                style: AppText.bodyMedium.copyWith(color: AppColors.gray),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
