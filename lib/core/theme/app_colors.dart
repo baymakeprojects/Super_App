@@ -1,4 +1,5 @@
 import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart' show Matrix4;
 
 /// Warna dari variabel Figma (koleksi Palette, mode Dark) di halaman
 /// Foundations (node 0:1). Nama mengikuti nama variabel Figma.
@@ -61,4 +62,31 @@ abstract final class AppColors {
     colors: [gradientSand, gradientFlame, gradientRed, primary],
     stops: [0, 0.22, 0.55, 1],
   );
+
+  /// Latar kartu Total saldo di 05 (Figma 16:320): gradien radial elips dari
+  /// pojok kanan bawah, Sand 0% → Flame 22% → Red 50% → Surface/Raised 100%.
+  /// Elips 248×115 dari kartu 372×172, jadi jari-jari = 248 / tinggi 172 dan
+  /// tingginya dipipihkan 115 / 248.
+  static const RadialGradient gradientBalanceCard = RadialGradient(
+    center: Alignment.bottomRight,
+    radius: 248 / 172,
+    colors: [gradientSand, gradientFlame, gradientRed, surfaceRaised],
+    stops: [0, 0.22, 0.5, 1],
+    transform: _FlattenFromBottomRight(114.67 / 248),
+  );
+}
+
+/// Memipihkan gradien radial jadi elips, berporos di pojok kanan bawah.
+class _FlattenFromBottomRight extends GradientTransform {
+  const _FlattenFromBottomRight(this.factor);
+
+  final double factor;
+
+  @override
+  Matrix4 transform(Rect bounds, {TextDirection? textDirection}) {
+    final origin = bounds.bottomRight;
+    return Matrix4.translationValues(origin.dx, origin.dy, 0)
+      ..multiply(Matrix4.diagonal3Values(1, factor, 1))
+      ..multiply(Matrix4.translationValues(-origin.dx, -origin.dy, 0));
+  }
 }

@@ -49,11 +49,16 @@ class AppWalletCard extends StatelessWidget {
                 label,
                 style: AppText.labelSmall.copyWith(color: AppColors.gray),
               ),
-              Text(
-                amount,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppText.titleMedium.copyWith(color: AppColors.white),
+              // Nominal tidak boleh terpotong: kalau kartu sempit (tiga
+              // sejajar di 05), teks mengecil secukupnya.
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  amount,
+                  maxLines: 1,
+                  style: AppText.titleMedium.copyWith(color: AppColors.white),
+                ),
               ),
             ],
           ),

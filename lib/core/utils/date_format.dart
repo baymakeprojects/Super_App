@@ -70,6 +70,10 @@ abstract final class AppDateFormat {
   static String weekdayDayMonth(DateTime date) =>
       '${weekday(date)} ${dayMonthShort(date)}';
 
+  /// "November 2026" (label atas 05 Keuangan).
+  static String monthYear(DateTime date) =>
+      '${_months[date.month - 1]} ${date.year}';
+
   /// "Jumat, 6 November" (judul hari di 04 Kuliah).
   static String weekdayCommaDayMonthLong(DateTime date) =>
       '${weekday(date)}, ${date.day} ${_months[date.month - 1]}';
