@@ -15,6 +15,7 @@ class AppSnackbar extends StatelessWidget {
     this.actionLabel,
     this.onAction,
     this.icon = AppIcons.check,
+    this.iconColor = AppColors.success,
   });
 
   // Ukuran tetap dari Figma (bukan variabel Figma).
@@ -31,8 +32,11 @@ class AppSnackbar extends StatelessWidget {
 
   final VoidCallback? onAction;
 
-  /// Ikon hijau di kiri. `null` = tanpa ikon.
+  /// Ikon di kiri. `null` = tanpa ikon.
   final AppIcons? icon;
+
+  /// Bawaan hijau (centang). E4 "dihapus": tempat sampah Light Gray.
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +63,7 @@ class AppSnackbar extends StatelessWidget {
       child: Row(
         spacing: AppSpace.s12,
         children: [
-          if (icon != null)
-            AppIcon(icon, size: _iconSize, color: AppColors.success),
+          if (icon != null) AppIcon(icon, size: _iconSize, color: iconColor),
           Expanded(
             child: Text(
               message,
@@ -114,11 +117,12 @@ void showAppSnackbar(
       backgroundColor: Colors.transparent,
       elevation: 0,
       padding: EdgeInsets.zero,
+      // Jarak dari frame E4: 20 di kiri/kanan, 12 di atas Bottom Nav.
       margin: const EdgeInsets.fromLTRB(
         AppSpace.s20,
         0,
         AppSpace.s20,
-        AppSpace.s16,
+        AppSpace.s12,
       ),
     ),
   );

@@ -6,13 +6,22 @@ import 'package:go_router/go_router.dart';
 import 'package:super_app/app/app.dart';
 import 'package:super_app/app/router.dart';
 import 'package:super_app/app/routes.dart';
+import 'package:super_app/core/db/database_provider.dart';
+
+import '../helpers/test_database.dart';
 
 Future<GoRouter> _pumpApp(WidgetTester tester) async {
   final router = buildAppRouter();
   addTearDown(router.dispose);
+  // Tab Tugas membaca database: pakai database di memori, bukan file HP.
+  final database = testDatabase();
+  addTearDown(database.close);
   await tester.pumpWidget(
     ProviderScope(
-      overrides: [appRouterProvider.overrideWithValue(router)],
+      overrides: [
+        appRouterProvider.overrideWithValue(router),
+        appDatabaseProvider.overrideWithValue(database),
+      ],
       child: const SuperApp(),
     ),
   );
