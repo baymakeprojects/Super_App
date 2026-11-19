@@ -1,5 +1,6 @@
 package com.bayu.super_app
 
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity : FlutterActivity()
+// FlutterFragmentActivity dibutuhkan local_auth untuk prompt sidik jari.
+class MainActivity : FlutterFragmentActivity()

@@ -42,7 +42,7 @@ Lima tab Bottom Nav memakai `StatefulShellRoute.indexedStack` supaya posisi guli
 | `/pengaturan/pin` | H05 Atur PIN cadangan | 14 › PIN cadangan; 01c › PIN cadangan | Tidak |
 | `/katalog` | Katalog komponen `core/ui` — **hanya build debug**, tidak ada di rilis (disetujui Bayu, W1-09) | Daftar "Rute debug" di tab Lainnya (debug) | Tidak |
 
-Status W1-09: semua rute di atas sudah ada dengan layar sementara berjudul, kecuali `/masuk` dan `/masuk/kode` (menunggu desain F-12). Pengalihan saat app dibuka (cek sesi → Intro/Kunci/Beranda) dibuat di W1-10; sampai saat itu app langsung membuka `/beranda`.
+Status W1-10: semua rute di atas sudah ada. `/intro` (00d), `/masuk`, `/masuk/kode`, `/kunci`, dan `/kunci/pin` sudah berupa layar asli. Pengalihan mengikuti sesi: belum pernah login → `/intro`; sudah login → `/kunci`; sesi berakhir → G1 di `/kunci` (F-51); kunci terbuka → `/beranda`. `/masuk` juga boleh dibuka dari 01/H06 ("Lupa PIN?") dan G1. Login pertama langsung ke Beranda sampai Setup awal dibuat (W4-01). App tanpa file env (build debug) tetap langsung ke Beranda dengan akun `dev-lokal`.
 
 ## Pop-up (bukan rute)
 
@@ -79,6 +79,5 @@ Claude Code tidak mengarang bagian ini. Kalau sampai ke sini, berhenti dan tanya
 | Kebutuhan | Kenapa perlu | Usulan sementara |
 | --- | --- | --- |
 | Keluar form yang sudah diisi | Ikon Close bisa membuang isian tanpa sengaja | Diputuskan Bayu (W2-05): tutup langsung tanpa konfirmasi sampai ada desain dialognya |
-| Layar masuk email dan kode (F-12) | Login diganti dari Google ke email + kode verifikasi (keputusan Bayu, 19 Nov 2026) | Bayu mendesain di Figma dulu; termasuk kode salah, kedaluwarsa, kirim ulang, dan memuat |
 | Nama pengguna (F-14) | Login email tidak memberi nama, padahal 01 dan G1 menyapa "Halo, Bayu" | Perlu keputusan: kolom Nama di layar masuk atau di setup awal |
 | Isi 14 Pengaturan versi MVP | Frame 14 berisi baris untuk fitur Tahap 2–3 (notifikasi, Data) | Tampilkan hanya kartu akun dan grup keamanan; baris lain disembunyikan |

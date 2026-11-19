@@ -5,16 +5,17 @@ import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:super_app/core/db/database_provider.dart';
+import 'package:super_app/core/storage/key_value_store.dart';
 import 'package:super_app/core/sync/remote_store.dart';
 import 'package:super_app/core/sync/sync_engine.dart';
 import 'package:super_app/core/utils/clock.dart';
 
-/// Tempat data di server. `null` = sinkron mati (belum login; diisi setelah
-/// login email + kode di W1-10, dengan id akun Supabase di
-/// [syncUserIdProvider]).
+/// Tempat data di server. `null` = sinkron mati (app tanpa file env). Diisi
+/// di `main.dart`.
 final remoteStoreProvider = Provider<RemoteStore?>((ref) => null);
 
-/// Id akun Supabase (uuid) untuk sinkron. `null` = belum login.
+/// Id akun Supabase (uuid) untuk sinkron. `null` = belum login atau sesi
+/// berakhir. Diisi dari sesi login di `main.dart`.
 final syncUserIdProvider = Provider<String?>((ref) => null);
 
 /// Keadaan sinkron, untuk banner offline E5 dan sinkron gagal G8 (W3-08).
@@ -135,9 +136,13 @@ class SyncController extends Notifier<SyncState> {
     if (!ref.mounted) return result;
 
     if (result.ok) {
-      state = SyncState(
-        phase: SyncPhase.synced,
-        lastSyncedAt: ref.read(clockProvider)(),
+      final now = ref.read(clockProvider)();
+      state = SyncState(phase: SyncPhase.synced, lastSyncedAt: now);
+      // Disimpan untuk baris "Belum tersinkron sejak …" di G1.
+      unawaited(
+        ref
+            .read(keyValueStoreProvider)
+            .write(StoreKeys.lastSyncedAt, now.toUtc().toIso8601String()),
       );
       _schedule(syncInterval);
     } else {

@@ -86,6 +86,8 @@ flutter:
   assets:
     # 39 ikon SVG dari Figma Components [01] (node 5:7).
     - assets/icons/
+    # Ilustrasi dari frame Figma (01 sensor sidik jari, 00d intro).
+    - assets/illustrations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

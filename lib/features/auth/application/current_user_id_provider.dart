@@ -1,18 +1,22 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Id akun sementara untuk mencoba app di build debug sebelum login ada
+import 'package:super_app/features/auth/application/session_controller.dart';
+
+/// Id akun sementara untuk mencoba app di build debug tanpa file env
 /// (keputusan Bayu, W2-02). Tidak pernah dipakai di build rilis.
 ///
-/// Saat login dibuat (W1-10), baris dengan id ini dipindahkan ke id akun
-/// asli sebelum sinkron pertama, atau dihapus.
+/// Saat login pertama, baris dengan id ini dipindahkan ke akun asli
+/// sebelum sinkron pertama (`adoptDevLocalRows`).
 const String devLocalUserId = 'dev-lokal';
 
-/// Id akun yang sedang login, untuk kolom `user_id`.
+/// Id akun pemilik data di HP, untuk kolom `user_id`.
 ///
-/// Sampai login dibuat di W1-10: build debug memakai [devLocalUserId],
-/// build rilis melempar error supaya tidak ada data tanpa pemilik asli.
+/// Melempar error kalau belum pernah login: layar data hanya bisa dibuka
+/// setelah login, jadi tidak ada data tanpa pemilik.
 final currentUserIdProvider = Provider<String>((ref) {
-  if (kDebugMode) return devLocalUserId;
-  throw StateError('Belum ada akun yang login (login dibuat di W1-10).');
+  final userId = ref.watch(sessionControllerProvider.select((s) => s.userId));
+  if (userId == null) {
+    throw StateError('Belum ada akun yang login.');
+  }
+  return userId;
 });

@@ -32,3 +32,9 @@ final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
     userId: ref.watch(currentUserIdProvider),
   );
 });
+
+/// Nama untuk sapaan (01, H06, G1, Beranda) dan avatar. `null` = belum ada
+/// nama (F-14, F-45).
+final profileNameProvider = StreamProvider<String?>(
+  (ref) => ref.watch(profileRepositoryProvider).watchName(),
+);

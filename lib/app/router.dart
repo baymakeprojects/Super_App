@@ -7,6 +7,12 @@ import 'package:super_app/app/placeholder_screen.dart';
 import 'package:super_app/app/routes.dart';
 import 'package:super_app/core/ui/catalog_page.dart';
 import 'package:super_app/core/ui/ui.dart';
+import 'package:super_app/features/auth/application/session_controller.dart';
+import 'package:super_app/features/auth/presentation/code_screen.dart';
+import 'package:super_app/features/auth/presentation/email_screen.dart';
+import 'package:super_app/features/auth/presentation/intro_screen.dart';
+import 'package:super_app/features/auth/presentation/lock_screen.dart';
+import 'package:super_app/features/auth/presentation/pin_screen.dart';
 import 'package:super_app/features/beranda/presentation/beranda_screen.dart';
 import 'package:super_app/features/keuangan/presentation/keuangan_screen.dart';
 import 'package:super_app/features/keuangan/presentation/transaction_form_screen.dart';
@@ -23,15 +29,45 @@ import 'package:super_app/features/tugas/presentation/tugas_screen.dart';
 ///   posisi gulir dan filter tiap tab tetap saat berpindah tab.
 /// - Layar tanpa Bottom Nav (form, detail, pengaturan) dibuka di navigator
 ///   akar, menutupi shell; Back kembali ke tab asalnya.
-/// - Pengalihan saat app dibuka (cek sesi → Intro/Kunci/Beranda) menyusul
-///   di W1-10 bersama login. Untuk sekarang app mulai di Beranda.
+/// - Pengalihan mengikuti sesi login ([sessionRedirect]): belum login ke
+///   Intro, sudah login ke Kunci sidik jari, sesi berakhir ke G1.
 final appRouterProvider = Provider<GoRouter>((ref) {
-  final router = buildAppRouter();
+  final session = ValueNotifier(ref.read(sessionControllerProvider));
+  ref
+    ..listen(sessionControllerProvider, (_, next) => session.value = next)
+    ..onDispose(session.dispose);
+  final router = buildAppRouter(session: session);
   ref.onDispose(router.dispose);
   return router;
 });
 
-GoRouter buildAppRouter({String initialLocation = AppRoutes.beranda}) {
+/// Rute tujuan untuk [location] menurut [session], atau `null` kalau boleh
+/// tetap di sana (navigasi.md › Alur saat app dibuka).
+String? sessionRedirect(SessionState session, String location) {
+  bool at(String route) => location == route || location.startsWith('$route/');
+  final onLogin = at(AppRoutes.masuk);
+
+  switch (session.status) {
+    case SessionStatus.signedOut:
+      return at(AppRoutes.intro) || onLogin ? null : AppRoutes.intro;
+    case SessionStatus.expired:
+      // G1 tampil di /kunci; "Masuk lagi" membuka /masuk.
+      return location == AppRoutes.kunci || onLogin ? null : AppRoutes.kunci;
+    case SessionStatus.locked:
+      // "Lupa PIN?" boleh masuk ulang dengan email.
+      return at(AppRoutes.kunci) || onLogin ? null : AppRoutes.kunci;
+    case SessionStatus.unlocked:
+      return at(AppRoutes.intro) || onLogin || at(AppRoutes.kunci)
+          ? AppRoutes.beranda
+          : null;
+  }
+}
+
+/// [session] `null` = tanpa pengalihan (dipakai tes rute).
+GoRouter buildAppRouter({
+  String initialLocation = AppRoutes.beranda,
+  ValueListenable<SessionState>? session,
+}) {
   final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
   /// Rute layar penuh (tanpa Bottom Nav) di dalam cabang tab.
@@ -90,12 +126,32 @@ GoRouter buildAppRouter({String initialLocation = AppRoutes.beranda}) {
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: initialLocation,
+    refreshListenable: session,
+    redirect: session == null
+        ? null
+        : (context, state) =>
+              sessionRedirect(session.value, state.matchedLocation),
     routes: [
-      topLevel(AppRoutes.intro, 'Intro'),
-      topLevel(
-        AppRoutes.kunci,
-        'Kunci sidik jari',
-        routes: [topLevel('pin', 'Masukkan PIN')],
+      GoRoute(
+        path: AppRoutes.intro,
+        builder: (context, state) => const IntroScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.masuk,
+        builder: (context, state) => const EmailScreen(),
+        routes: [
+          GoRoute(
+            path: 'kode',
+            builder: (context, state) => const CodeScreen(),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: AppRoutes.kunci,
+        builder: (context, state) => const LockScreen(),
+        routes: [
+          GoRoute(path: 'pin', builder: (context, state) => const PinScreen()),
+        ],
       ),
       topLevel(AppRoutes.setupJadwal, 'Jadwal semester'),
       topLevel(AppRoutes.setupDompet, 'Dompet & saldo awal'),

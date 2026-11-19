@@ -291,6 +291,28 @@ class _CatalogPageState extends State<CatalogPage> {
               ),
               const SizedBox(height: AppSpace.s12),
             ],
+            const _Section('Login · Kunci'),
+            Row(
+              spacing: AppSpace.s8,
+              children: [
+                for (final state in AppCodeCellState.values)
+                  Expanded(
+                    child: AppCodeCell(state: state, digit: '4'),
+                  ),
+              ],
+            ),
+            const SizedBox(height: AppSpace.s16),
+            const Row(
+              spacing: AppSpace.s16,
+              children: [
+                AppLogoMark(),
+                AppLogoMark(size: AppLogoMarkSize.large),
+                AppPinDots(filled: 2),
+                AppPageIndicator(page: 4),
+              ],
+            ),
+            const SizedBox(height: AppSpace.s16),
+            AppKeypad(onDigit: (_) {}, onDelete: () {}, onFingerprint: () {}),
           ],
         ),
       ),

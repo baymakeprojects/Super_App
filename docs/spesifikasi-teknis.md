@@ -117,7 +117,7 @@ Implementasi (W3-07, tanpa paket baru):
 - `lib/core/sync/remote_store.dart`: antarmuka server; `SupabaseRemoteStore` untuk app, versi palsu untuk uji integrasi offline → online.
 - `lib/core/sync/sync_controller.dart`: jalan saat app dibuka, 2 detik setelah ada perubahan di antrean, rutin tiap 5 menit, dan coba ulang setelah gagal (30 detik, berlipat, maks. 15 menit). Status (`SyncPhase`) dipakai banner E5/G8.
 - `lib/core/sync/sync_status.dart` + `sync_status_banner.dart`: banner di Beranda. E5 (offline) bila putaran gagal karena jaringan; G8 (sinkron gagal) bila server gagal 2 kali berturut-turut. Jumlah perubahan = baris berbeda di antrean. "Coba lagi" menjalankan sinkron sekarang.
-- Sinkron **mati** sampai login ada (W1-10): `remoteStoreProvider` dan `syncUserIdProvider` diisi setelah masuk dengan email + kode.
+- Sinkron jalan setelah masuk dengan email + kode (W1-10): `main.dart` mengisi `remoteStoreProvider` dan `syncUserIdProvider` dari sesi login. Sinkron mati selama sesi berakhir (G1), untuk akun sementara `dev-lokal`, dan kalau app dijalankan tanpa file env.
 
 ## Lingkungan
 

@@ -2,6 +2,8 @@
 /// Jangan menambah rute di luar tabel itu.
 abstract final class AppRoutes {
   static const String intro = '/intro';
+  static const String masuk = '/masuk';
+  static const String masukKode = '/masuk/kode';
   static const String kunci = '/kunci';
   static const String kunciPin = '/kunci/pin';
   static const String setupJadwal = '/setup/jadwal';

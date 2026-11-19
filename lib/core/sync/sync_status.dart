@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:super_app/core/db/database_provider.dart';
+import 'package:super_app/core/storage/key_value_store.dart';
 import 'package:super_app/core/sync/sync_controller.dart';
 
 /// Jumlah perubahan lokal yang belum terkirim: baris berbeda di antrean
@@ -80,3 +81,16 @@ String failedBannerBody(int pending) => pending == 0
 final syncBannerProvider = Provider<SyncBannerKind?>(
   (ref) => syncBannerOf(ref.watch(syncControllerProvider)),
 );
+
+/// Waktu sinkron terakhir yang berhasil, juga dari sesi app sebelumnya
+/// (untuk G1 "Belum tersinkron sejak 08.12"). `null` = belum pernah.
+final lastSyncedAtProvider = FutureProvider<DateTime?>((ref) async {
+  final current = ref.watch(
+    syncControllerProvider.select((s) => s.lastSyncedAt),
+  );
+  if (current != null) return current;
+  final stored = await ref
+      .read(keyValueStoreProvider)
+      .read(StoreKeys.lastSyncedAt);
+  return stored == null ? null : DateTime.tryParse(stored)?.toLocal();
+});

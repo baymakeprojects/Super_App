@@ -1,16 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:super_app/core/utils/clock.dart';
-import 'package:super_app/features/auth/data/profile_repository.dart';
 import 'package:super_app/features/beranda/application/beranda_view.dart';
 import 'package:super_app/features/keuangan/data/finance_repository.dart';
 import 'package:super_app/features/keuangan/data/finance_repository_provider.dart';
 import 'package:super_app/features/kuliah/application/kuliah_providers.dart';
-
-/// Nama untuk sapaan dan avatar. `null` = belum ada nama (F-14, F-45).
-final profileNameProvider = StreamProvider<String?>(
-  (ref) => ref.watch(profileRepositoryProvider).watchName(),
-);
 
 /// Kelas berikutnya hari ini. `null` = kartu disembunyikan.
 final nextClassProvider = Provider<NextClass?>((ref) {

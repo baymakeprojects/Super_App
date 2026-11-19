@@ -79,9 +79,20 @@ Dashboard → Authentication → **Emails** → Templates. Ubah dua template ini
 
 Salin `env/dev.example.json` jadi `env/dev.json`, lalu isi URL dev di atas dan publishable key (Dashboard → Project Settings → API Keys). `env/dev.json` sudah masuk `.gitignore`.
 
-### Di kode app (tugas W1-10)
+App membaca dua nama ini (W1-10, `lib/core/config/app_config.dart`). Pastikan nama kunci di file env sama persis:
 
-Layar masuk email dan kode dibuat setelah desainnya ada di Figma (`catatan-figma.md` F-12). Panggilannya:
+```json
+{
+  "SUPABASE_URL": "https://nyzktdlyfuqjxumlicgf.supabase.co",
+  "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_..."
+}
+```
+
+Nama lama `SUPABASE_ANON_KEY` juga diterima. Tanpa file env (`flutter run` biasa), login dan sinkron mati dan build debug langsung membuka Beranda dengan akun sementara `dev-lokal`.
+
+### Di kode app (W1-10, sudah dibuat)
+
+Layar 00e dan 00f memanggil Supabase lewat `SupabaseAuthRepository` (`lib/features/auth/data/auth_repository.dart`). Sesi login disimpan terenkripsi di HP (flutter_secure_storage). Saat login pertama, data yang dicatat dengan akun `dev-lokal` dipindahkan ke akun asli lalu ikut sinkron. Panggilannya:
 
 ```dart
 // 1. Kirim kode ke email (akun baru dibuat otomatis).
