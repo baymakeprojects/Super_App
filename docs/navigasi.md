@@ -6,7 +6,7 @@ Semua layar MVP, rute `go_router`-nya, tombol yang membukanya, dan ke mana layar
 
 1. **Splash (00)** — splash native Android, lalu app memeriksa sesi.
 2. **Belum pernah login** → Intro (00a–00d). Tombol "Mulai sekarang" di 00d membuka Masuk dengan email → Masukkan kode (6 digit dari email). Kalau 00a–00c belum dibuat, intro langsung mulai dari 00d.
-3. **Login pertama berhasil** → Setup awal 01a → 01b → 01c → Beranda. "Lewati" di langkah mana pun langsung ke Beranda.
+3. **Login pertama berhasil** (akun baru) → Nama kamu (00g, boleh dikosongkan) → Setup awal 01a → 01b → 01c → Beranda. "Lewati" di langkah mana pun langsung ke Beranda.
 4. **Sudah login** → Kunci sidik jari (01) → Beranda. Sidik jari gagal 3 kali atau "Pakai PIN" → Masukkan PIN (H06).
 5. **Sesi berakhir** (token tidak bisa diperbarui) → G1, tombol "Masuk lagi" membuka Masuk dengan email; data di HP tetap ada.
 
@@ -19,7 +19,8 @@ Lima tab Bottom Nav memakai `StatefulShellRoute.indexedStack` supaya posisi guli
 | `/intro` | 00a–00d Intro (satu halaman bergeser) | Pembukaan pertama | Tidak |
 | `/masuk` | 00e Masuk dengan email (frame 230:5209, F-12) | 00d › Mulai sekarang; G1 › Masuk lagi | Tidak |
 | `/masuk/kode` | 00f Masukkan kode (frame 231:5271, F-12) | `/masuk` › kirim kode | Tidak |
-| `/kunci` | 01 Kunci sidik jari | Setiap app dibuka dari keadaan tertutup | Tidak |
+| `/masuk/nama` | 00g Nama kamu (frame 238:5382, F-14) — **belum dibuat di kode** | `/masuk/kode` › kode benar, hanya akun baru | Tidak |
+| `/kunci` | 01 Kunci sidik jari; G1 Sesi berakhir tampil sebagai keadaan rute ini (F-51) | Setiap app dibuka dari keadaan tertutup | Tidak |
 | `/kunci/pin` | H06 Masukkan PIN | 01 › Pakai PIN | Tidak |
 | `/setup/jadwal` | 01a Jadwal semester | Setelah login pertama | Tidak |
 | `/setup/dompet` | 01b Dompet & saldo awal | 01a › Lanjut | Tidak |
@@ -56,7 +57,7 @@ Bottom sheet dibuka dengan `showModalBottomSheet` memakai Overlay Header dari `c
 | P05 | Konfirmasi hapus | 16 › Hapus (pola yang sama untuk hapus lainnya) |
 | P06 | Pilih dompet | 17 › Dompet |
 | P07 | Dompet baru | P06 › + Tambah dompet |
-| P20 | Pilih semester | 01a › Semester; H02 › Semester |
+| P20 | Pilih semester | 01a › Semester; H02 › Simpan kalau belum ada semester aktif (H02 tidak punya kolom Semester, F-39) |
 | P37 | Akun | 14 › kartu akun |
 | P38 | Keluar akun | P37 › Keluar dari akun |
 | P47 | Hapus transaksi | H11 › ikon Hapus (kanan atas) |
@@ -79,5 +80,5 @@ Claude Code tidak mengarang bagian ini. Kalau sampai ke sini, berhenti dan tanya
 | Kebutuhan | Kenapa perlu | Usulan sementara |
 | --- | --- | --- |
 | Keluar form yang sudah diisi | Ikon Close bisa membuang isian tanpa sengaja | Diputuskan Bayu (W2-05): tutup langsung tanpa konfirmasi sampai ada desain dialognya |
-| Nama pengguna (F-14) | Login email tidak memberi nama, padahal 01 dan G1 menyapa "Halo, Bayu" | Perlu keputusan: kolom Nama di layar masuk atau di setup awal |
+| Nama pengguna (F-14) | Login email tidak memberi nama, padahal 01 dan G1 menyapa "Halo, Bayu" | Diputuskan Bayu (20 Nov 2026): layar 00g Nama kamu setelah 00f untuk akun baru (`/masuk/nama`); nama boleh kosong, sapaan jadi "Halo" |
 | Isi 14 Pengaturan versi MVP | Frame 14 berisi baris untuk fitur Tahap 2–3 (notifikasi, Data) | Tampilkan hanya kartu akun dan grup keamanan; baris lain disembunyikan |

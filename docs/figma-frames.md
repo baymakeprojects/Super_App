@@ -32,6 +32,17 @@ Node id dicatat 19 Nov 2026. Kalau sebuah id tidak ditemukan, cari frame dengan 
 | [11] Status & umpan balik | 65:180 |
 | [14] Masuk & kode (Code Cell 229:241) | 229:228 |
 
+Komponen baru dan varian yang ditambahkan saat revisi 20 Nov 2026 (`catatan-figma.md` F-01–F-51):
+
+| Komponen / varian | Node |
+| --- | --- |
+| Icon Button (tombol ikon bulat 40, properti Icon) | 236:228 |
+| Bottom Sheet (kerangka pop-up HP, properti Footer) | 236:13583 |
+| Select (set): Filled 21:65, Empty, Disabled, Error | 236:252 (236:232, 236:238, 236:245) |
+| Input State=Filled | 235:235 |
+| Button Danger × Hover, Pressed, Disabled | 235:228, 235:230, 235:232 |
+| Foundations › Radius/Item · 16 | 236:13601 |
+
 ## Layar HP MVP
 
 | Kode | Layar | Node |
@@ -43,6 +54,7 @@ Node id dicatat 19 Nov 2026. Kalau sebuah id tidak ditemukan, cari frame dengan 
 | 00e | Email tidak valid · Mengirim kode · Gagal kirim kode | 230:5235, 230:5261, 230:5287 |
 | 00f | Masukkan kode | 231:5271 |
 | 00f | Kode salah · Kode kedaluwarsa · Memeriksa kode | 231:5310, 231:5349, 231:5388 |
+| 00g | Nama kamu (akun baru, setelah 00f) | 238:5382 |
 | 01 | Login / Kunci sidik jari | 12:2 |
 | 01a | Jadwal semester | 66:1786 |
 | 01b | Dompet & saldo awal | 66:1852 |
@@ -94,3 +106,37 @@ Node id dicatat 19 Nov 2026. Kalau sebuah id tidak ditemukan, cari frame dengan 
 | H05 | Atur PIN cadangan | 56:2490 |
 | H06 | Masukkan PIN | 56:2560 |
 | H11 | Ubah transaksi | 185:13492 |
+
+## Keadaan tambahan (revisi 20 Nov 2026)
+
+Frame keadaan yang ditambahkan dari `catatan-figma.md`. Letaknya di section "Revisi · …" di bawah halaman masing-masing; tiap section punya kotak Catatan berisi aturan layarnya.
+
+| Kode | Keadaan | Node |
+| --- | --- | --- |
+| — | Section Revisi · masuk & kunci (Screens) | 238:5381 |
+| 00f | Offline saat memeriksa / gagal kirim ulang · Kirim ulang tersedia | 238:5410, 238:5456 |
+| 01 | Tanpa nama · Belum tersinkron | 238:5495, 238:5734 |
+| G1 | Belum pernah sinkron | 238:5976 |
+| — | Catatan · masuk & kunci | 238:6226 |
+| — | Section Revisi · Beranda & Tugas (Screens) | 239:5481 |
+| 02 | Tanpa nama, tanpa tugas hari ini | 239:5482 |
+| 03 | Kelompok Nanti (di frame 03 14:127) · Filter tanpa hasil | 239:5471, 239:5533 |
+| E4 | Snackbar tugas selesai | 239:5660 |
+| E5 | Offline tanpa perubahan menunggu | 239:5771 |
+| 15 | Isian awal · Tanpa tanggal · Mengetik sub-tugas | 241:5764, 241:5848, 241:5920 |
+| 16 | Tugas selesai · Tanpa deadline & data opsional | 241:5999, 241:6094 |
+| — | Catatan · 03 Tugas · 02 Beranda & E5 · 15 dan 16 | 241:6213, 241:6220, 241:6227 |
+| — | Section Revisi · Kuliah & Keuangan (Screens) | 241:6235 |
+| 04 | Hari tanpa kelas | 241:6236 |
+| 20 | Tanpa tugas aktif | 241:6354 |
+| 05 | Snackbar transaksi dihapus | 241:6417 |
+| 17 | Pemasukan · Nominal kosong · Nominal wajib diisi · Tidak fokus + tanggal lain | 241:6539, 241:6613, 241:6655, 241:6698 |
+| — | Catatan · 04 dan 20 · 05 dan 17 | 241:6832, 241:6839 |
+| — | Section Revisi · pop-up & halaman penuh (Pop-up & Input) | 242:7910 |
+| P03 | Belum ada mata kuliah | 242:7911 |
+| P05 | Tanpa sub-tugas | 242:8060 |
+| P07 | Nama dompet kosong | 242:8148 |
+| P20 | Belum ada semester | 242:8269 |
+| P47 | Hapus pemasukan | 242:8384 |
+| H02 | Ubah jadwal · Isian salah | 242:8480, 242:8574 |
+| — | Catatan · pop-up (P03, P05, P07, P20, H02, H06) | 242:8677 |

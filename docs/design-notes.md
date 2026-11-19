@@ -42,7 +42,7 @@ Node id tiap frame ada di `figma-frames.md`. Token ada di `design-tokens.md`.
 | --- | --- | --- |
 | Button | Primary, Ghost, Danger × Default, Hover, Pressed, Disabled | Sudut 12, label Geist Mono kapital. Hover hanya di desktop. Danger hanya untuk hapus dan keluar akun |
 | FAB | — | 56×56, oranye, ikon Plus hitam. Hanya di layar yang punya FAB di Figma |
-| Input | Default, Focus, Error | Label kecil kapital di atas kolom. Focus: garis dan label oranye. Error: garis dan pesan merah di bawah kolom |
+| Input | Default, Focus, Filled, Error | Label kecil kapital di atas kolom. Focus: garis dan label oranye, kursor oranye. Filled: teks ketikan putih. Error: garis dan pesan merah di bawah kolom. Disabled tampil seperti Default |
 | Checkbox | Unchecked, Checked | Kotak bersudut kecil; dicentang = isi oranye, centang hitam |
 | Switch | Off, On | On = oranye |
 | Chip | Default, Selected | Bentuk pil, untuk filter dan pilihan; Selected = isi oranye, teks hitam |
@@ -58,12 +58,14 @@ Node id tiap frame ada di `figma-frames.md`. Token ada di `design-tokens.md`.
 | Day Pill | Default, Selected | Hari singkat + tanggal; Selected = isi oranye |
 | Wallet Card | — | Nama dompet kapital + saldo |
 | Segmented Control | First, Second | Dua pilihan, misalnya Pengeluaran / Pemasukan |
-| Select, List Row, Checklist Item | — | Select membuka bottom sheet pilihan, bukan dropdown Material |
+| Select, List Row, Checklist Item | Select: Filled, Empty, Disabled, Error | Select membuka bottom sheet pilihan, bukan dropdown Material. Disabled = nilai "—" abu, tidak bisa diketuk |
 | Action Bar | Single, Double | Bar tombol di bawah form dan detail. Double: kiri Ghost, kanan Primary |
 | Overlay Header, Option Item | Sheet, Dialog; Default, Selected | Bottom sheet: sudut atas 20, handle, scrim hitam 70%, lebar penuh |
 | Date Picker, Time Picker, Keypad, Text Area | — | Dibangun sendiri sesuai Figma; jangan pakai showDatePicker atau showTimePicker Material |
 | Page Indicator | Page 1–4 | Titik aktif memanjang oranye, lainnya titik abu |
-| Snackbar | — | Muncul 4 detik di atas bottom nav, teks + aksi "Urungkan" |
+| Snackbar | — | Muncul 4 detik di atas bottom nav, teks + aksi "Urungkan". 20 dari tepi, 12 di atas Bottom Nav; FAB 16 di atas snackbar |
+| Icon Button | Icon (swap) | Tombol ikon bulat 40 di kanan atas menu utama (Cari, Notifikasi, Tambah jadwal, Akun). Ditambahkan 20 Nov 2026 (F-22) |
+| Bottom Sheet | Footer on/off | Kerangka semua pop-up P: Overlay Header, isi, footer tombol. Ditambahkan 20 Nov 2026 (F-27) |
 | Banner | Warning, Danger, Info, Success | Keadaan yang bertahan (offline, sinkron gagal); di bawah header, di atas isi |
 
 Komponen Habit Item, Note Card, Project Card, Step Item, Bill Item, Budget Item, File Item, Folder Card, dan komponen desktop dibangun saat modulnya dikerjakan.
@@ -88,7 +90,8 @@ Komponen Habit Item, Note Card, Project Card, Step Item, Bill Item, Budget Item,
 
 - "Halo, Bayu" memakai Doto dan nama dari profil. Ikon sidik jari di tengah cincin titik oranye, teks status di bawahnya.
 - Prompt sidik jari dari sistem (local_auth) langsung muncul; gambar di layar hanya latar.
-- Tombol Ghost di bawah membuka PIN cadangan (H06). Baris kecil status sinkron di paling bawah.
+- Tombol Ghost "Pakai PIN" di bawah membuka PIN cadangan (H06). Baris kecil status sinkron di paling bawah ("Tersinkron" atau "Belum tersinkron sejak 08.12").
+- Tanpa nama (nama dikosongkan di 00g): "Halo" satu baris.
 
 ### 01a–01c Setup awal
 
@@ -163,6 +166,8 @@ Beberapa layar MVP sudah menggambar elemen dari modul Tahap 2–3. Selama moduln
 | 04 Kuliah | Ikon Materi; bagian "Catatan terakhir" | Sembunyikan |
 | 05 Keuangan | Chip Tagihan dan Budget; bagian "Tagihan terdekat"; ikon Statistik | Sembunyikan; baris chip hilang karena tinggal Ringkasan |
 | 15 Tugas baru | Baris "Ingatkan saya" | Sembunyikan |
+| H02 Jadwal baru | Baris "Ulangi tiap minggu · 16 pertemuan" (butuh fitur pertemuan) | Sembunyikan (F-38) |
+| P07 Dompet baru | Baris "Hitung di total saldo" (model dompet belum punya kolomnya) | Sembunyikan (F-43) |
 | 16 Detail tugas | Baris pengingat; bagian Lampiran (Scan PDF, Pilih file) | Sembunyikan |
 | 20 Detail mata kuliah | Kartu Kehadiran; tab Pertemuan | Sembunyikan Stat Card, Segmented Control, daftar Pertemuan, dan FAB; tampilkan label "Tugas aktif · n" + Task Item mata kuliah itu. Acuan: frame "20 Detail Mata Kuliah (MVP)" |
 | 06 Lainnya | 10 Module Tile (semua modul Tahap 2–3) | Sembunyikan grid dan label jumlah modul; tile muncul satu per satu saat modulnya selesai. Acuan: frame "06 Lainnya (MVP)" |
