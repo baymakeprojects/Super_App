@@ -33,7 +33,8 @@ class _App {
   final ProviderContainer container;
   final AppDatabase database;
 
-  TaskFormController get form => container.read(taskFormProvider.notifier);
+  TaskFormController get form =>
+      container.read(taskFormProvider(null).notifier);
 }
 
 Future<_App> _pumpForm(
@@ -372,17 +373,20 @@ void main() {
       await tester.enterText(_subtaskInput, 'Kode modul 5');
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pumpAndSettle();
-      expect(app.container.read(taskFormProvider).subtasks, [
-        'Kode modul 5',
-        'Tulis analisis & kesimpulan',
-      ]);
+      expect(
+        app.container.read(taskFormProvider(null)).subtasks.map((s) => s.title),
+        ['Kode modul 5', 'Tulis analisis & kesimpulan'],
+      );
 
       await tester.tap(find.text('Tulis analisis & kesimpulan'));
       await tester.pumpAndSettle();
       await tester.enterText(_subtaskInput, '');
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pumpAndSettle();
-      expect(app.container.read(taskFormProvider).subtasks, ['Kode modul 5']);
+      expect(
+        app.container.read(taskFormProvider(null)).subtasks.map((s) => s.title),
+        ['Kode modul 5'],
+      );
     });
 
     testWidgets('Close menutup tanpa menyimpan', (tester) async {

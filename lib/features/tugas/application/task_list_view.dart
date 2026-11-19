@@ -149,6 +149,34 @@ TaskListView buildTaskListView(
 const int _weekDays = 7;
 const int _recentDoneDays = 7;
 
+/// Badge status satu tugas, sama di layar 03 dan 16 Detail tugas:
+/// Selesai, Terlambat, Hari ini, Besok, "n hari", atau tanggal ("20 Nov").
+/// `null` = tugas aktif tanpa deadline.
+typedef TaskBadge = ({String label, AppBadgeType type});
+
+TaskBadge? taskStatusBadge(Task task, DateTime now) {
+  if (task.status == TaskStatus.done) {
+    return (label: 'Selesai', type: AppBadgeType.success);
+  }
+  final due = task.dueAt?.toLocal();
+  if (due == null) return null;
+  if (due.isBefore(now)) {
+    return (label: 'Terlambat', type: AppBadgeType.danger);
+  }
+  return switch (_groupOf(task, now)) {
+    TaskGroupKind.hariIni => (label: 'Hari ini', type: AppBadgeType.warning),
+    TaskGroupKind.besok => (label: 'Besok', type: AppBadgeType.neutral),
+    TaskGroupKind.mingguIni => (
+      label: '${AppDateFormat.daysBetween(now, due)} hari',
+      type: AppBadgeType.neutral,
+    ),
+    TaskGroupKind.nanti || TaskGroupKind.selesai => (
+      label: AppDateFormat.dayMonthShort(due),
+      type: AppBadgeType.neutral,
+    ),
+  };
+}
+
 TaskGroupKind _groupOf(Task task, DateTime now) {
   final due = task.dueAt;
   if (due == null) return TaskGroupKind.nanti;
@@ -172,47 +200,25 @@ TaskRowView _activeRow(TaskListItem item, TaskGroupKind kind, DateTime now) {
   final due = task.dueAt?.toLocal();
 
   String? when;
-  String? badge;
-  var badgeType = AppBadgeType.neutral;
-
   if (due != null) {
     final days = AppDateFormat.daysBetween(now, due);
-    final overdue = due.isBefore(now);
-    if (overdue && days < 0) {
+    if (due.isBefore(now) && days < 0) {
       when = days == -1 ? 'kemarin' : '${-days} hari lalu';
     } else if (kind == TaskGroupKind.mingguIni) {
       when = '${AppDateFormat.weekdayShort(due)} ${AppDateFormat.time(due)}';
     } else {
       when = AppDateFormat.time(due);
     }
-
-    if (overdue) {
-      badge = 'Terlambat';
-      badgeType = AppBadgeType.danger;
-    } else {
-      switch (kind) {
-        case TaskGroupKind.hariIni:
-          badge = 'Hari ini';
-          badgeType = AppBadgeType.warning;
-        case TaskGroupKind.besok:
-          badge = 'Besok';
-        case TaskGroupKind.mingguIni:
-          badge = '$days hari';
-        case TaskGroupKind.nanti:
-          badge = AppDateFormat.dayMonthShort(due);
-        case TaskGroupKind.selesai:
-          break;
-      }
-    }
   }
+  final badge = taskStatusBadge(task, now);
 
   return TaskRowView(
     id: task.id,
     title: task.title,
     meta: _meta(item.courseName, when),
     done: false,
-    badgeLabel: badge,
-    badgeType: badgeType,
+    badgeLabel: badge?.label,
+    badgeType: badge?.type ?? AppBadgeType.neutral,
   );
 }
 

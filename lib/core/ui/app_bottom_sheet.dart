@@ -17,6 +17,7 @@ class AppBottomSheet extends StatelessWidget {
     this.subtitle,
     this.footer = const [],
     this.onClose,
+    this.showClose = true,
   });
 
   static const double _borderWidth = 1;
@@ -33,6 +34,10 @@ class AppBottomSheet extends StatelessWidget {
 
   /// Tombol tutup bulat di kepala. Bawaan: menutup sheet tanpa hasil.
   final VoidCallback? onClose;
+
+  /// `false` = tanpa tombol tutup, misalnya konfirmasi hapus (design-notes
+  /// §4: konfirmasi hapus tanpa tombol tutup).
+  final bool showClose;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +77,9 @@ class AppBottomSheet extends StatelessWidget {
           AppOverlayHeader(
             title: title,
             subtitle: subtitle,
-            onClose: onClose ?? () => Navigator.of(context).pop(),
+            onClose: showClose
+                ? onClose ?? () => Navigator.of(context).pop()
+                : null,
           ),
           Flexible(child: SingleChildScrollView(child: paddedBody)),
           if (footer.isNotEmpty)

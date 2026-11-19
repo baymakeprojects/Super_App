@@ -7,6 +7,7 @@ import 'package:super_app/app/placeholder_screen.dart';
 import 'package:super_app/app/routes.dart';
 import 'package:super_app/core/ui/catalog_page.dart';
 import 'package:super_app/core/ui/ui.dart';
+import 'package:super_app/features/tugas/presentation/task_detail_screen.dart';
 import 'package:super_app/features/tugas/presentation/task_form_screen.dart';
 import 'package:super_app/features/tugas/presentation/tugas_screen.dart';
 
@@ -116,10 +117,19 @@ GoRouter buildAppRouter({String initialLocation = AppRoutes.beranda}) {
               // 'baru' dan 'cari' sebelum ':id' supaya tidak dianggap id.
               fullScreen('baru', 'Tugas baru', screen: const TaskFormScreen()),
               fullScreen('cari', 'Pencarian'),
-              fullScreen(
-                ':id',
-                'Detail tugas',
-                routes: [fullScreen('edit', 'Edit tugas')],
+              GoRoute(
+                path: ':id',
+                parentNavigatorKey: rootNavigatorKey,
+                builder: (context, state) =>
+                    TaskDetailScreen(taskId: state.pathParameters['id']!),
+                routes: [
+                  GoRoute(
+                    path: 'edit',
+                    parentNavigatorKey: rootNavigatorKey,
+                    builder: (context, state) =>
+                        TaskFormScreen(taskId: state.pathParameters['id']),
+                  ),
+                ],
               ),
             ],
           ),

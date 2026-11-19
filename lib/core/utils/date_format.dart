@@ -55,6 +55,10 @@ abstract final class AppDateFormat {
   static String weekdayDayMonth(DateTime date) =>
       '${weekday(date)} ${dayMonthShort(date)}';
 
+  /// "Jumat, 6 Nov" (baris tanggal di 16 Detail tugas).
+  static String weekdayCommaDayMonth(DateTime date) =>
+      '${weekday(date)}, ${dayMonthShort(date)}';
+
   /// "Jum, 6 Nov" (kolom Tanggal di form 15 dan 17).
   static String weekdayShortDayMonth(DateTime date) =>
       '${weekdayShort(date)}, ${dayMonthShort(date)}';

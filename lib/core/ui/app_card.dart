@@ -9,8 +9,9 @@ class AppCard extends StatelessWidget {
   const AppCard({
     super.key,
     required this.eyebrow,
-    required this.title,
     required this.body,
+    this.title,
+    this.bodyMaxLines = 2,
     this.onTap,
   });
 
@@ -19,16 +20,21 @@ class AppCard extends StatelessWidget {
   /// Label kecil oranye di atas judul. Dikapitalkan otomatis.
   final String eyebrow;
 
-  /// Judul kartu, maksimal 2 baris.
-  final String title;
+  /// Judul kartu, maksimal 2 baris. `null` = disembunyikan (kartu Catatan
+  /// di 16 Detail tugas, F-32).
+  final String? title;
 
   /// Isi singkat, maksimal 2 baris (catatan Figma).
   final String body;
+
+  /// Batas baris isi. `null` = tampil utuh (isi catatan tugas).
+  final int? bodyMaxLines;
 
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final title = this.title;
     final card = Container(
       width: double.infinity,
       padding: const EdgeInsets.all(AppSpace.s20),
@@ -46,16 +52,17 @@ class AppCard extends StatelessWidget {
             eyebrow,
             style: AppText.labelSmall.copyWith(color: AppColors.accentText),
           ),
-          Text(
-            title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: AppText.headingSmall.copyWith(color: AppColors.white),
-          ),
+          if (title != null)
+            Text(
+              title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: AppText.headingSmall.copyWith(color: AppColors.white),
+            ),
           Text(
             body,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+            maxLines: bodyMaxLines,
+            overflow: bodyMaxLines == null ? null : TextOverflow.ellipsis,
             style: AppText.bodyMedium.copyWith(color: AppColors.lightGray),
           ),
         ],

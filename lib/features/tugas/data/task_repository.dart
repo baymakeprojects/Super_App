@@ -80,9 +80,33 @@ class TaskRepository {
   /// `null` kalau tidak ada atau sudah dihapus.
   Stream<Task?> watchTask(String id) => _taskQuery(id).watchSingleOrNull();
 
+  /// Satu tugas beserta nama mata kuliahnya (layar 16 Detail tugas).
+  /// `null` kalau tidak ada atau sudah dihapus.
+  Stream<TaskListItem?> watchTaskItem(String id) {
+    final query = _taskListQuery()..where(_database.tasks.id.equals(id));
+    return query.watch().map((rows) {
+      final items = _toTaskListItems(rows);
+      return items.isEmpty ? null : items.single;
+    });
+  }
+
+  /// Sama dengan [watchTaskItem], sekali baca (isian awal H01 Edit tugas).
+  Future<TaskListItem?> getTaskItem(String id) async {
+    final query = _taskListQuery()..where(_database.tasks.id.equals(id));
+    final items = _toTaskListItems(await query.get());
+    return items.isEmpty ? null : items.single;
+  }
+
   /// Sub-tugas milik [taskId] yang belum dihapus, sesuai urutan.
-  Stream<List<Subtask>> watchSubtasks(String taskId) {
-    final query = _database.select(_database.subtasks)
+  Stream<List<Subtask>> watchSubtasks(String taskId) =>
+      _subtasksQuery(taskId).watch();
+
+  /// Sama dengan [watchSubtasks], sekali baca (isian awal H01 Edit tugas).
+  Future<List<Subtask>> getSubtasks(String taskId) =>
+      _subtasksQuery(taskId).get();
+
+  SimpleSelectStatement<$SubtasksTable, Subtask> _subtasksQuery(String taskId) {
+    return _database.select(_database.subtasks)
       ..where(
         (s) =>
             s.userId.equals(userId) &
@@ -90,7 +114,6 @@ class TaskRepository {
             s.deletedAt.isNull(),
       )
       ..orderBy([(s) => OrderingTerm(expression: s.position)]);
-    return query.watch();
   }
 
   /// Progres sub-tugas, misalnya "2/4 selesai" di layar 16.
@@ -303,6 +326,44 @@ class TaskRepository {
     );
   }
 
+  /// Menyimpan H01 Edit tugas dalam satu transaksi: isi tugas, lalu
+  /// sub-tugas. Sub-tugas lama yang tidak ada lagi di [subtasks] dihapus,
+  /// yang judulnya berubah diganti, dan yang tanpa id ditambah di akhir.
+  Future<void> saveTaskEdit(
+    String id, {
+    required String title,
+    String? courseId,
+    String? notes,
+    DateTime? dueAt,
+    TaskPriority? priority,
+    required List<SubtaskEdit> subtasks,
+  }) {
+    return _database.transaction(() async {
+      await updateTask(
+        id,
+        title: title,
+        courseId: courseId,
+        notes: notes,
+        dueAt: dueAt,
+        priority: priority,
+      );
+
+      final existing = {for (final s in await getSubtasks(id)) s.id: s};
+      final kept = {for (final s in subtasks) ?s.id};
+      for (final old in existing.values) {
+        if (!kept.contains(old.id)) await deleteSubtask(old.id);
+      }
+      for (final edit in subtasks) {
+        final subtaskId = edit.id;
+        if (subtaskId == null) {
+          await addSubtask(id, edit.title);
+        } else if (existing[subtaskId]?.title != edit.title) {
+          await renameSubtask(subtaskId, edit.title);
+        }
+      }
+    });
+  }
+
   /// Mencentang atau melepas centang sub-tugas.
   Future<void> setSubtaskDone(String id, {required bool done}) {
     return _writeSubtask(
@@ -376,6 +437,9 @@ class TaskListItem {
   /// `null` = tugas tanpa mata kuliah, atau mata kuliahnya sudah dihapus.
   final String? courseName;
 }
+
+/// Sub-tugas di form H01: [id] `null` = sub-tugas baru.
+typedef SubtaskEdit = ({String? id, String title});
 
 /// Progres sub-tugas: berapa yang selesai dari total.
 typedef SubtaskProgress = ({int done, int total});

@@ -184,4 +184,43 @@ void main() {
     await expectLater(repository.deleteTask('tidak-ada'), throwsStateError);
     expect(await queueEntries(), isEmpty);
   });
+
+  test('simpan edit H01: tugas dan sub-tugas dalam satu kali simpan', () async {
+    final id = await repository.addTask(
+      title: 'Laporan',
+      subtasks: ['A', 'B', 'C'],
+    );
+    final before = await repository.getSubtasks(id);
+    await repository.setSubtaskDone(before[0].id, done: true);
+
+    await repository.saveTaskEdit(
+      id,
+      title: 'Laporan final',
+      priority: TaskPriority.high,
+      subtasks: [
+        (id: before[0].id, title: 'A'),
+        (id: before[1].id, title: 'B2'),
+        (id: null, title: 'D'),
+      ],
+    );
+
+    final task = await repository.getTask(id);
+    expect(task!.title, 'Laporan final');
+    expect(task.priority, TaskPriority.high);
+    final after = await repository.getSubtasks(id);
+    expect(after.map((s) => (s.title, s.isDone)), [
+      ('A', true),
+      ('B2', false),
+      ('D', false),
+    ]);
+    expect(after[0].id, before[0].id);
+  });
+
+  test('tugas lewat getTaskItem dan watchTaskItem; dihapus = null', () async {
+    final id = await repository.addTask(title: 'Kuis');
+    expect((await repository.getTaskItem(id))!.task.title, 'Kuis');
+    await repository.deleteTask(id);
+    expect(await repository.getTaskItem(id), isNull);
+    expect(await repository.watchTaskItem(id).first, isNull);
+  });
 }

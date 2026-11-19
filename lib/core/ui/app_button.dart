@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart' show OverflowBoxFit;
 import 'package:material_ui/material_ui.dart';
 
 import 'package:super_app/core/theme/theme.dart';
@@ -154,18 +155,38 @@ class _AppButtonState extends State<AppButton> {
               border: Border.all(color: colors.border, width: _borderWidth),
               borderRadius: BorderRadius.circular(AppRadius.button),
             ),
-            child: Row(
-              mainAxisSize: widget.expand ? MainAxisSize.max : MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: AppLabelText(
-                    widget.label,
-                    style: AppText.labelLarge.copyWith(color: colors.label),
+            child: widget.expand
+                // Seperti di Figma, label panjang di tombol lebar penuh boleh
+                // masuk ke padding kiri-kanan dan tetap di tengah (misalnya
+                // "Simpan perubahan" di Action Bar Double H01).
+                ? LayoutBuilder(
+                    builder: (context, constraints) => Center(
+                      heightFactor: 1,
+                      child: OverflowBox(
+                        fit: OverflowBoxFit.deferToChild,
+                        maxWidth: constraints.maxWidth + 2 * AppSpace.s24,
+                        child: AppLabelText(
+                          widget.label,
+                          style: AppText.labelLarge.copyWith(
+                            color: colors.label,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: AppLabelText(
+                          widget.label,
+                          style: AppText.labelLarge.copyWith(
+                            color: colors.label,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
           ),
         ),
       ),

@@ -1,11 +1,27 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:super_app/core/db/app_database.dart';
 import 'package:super_app/core/db/enums.dart';
 import 'package:super_app/core/utils/clock.dart';
 import 'package:super_app/core/utils/date_format.dart';
+import 'package:super_app/features/tugas/data/task_repository.dart';
 import 'package:super_app/features/tugas/data/task_repository_provider.dart';
 
-/// Isian form 15 Tugas baru.
+/// Satu sub-tugas di form. [id] `null` = baru, belum tersimpan.
+class FormSubtask {
+  const FormSubtask({this.id, required this.title, this.done = false});
+
+  final String? id;
+  final String title;
+
+  /// Hanya tampilan di H01; centang diubah di 16 Detail tugas.
+  final bool done;
+
+  FormSubtask withTitle(String title) =>
+      FormSubtask(id: id, title: title, done: done);
+}
+
+/// Isian form 15 Tugas baru dan H01 Edit tugas.
 class TaskFormState {
   const TaskFormState({
     required this.title,
@@ -32,11 +48,12 @@ class TaskFormState {
   final int dueHour;
   final int dueMinute;
 
-  final TaskPriority priority;
-  final List<String> subtasks;
+  /// `null` hanya untuk tugas lama tanpa prioritas (tidak ada chip terpilih).
+  final TaskPriority? priority;
+  final List<FormSubtask> subtasks;
   final String notes;
 
-  /// G2: "Simpan tugas" diketuk saat judul kosong. Hilang saat mengetik.
+  /// G2: tombol simpan diketuk saat judul kosong. Hilang saat mengetik.
   final bool showTitleError;
 
   final bool saving;
@@ -55,7 +72,7 @@ class TaskFormState {
     int? dueHour,
     int? dueMinute,
     TaskPriority? priority,
-    List<String>? subtasks,
+    List<FormSubtask>? subtasks,
     String? notes,
     bool? showTitleError,
     bool? saving,
@@ -76,22 +93,54 @@ class TaskFormState {
   }
 }
 
-/// Form 15 Tugas baru. Dibuang otomatis saat layar ditutup, jadi setiap
-/// membuka form mulai dari isian awal.
-final taskFormProvider =
-    NotifierProvider.autoDispose<TaskFormController, TaskFormState>(
-      TaskFormController.new,
-    );
+/// Data awal H01: tugas yang diubah dan sub-tugasnya.
+class TaskEditSource {
+  const TaskEditSource({required this.item, required this.subtasks});
+
+  final TaskListItem item;
+  final List<Subtask> subtasks;
+}
+
+/// Isian awal H01, dibaca sekali saat layar dibuka. `null` = tugas tidak
+/// ada atau sudah dihapus.
+final taskEditSourceProvider = FutureProvider.autoDispose
+    .family<TaskEditSource?, String>((ref, id) async {
+      final repository = ref.read(taskRepositoryProvider);
+      final item = await repository.getTaskItem(id);
+      if (item == null) return null;
+      return TaskEditSource(
+        item: item,
+        subtasks: await repository.getSubtasks(id),
+      );
+    });
+
+/// Form tugas. Argumen `null` = 15 Tugas baru; id tugas = H01 Edit tugas
+/// (pastikan [taskEditSourceProvider] untuk id itu sudah selesai dibaca).
+/// Dibuang otomatis saat layar ditutup, jadi setiap membuka form mulai dari
+/// isian awal.
+final taskFormProvider = NotifierProvider.autoDispose
+    .family<TaskFormController, TaskFormState, String?>(TaskFormController.new);
 
 class TaskFormController extends Notifier<TaskFormState> {
+  TaskFormController(this.taskId);
+
+  /// `null` = tugas baru.
+  final String? taskId;
+
   /// Jam deadline bawaan: 23.59 (keputusan Bayu, W2-05).
   static const int defaultHour = 23;
   static const int defaultMinute = 59;
 
   @override
   TaskFormState build() {
-    // Isian awal (keputusan Bayu, W2-05): deadline hari ini 23.59,
-    // prioritas Sedang, tanpa mata kuliah.
+    final taskId = this.taskId;
+    if (taskId != null) {
+      final source = ref.read(taskEditSourceProvider(taskId)).value;
+      if (source != null) return _fromTask(source);
+    }
+
+    // Isian awal tugas baru (keputusan Bayu, W2-05): deadline hari ini
+    // 23.59, prioritas Sedang, tanpa mata kuliah.
     final now = ref.read(clockProvider)();
     return TaskFormState(
       title: '',
@@ -103,6 +152,27 @@ class TaskFormController extends Notifier<TaskFormState> {
       priority: TaskPriority.medium,
       subtasks: const [],
       notes: '',
+      showTitleError: false,
+      saving: false,
+    );
+  }
+
+  static TaskFormState _fromTask(TaskEditSource source) {
+    final task = source.item.task;
+    final due = task.dueAt?.toLocal();
+    return TaskFormState(
+      title: task.title,
+      courseId: task.courseId,
+      courseName: source.item.courseName,
+      dueDate: due == null ? null : AppDateFormat.dateOnly(due),
+      dueHour: due?.hour ?? defaultHour,
+      dueMinute: due?.minute ?? defaultMinute,
+      priority: task.priority,
+      subtasks: [
+        for (final s in source.subtasks)
+          FormSubtask(id: s.id, title: s.title, done: s.isDone),
+      ],
+      notes: task.notes ?? '',
       showTitleError: false,
       saving: false,
     );
@@ -140,7 +210,12 @@ class TaskFormController extends Notifier<TaskFormState> {
   void addSubtask(String title) {
     final text = title.trim();
     if (text.isEmpty) return;
-    state = state.copyWith(subtasks: [...state.subtasks, text]);
+    state = state.copyWith(
+      subtasks: [
+        ...state.subtasks,
+        FormSubtask(title: text),
+      ],
+    );
   }
 
   /// Ubah sub-tugas ke-[index]. Teks dikosongkan = sub-tugas dihapus.
@@ -150,13 +225,13 @@ class TaskFormController extends Notifier<TaskFormState> {
     if (text.isEmpty) {
       subtasks.removeAt(index);
     } else {
-      subtasks[index] = text;
+      subtasks[index] = subtasks[index].withTitle(text);
     }
     state = state.copyWith(subtasks: subtasks);
   }
 
-  /// Simpan tugas. Mengembalikan id tugas baru, atau `null` kalau judul
-  /// kosong (G2: pesan muncul di kolom judul, isian lain tetap).
+  /// Simpan tugas. Mengembalikan id tugas, atau `null` kalau judul kosong
+  /// (G2: pesan muncul di kolom judul, isian lain tetap).
   Future<String?> save() async {
     if (state.saving) return null;
     final title = state.title.trim();
@@ -167,17 +242,29 @@ class TaskFormController extends Notifier<TaskFormState> {
 
     state = state.copyWith(saving: true);
     try {
+      final repository = ref.read(taskRepositoryProvider);
       final notes = state.notes.trim();
-      return await ref
-          .read(taskRepositoryProvider)
-          .addTask(
-            title: title,
-            courseId: state.courseId,
-            notes: notes.isEmpty ? null : notes,
-            dueAt: state.dueAt,
-            priority: state.priority,
-            subtasks: state.subtasks,
-          );
+      final taskId = this.taskId;
+      if (taskId == null) {
+        return await repository.addTask(
+          title: title,
+          courseId: state.courseId,
+          notes: notes.isEmpty ? null : notes,
+          dueAt: state.dueAt,
+          priority: state.priority,
+          subtasks: [for (final s in state.subtasks) s.title],
+        );
+      }
+      await repository.saveTaskEdit(
+        taskId,
+        title: title,
+        courseId: state.courseId,
+        notes: notes.isEmpty ? null : notes,
+        dueAt: state.dueAt,
+        priority: state.priority,
+        subtasks: [for (final s in state.subtasks) (id: s.id, title: s.title)],
+      );
+      return taskId;
     } finally {
       if (ref.mounted) state = state.copyWith(saving: false);
     }

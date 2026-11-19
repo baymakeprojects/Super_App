@@ -14,23 +14,62 @@ import 'package:super_app/features/kuliah/data/course_repository_provider.dart';
 import 'package:super_app/features/tugas/application/task_form_controller.dart';
 import 'package:super_app/features/tugas/presentation/course_sheet.dart';
 
-/// Layar 15 Tugas baru (Figma 30:1381) dengan G2 isian belum lengkap
-/// (137:4349) dan pop-up P01 tanggal, P02 jam, P03 mata kuliah.
+/// Layar 15 Tugas baru (Figma 30:1381) dan H01 Edit tugas (54:2269), dengan
+/// G2 isian belum lengkap (137:4349) dan pop-up P01 tanggal, P02 jam,
+/// P03 mata kuliah.
 ///
 /// Kartu "Ingatkan saya" di Figma adalah fitur Tahap 2, jadi
 /// disembunyikan utuh (design-notes §7).
-class TaskFormScreen extends ConsumerStatefulWidget {
-  const TaskFormScreen({super.key});
+class TaskFormScreen extends ConsumerWidget {
+  const TaskFormScreen({super.key, this.taskId});
+
+  /// `null` = Tugas baru; id tugas = Edit tugas.
+  final String? taskId;
 
   @override
-  ConsumerState<TaskFormScreen> createState() => _TaskFormScreenState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final taskId = this.taskId;
+    if (taskId == null) return const _TaskForm(taskId: null);
+
+    // H01: isian awal dibaca dari database dulu. Data lokal, jadi biasanya
+    // hanya sekejap; sementara itu yang tampil hanya bar atas.
+    final source = ref.watch(taskEditSourceProvider(taskId));
+    if (source.value == null) {
+      return Scaffold(
+        backgroundColor: AppColors.primary,
+        appBar: AppTopAppBar(
+          title: 'Edit tugas',
+          leadingIcon: AppIcons.close,
+          leadingSemanticLabel: 'Tutup',
+          onLeadingPressed: () => context.pop(),
+        ),
+      );
+    }
+    return _TaskForm(taskId: taskId);
+  }
 }
 
-class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
-  final _titleController = TextEditingController();
-  final _notesController = TextEditingController();
+class _TaskForm extends ConsumerStatefulWidget {
+  const _TaskForm({required this.taskId});
 
-  TaskFormController get _form => ref.read(taskFormProvider.notifier);
+  final String? taskId;
+
+  @override
+  ConsumerState<_TaskForm> createState() => _TaskFormState();
+}
+
+class _TaskFormState extends ConsumerState<_TaskForm> {
+  late final _provider = taskFormProvider(widget.taskId);
+  late final _titleController = TextEditingController(
+    text: ref.read(_provider).title,
+  );
+  late final _notesController = TextEditingController(
+    text: ref.read(_provider).notes,
+  );
+
+  bool get _isEdit => widget.taskId != null;
+
+  TaskFormController get _form => ref.read(_provider.notifier);
 
   @override
   void dispose() {
@@ -53,7 +92,7 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
     final result = await showCourseSheet(
       context: context,
       options: options,
-      selectedId: ref.read(taskFormProvider).courseId,
+      selectedId: ref.read(_provider).courseId,
     );
     if (!mounted) return;
     switch (result) {
@@ -70,7 +109,7 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
     _unfocus();
     final result = await showDateSheet(
       context: context,
-      selected: ref.read(taskFormProvider).dueDate,
+      selected: ref.read(_provider).dueDate,
       today: ref.read(clockProvider)(),
       subtitle: 'Tenggat tugas',
     );
@@ -79,7 +118,7 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
 
   Future<void> _pickTime(DateTime date) async {
     _unfocus();
-    final form = ref.read(taskFormProvider);
+    final form = ref.read(_provider);
     final result = await showTimeSheet(
       context: context,
       selected: (hour: form.dueHour, minute: form.dueMinute),
@@ -95,13 +134,13 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final form = ref.watch(taskFormProvider);
+    final form = ref.watch(_provider);
     final dueDate = form.dueDate;
 
     return Scaffold(
       backgroundColor: AppColors.primary,
       appBar: AppTopAppBar(
-        title: 'Tugas baru',
+        title: _isEdit ? 'Edit tugas' : 'Tugas baru',
         leadingIcon: AppIcons.close,
         leadingSemanticLabel: 'Tutup',
         // Menutup tanpa konfirmasi (keputusan Bayu, W2-05).
@@ -119,7 +158,9 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
             label: 'Judul tugas',
             placeholder: 'Contoh: laporan praktikum',
             controller: _titleController,
-            autofocus: true,
+            // Tugas baru: langsung mengetik judul. Edit: keyboard tidak
+            // langsung muncul (keputusan Bayu, W2-06, F-34).
+            autofocus: !_isEdit,
             textInputAction: TextInputAction.next,
             errorText: form.showTitleError ? 'Judul wajib diisi' : null,
             onChanged: _form.setTitle,
@@ -182,10 +223,17 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: AppActionBar(
-        primaryLabel: 'Simpan tugas',
-        onPrimaryPressed: form.saving ? null : _save,
-      ),
+      bottomNavigationBar: _isEdit
+          ? AppActionBar(
+              secondaryLabel: 'Batal',
+              onSecondaryPressed: () => context.pop(),
+              primaryLabel: 'Simpan perubahan',
+              onPrimaryPressed: form.saving ? null : _save,
+            )
+          : AppActionBar(
+              primaryLabel: 'Simpan tugas',
+              onPrimaryPressed: form.saving ? null : _save,
+            ),
     );
   }
 }
@@ -200,7 +248,8 @@ class _PriorityField extends StatelessWidget {
     (TaskPriority.high, 'Tinggi'),
   ];
 
-  final TaskPriority selected;
+  /// `null` = tugas lama tanpa prioritas: tidak ada chip terpilih.
+  final TaskPriority? selected;
   final ValueChanged<TaskPriority> onSelected;
 
   @override
@@ -243,7 +292,7 @@ class _SubtaskField extends StatefulWidget {
     required this.onRename,
   });
 
-  final List<String> subtasks;
+  final List<FormSubtask> subtasks;
   final ValueChanged<String> onAdd;
   final void Function(int index, String title) onRename;
 
@@ -277,7 +326,7 @@ class _SubtaskFieldState extends State<_SubtaskField> {
           if (editing == i)
             _SubtaskInput(
               key: ValueKey('edit-$i'),
-              initialText: widget.subtasks[i],
+              initialText: widget.subtasks[i].title,
               onSubmitted: (text) {
                 widget.onRename(i, text);
                 _close();
@@ -294,9 +343,11 @@ class _SubtaskFieldState extends State<_SubtaskField> {
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () => setState(() => _editing = i),
+                // H01: centang tampil apa adanya, tapi diubah di 16 Detail
+                // tugas (keputusan Bayu, W2-06).
                 child: AppChecklistItem(
-                  label: widget.subtasks[i],
-                  done: false,
+                  label: widget.subtasks[i].title,
+                  done: widget.subtasks[i].done,
                   onChanged: null,
                 ),
               ),

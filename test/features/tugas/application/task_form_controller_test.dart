@@ -24,7 +24,7 @@ void main() {
       ],
     );
     // Provider autoDispose: tetap hidup selama tes mendengarkan.
-    container.listen(taskFormProvider, (_, _) {});
+    container.listen(taskFormProvider(null), (_, _) {});
   });
 
   tearDown(() async {
@@ -32,8 +32,8 @@ void main() {
     await database.close();
   });
 
-  TaskFormController form() => container.read(taskFormProvider.notifier);
-  TaskFormState state() => container.read(taskFormProvider);
+  TaskFormController form() => container.read(taskFormProvider(null).notifier);
+  TaskFormState state() => container.read(taskFormProvider(null));
 
   test('isian awal: hari ini 23.59, Sedang, tanpa mata kuliah', () {
     expect(state().dueAt, DateTime(2026, 11, 6, 23, 59));
@@ -93,6 +93,6 @@ void main() {
       ..addSubtask('B')
       ..renameSubtask(0, ' A2 ')
       ..renameSubtask(1, '');
-    expect(state().subtasks, ['A2']);
+    expect(state().subtasks.map((s) => s.title), ['A2']);
   });
 }
