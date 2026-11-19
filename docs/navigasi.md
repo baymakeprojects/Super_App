@@ -5,10 +5,10 @@ Semua layar MVP, rute `go_router`-nya, tombol yang membukanya, dan ke mana layar
 ## Alur saat app dibuka
 
 1. **Splash (00)** — splash native Android, lalu app memeriksa sesi.
-2. **Belum pernah login** → Intro (00a–00d). Tombol "Mulai sekarang" di 00d memanggil login Google sistem. Kalau 00a–00c belum dibuat, intro langsung mulai dari 00d.
+2. **Belum pernah login** → Intro (00a–00d). Tombol "Mulai sekarang" di 00d membuka Masuk dengan email → Masukkan kode (6 digit dari email). Kalau 00a–00c belum dibuat, intro langsung mulai dari 00d.
 3. **Login pertama berhasil** → Setup awal 01a → 01b → 01c → Beranda. "Lewati" di langkah mana pun langsung ke Beranda.
 4. **Sudah login** → Kunci sidik jari (01) → Beranda. Sidik jari gagal 3 kali atau "Pakai PIN" → Masukkan PIN (H06).
-5. **Sesi berakhir** (token tidak bisa diperbarui) → G1, tombol "Masuk lagi" memanggil login Google; data di HP tetap ada.
+5. **Sesi berakhir** (token tidak bisa diperbarui) → G1, tombol "Masuk lagi" membuka Masuk dengan email; data di HP tetap ada.
 
 ## Rute
 
@@ -17,6 +17,8 @@ Lima tab Bottom Nav memakai `StatefulShellRoute.indexedStack` supaya posisi guli
 | Rute | Layar | Dibuka dari | Bottom nav |
 | --- | --- | --- | --- |
 | `/intro` | 00a–00d Intro (satu halaman bergeser) | Pembukaan pertama | Tidak |
+| `/masuk` | Masuk dengan email — **belum ada frame Figma (F-12), jangan dibuat dulu** | 00d › Mulai sekarang; G1 › Masuk lagi | Tidak |
+| `/masuk/kode` | Masukkan kode verifikasi — **belum ada frame Figma (F-12), jangan dibuat dulu** | `/masuk` › kirim kode | Tidak |
 | `/kunci` | 01 Kunci sidik jari | Setiap app dibuka dari keadaan tertutup | Tidak |
 | `/kunci/pin` | H06 Masukkan PIN | 01 › Pakai PIN | Tidak |
 | `/setup/jadwal` | 01a Jadwal semester | Setelah login pertama | Tidak |
@@ -65,7 +67,7 @@ P04 Ingatkan saya tidak dipakai di MVP. Snackbar (E4) dan banner (E5, G8) bukan 
 - Setelah "Simpan", form tertutup dan kembali ke layar asal; data baru langsung tampil.
 - Di tab selain Beranda, Back pindah ke tab Beranda. Di Beranda, Back keluar dari app.
 - Setelah hapus dari 16 Detail tugas, kembali ke daftar dan tampilkan snackbar Urungkan. Sama untuk hapus transaksi dari H11: kembali ke 05 dengan snackbar Urungkan.
-- Halaman Kunci, Setup, dan Intro tidak bisa dikembalikan dengan Back setelah dilewati.
+- Halaman Kunci, Setup, Intro, dan Masuk tidak bisa dikembalikan dengan Back setelah dilewati. Dari Masukkan kode, Back kembali ke Masuk dengan email (untuk mengganti alamat).
 
 ## Celah desain yang belum ada frame-nya
 
@@ -74,4 +76,6 @@ Claude Code tidak mengarang bagian ini. Kalau sampai ke sini, berhenti dan tanya
 | Kebutuhan | Kenapa perlu | Usulan sementara |
 | --- | --- | --- |
 | Keluar form yang sudah diisi | Ikon Close bisa membuang isian tanpa sengaja | Tutup langsung seperti sekarang, atau tambah konfirmasi; perlu keputusan |
+| Layar masuk email dan kode (F-12) | Login diganti dari Google ke email + kode verifikasi (keputusan Bayu, 19 Nov 2026) | Bayu mendesain di Figma dulu; termasuk kode salah, kedaluwarsa, kirim ulang, dan memuat |
+| Nama pengguna (F-14) | Login email tidak memberi nama, padahal 01 dan G1 menyapa "Halo, Bayu" | Perlu keputusan: kolom Nama di layar masuk atau di setup awal |
 | Isi 14 Pengaturan versi MVP | Frame 14 berisi baris untuk fitur Tahap 2–3 (notifikasi, Data) | Tampilkan hanya kartu akun dan grup keamanan; baris lain disembunyikan |

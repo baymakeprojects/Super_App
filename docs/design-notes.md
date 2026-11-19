@@ -23,7 +23,7 @@ Node id tiap frame ada di `figma-frames.md`. Token ada di `design-tokens.md`.
 ## 2. Yang tidak ikut dibangun
 
 - **Status Bar** (jam, sinyal, baterai) di atas setiap layar adalah gambar status bar Android. Jangan dibuat sebagai widget; cukup atur ikon status bar sistem jadi terang di atas latar hitam dan hormati safe area.
-- Dialog sistem: pilih akun Google, sidik jari OS, pemilih file, kamera, dan layar scan ML Kit. Pakai bawaan sistem atau paketnya.
+- Dialog sistem: sidik jari OS, pemilih file, kamera, dan layar scan ML Kit. Pakai bawaan sistem atau paketnya. (Login tidak lagi memakai dialog pilih akun Google; diganti layar masuk email + kode, lihat `catatan-figma.md` F-12.)
 - Teks dan kotak penjelasan di samping frame (misalnya "Catatan untuk dibuat" di papan widget).
 
 ## 3. Fondasi

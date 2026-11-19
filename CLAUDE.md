@@ -14,7 +14,7 @@ dan sambil belajar Flutter, jadi jelaskan keputusan teknis dengan singkat dan je
 - docs/figma-frames.md — node id tiap frame Figma MVP.
 - docs/backlog.md — daftar tugas MVP (W1-01 … W4-08) beserta statusnya.
 - docs/catatan-figma.md — desain Figma yang salah/kurang/tidak ada, untuk diperbaiki nanti.
-- docs/setup-supabase.md — proyek Supabase dev, db push, uji RLS, dan setup login Google.
+- docs/setup-supabase.md — proyek Supabase dev, db push, uji RLS, dan setup login email + kode.
 - docs/pengujian-rilis.md — definition of done dan checklist rilis.
 
 ## Desain: Figma adalah sumber kebenaran

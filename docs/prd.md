@@ -23,7 +23,7 @@ Ukuran berhasil: app dipakai setiap hari selama 2 minggu setelah rilis MVP, dan 
 
 | Area | Masuk MVP | Layar Figma |
 | --- | --- | --- |
-| Akun & keamanan | Login Google, kunci sidik jari dengan PIN cadangan, setup awal 3 langkah (bisa dilewati) | 01, 01a–01c, H05, H06 |
+| Akun & keamanan | Login email dengan kode verifikasi, kunci sidik jari dengan PIN cadangan, setup awal 3 langkah (bisa dilewati) | Layar masuk email dan kode (belum ada di Figma, F-12), 01, 01a–01c, H05, H06 |
 | Beranda | Kelas berikutnya, tugas hari ini dan terlambat, saldo, checklist "Siapkan Super App kamu" | 02, E1 |
 | Tugas | Tambah, ubah, hapus, tandai selesai, sub-tugas, prioritas, mata kuliah, filter per deadline | 03, 15, 16, H01, E2 |
 | Kuliah | Semester, jadwal mingguan, mata kuliah + dosen + ruang, detail mata kuliah | 04, 20 (MVP), H02, K1 |
@@ -44,9 +44,11 @@ Splash (00) dan ikon app juga masuk MVP. Intro 00a–00d boleh menyusul.
 
 ### Akun & keamanan
 
-**Sebagai pengguna, aku masuk dengan akun Google supaya dataku tersimpan di cloud.**
+**Sebagai pengguna, aku masuk dengan email dan kode verifikasi supaya dataku tersimpan di cloud.**
 
-- [ ] Login Google membuat profil di Supabase; login berikutnya langsung ke Beranda.
+- [ ] Aku mengisi email, menerima kode 6 digit di email itu, lalu mengisi kodenya di app. Tanpa password.
+- [ ] Kode salah atau kedaluwarsa memberi pesan yang jelas, dan kode bisa dikirim ulang.
+- [ ] Login pertama membuat profil di Supabase; login berikutnya langsung ke Beranda.
 - [ ] Setelah login pertama, setup awal (jadwal semester, dompet & saldo awal, keamanan) tampil dan bisa dilewati.
 - [ ] Sesi yang berakhir menampilkan G1 dengan tombol Masuk lagi; data di HP tidak hilang.
 
@@ -109,7 +111,7 @@ Tidak ada tenggat; MVP dikerjakan berurutan per fase sampai selesai. Rincian tug
 
 | Fase | Selesai di akhir fase |
 | --- | --- |
-| 1 — fondasi | Proyek Flutter, token tema dan komponen `core/ui` dari Figma, proyek Supabase dev, database drift, login Google, kunci sidik jari + PIN |
+| 1 — fondasi | Proyek Flutter, token tema dan komponen `core/ui` dari Figma, proyek Supabase dev, database drift, login email + kode verifikasi, kunci sidik jari + PIN |
 | 2 — Tugas & Kuliah | Modul Tugas dan Kuliah, termasuk tampilan kosong dan isian belum lengkap |
 | 3 — Keuangan, Beranda, sinkron | Modul Keuangan, Beranda, sinkron offline dan banner offline |
 | 4 — pertama kali, rapikan, rilis | Setup awal, splash dan ikon app, tampilan gagal, Lainnya dan Pengaturan, uji, build APK release |

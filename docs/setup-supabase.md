@@ -1,4 +1,4 @@
-# Setup Supabase dan login Google
+# Setup Supabase dan login email
 
 Langkah yang dikerjakan Bayu sendiri di dashboard. Claude Code tidak boleh membaca atau menulis `env/`, kunci service role, atau keystore.
 
@@ -38,33 +38,57 @@ Status dev: migrasi `20261118234355_mvp_tables` sudah diterapkan oleh Claude Cod
 
 Buka Dashboard → **superapp-dev** → SQL Editor, tempel seluruh isi `supabase/tests/rls_dua_akun.sql`, lalu Run. Hasil yang benar: satu baris berbunyi **LULUS**. Semua akun dan data uji dibatalkan otomatis (rollback).
 
-## 3. Login Google
+## 3. Login email dengan kode verifikasi
 
-### Google Cloud Console
+Login memakai email + kode 6 digit (tanpa password, tanpa Google). Keputusan Bayu, 19 Nov 2026. Alurnya: app mengirim email → Supabase mengirim kode → pengguna mengetik kode di app.
 
-1. Buat proyek Google Cloud (misalnya `super-app`).
-2. **OAuth consent screen**: tipe External, status Testing, tambahkan email Google kamu sebagai test user.
-3. **Credentials → Create OAuth client ID → Web application**
-   - Authorized redirect URI: `https://nyzktdlyfuqjxumlicgf.supabase.co/auth/v1/callback`
-   - Catat **Client ID** dan **Client secret** (secret jangan masuk Git).
-4. **Credentials → Create OAuth client ID → Android**
-   - Package name: `com.bayu.super_app`
-   - SHA-1: jalankan perintah di bawah, lalu salin SHA1 dari varian `debug`.
+### Provider Email
 
-```powershell
-cd android; .\gradlew signingReport
+Dashboard → **superapp-dev** → Authentication → Sign In / Providers → **Email**:
+
+- **Enable Email provider**: aktif.
+- **Confirm email**: aktif.
+- **Email OTP Length**: 6.
+- **Email OTP Expiration**: 600 detik (10 menit) sudah cukup.
+- Simpan.
+
+### Template email berisi kode
+
+Secara bawaan Supabase mengirim **tautan**. Supaya yang dikirim **kode**, template harus memakai `{{ .Token }}`.
+
+Dashboard → Authentication → **Emails** → Templates. Ubah dua template ini (akun baru memakai *Confirm signup*, akun lama memakai *Magic Link*):
+
+- **Confirm signup**: subjek `Kode masuk Super App`, isi:
+
+```html
+<h2>Kode masuk Super App</h2>
+<p>Masukkan kode ini di app:</p>
+<p style="font-size: 28px; letter-spacing: 6px"><strong>{{ .Token }}</strong></p>
+<p>Kode berlaku 10 menit. Abaikan email ini kalau kamu tidak sedang masuk.</p>
 ```
 
-### Supabase
+- **Magic Link**: subjek dan isi yang sama.
 
-Dashboard → **superapp-dev** → Authentication → Sign In / Providers → **Google**:
+### Batas pengiriman email
 
-- Aktifkan.
-- Isi **Client ID** dan **Client secret** dari client *Web application*.
-- Simpan.
+- Layanan email bawaan Supabase hanya untuk mencoba: jumlah email per jam sangat sedikit, dan email hanya terkirim ke alamat anggota tim proyek (akun Supabase kamu sendiri).
+- Untuk dev, masuk dengan email akun Supabase kamu.
+- Sebelum rilis (atau sebelum teman ikut mencoba), pasang SMTP sendiri: Authentication → Emails → **SMTP Settings** (misalnya Resend atau Brevo, keduanya punya paket gratis). Kunci SMTP hanya di dashboard, jangan masuk Git.
 
 ### File env
 
-Salin `env/dev.example.json` jadi `env/dev.json`, lalu isi URL dev di atas, publishable key (Dashboard → Project Settings → API Keys), dan Client ID *Web application* kalau ada kuncinya di contoh. `env/dev.json` sudah masuk `.gitignore`.
+Salin `env/dev.example.json` jadi `env/dev.json`, lalu isi URL dev di atas dan publishable key (Dashboard → Project Settings → API Keys). `env/dev.json` sudah masuk `.gitignore`.
 
-Kode login di app (layar 01, google_sign_in + Supabase Auth) dibuat di tugas layar login; langkah di atas cukup menyiapkan sisi Supabase dan Google.
+### Di kode app (tugas W1-10)
+
+Layar masuk email dan kode dibuat setelah desainnya ada di Figma (`catatan-figma.md` F-12). Panggilannya:
+
+```dart
+// 1. Kirim kode ke email (akun baru dibuat otomatis).
+await supabase.auth.signInWithOtp(email: email);
+
+// 2. Cocokkan kode yang diketik pengguna.
+await supabase.auth.verifyOTP(type: OtpType.email, email: email, token: kode);
+```
+
+Profil dibuat otomatis oleh trigger database saat akun pertama kali dibuat. Untuk akun email, `name` awalnya kosong (lihat F-14).

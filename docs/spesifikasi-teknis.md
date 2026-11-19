@@ -22,7 +22,7 @@ Bahasa, library, arsitektur, dan struktur data untuk MVP. Versi dicek 7 Nov 2026
 | Navigasi | go_router | MVP |
 | Database lokal | drift, drift_flutter | MVP |
 | Supabase | supabase_flutter | MVP |
-| Login Google | google_sign_in (lewat Supabase Auth) | MVP |
+| Login email + kode verifikasi | supabase_flutter (Supabase Auth: `signInWithOtp` lalu `verifyOTP`), tanpa paket tambahan | MVP |
 | Sidik jari | local_auth | MVP |
 | Simpan PIN dan sesi | flutter_secure_storage | MVP |
 | Format Rp dan tanggal | intl (locale id_ID) | MVP |
