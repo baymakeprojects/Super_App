@@ -27,6 +27,9 @@ class FakeAuth implements AuthRepository {
   @override
   String? currentUserId;
 
+  @override
+  String? currentEmail;
+
   final StreamController<void> expired = StreamController<void>.broadcast();
 
   /// Diisi = kirim kode melempar ini (misalnya offline).
@@ -63,11 +66,18 @@ class FakeAuth implements AuthRepository {
       throw const CodeRejectedException(CodeRejection.rejected);
     }
     currentUserId = realUserId;
+    currentEmail = email;
     return realUserId;
   }
 
   @override
-  Future<void> signOut() async => currentUserId = null;
+  Future<void> signOut() async {
+    signOutCalls++;
+    currentUserId = null;
+    currentEmail = null;
+  }
+
+  int signOutCalls = 0;
 }
 
 /// [DeviceLock] palsu: hasil sidik jari diambil berurutan dari

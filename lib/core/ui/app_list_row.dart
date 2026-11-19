@@ -17,6 +17,7 @@ class AppListRow extends StatelessWidget {
     this.trailing = const AppListRowChevron(),
     this.onTap,
     this.horizontalPadding = AppSpace.s16,
+    this.showDivider = true,
   });
 
   // Ukuran tetap dari Figma (bukan variabel Figma).
@@ -37,6 +38,9 @@ class AppListRow extends StatelessWidget {
   /// Padding kiri-kanan: 16 di komponen, 0 di layar setup 01a–01c.
   final double horizontalPadding;
 
+  /// Garis bawah. Baris terakhir di kartu grup 14 tanpa garis (Figma).
+  final bool showDivider;
+
   @override
   Widget build(BuildContext context) {
     final subtitle = this.subtitle;
@@ -47,9 +51,11 @@ class AppListRow extends StatelessWidget {
           horizontal: horizontalPadding,
           vertical: AppSpace.s12,
         ),
-        decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: AppColors.darkGray)),
-        ),
+        decoration: showDivider
+            ? const BoxDecoration(
+                border: Border(bottom: BorderSide(color: AppColors.darkGray)),
+              )
+            : null,
         child: Row(
           spacing: AppSpace.s12,
           children: [

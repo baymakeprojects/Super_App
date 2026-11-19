@@ -19,6 +19,9 @@ import 'package:super_app/features/keuangan/presentation/transaction_form_screen
 import 'package:super_app/features/kuliah/presentation/course_detail_screen.dart';
 import 'package:super_app/features/kuliah/presentation/course_form_screen.dart';
 import 'package:super_app/features/kuliah/presentation/kuliah_screen.dart';
+import 'package:super_app/features/lainnya/presentation/lainnya_screen.dart';
+import 'package:super_app/features/pengaturan/presentation/pengaturan_screen.dart';
+import 'package:super_app/features/pengaturan/presentation/pin_setup_screen.dart';
 import 'package:super_app/features/setup/presentation/setup_screens.dart';
 import 'package:super_app/features/tugas/presentation/task_detail_screen.dart';
 import 'package:super_app/features/tugas/presentation/task_form_screen.dart';
@@ -90,19 +93,6 @@ GoRouter buildAppRouter({
     );
   }
 
-  /// Rute akar tanpa Bottom Nav.
-  GoRoute topLevel(
-    String path,
-    String title, {
-    List<RouteBase> routes = const [],
-  }) {
-    return GoRoute(
-      path: path,
-      builder: (context, state) => PlaceholderScreen(title: title),
-      routes: routes,
-    );
-  }
-
   /// Satu tab Bottom Nav.
   StatefulShellBranch tab(
     String path,
@@ -170,10 +160,15 @@ GoRouter buildAppRouter({
         path: AppRoutes.setupKeamanan,
         builder: (context, state) => const SetupSecurityScreen(),
       ),
-      topLevel(
-        AppRoutes.pengaturan,
-        'Pengaturan',
-        routes: [topLevel('pin', 'Atur PIN cadangan')],
+      GoRoute(
+        path: AppRoutes.pengaturan,
+        builder: (context, state) => const PengaturanScreen(),
+        routes: [
+          GoRoute(
+            path: 'pin',
+            builder: (context, state) => const PinSetupScreen(),
+          ),
+        ],
       ),
       if (kDebugMode)
         GoRoute(
@@ -254,7 +249,7 @@ GoRouter buildAppRouter({
               ),
             ],
           ),
-          tab(AppRoutes.lainnya, 'Lainnya', showDebugRoutes: true),
+          tab(AppRoutes.lainnya, 'Lainnya', screen: const LainnyaScreen()),
         ],
       ),
     ],

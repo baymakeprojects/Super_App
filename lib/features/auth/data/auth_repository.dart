@@ -29,6 +29,9 @@ abstract interface class AuthRepository {
   /// Id akun yang sesinya tersimpan di HP, `null` kalau belum login.
   String? get currentUserId;
 
+  /// Email akun yang login (kartu akun di 14 dan P37).
+  String? get currentEmail;
+
   /// Berbunyi saat sesi hilang bukan karena keluar sendiri, misalnya token
   /// tidak bisa diperbarui lagi (G1 Sesi berakhir).
   Stream<void> get sessionExpired;
@@ -52,6 +55,9 @@ class SupabaseAuthRepository implements AuthRepository {
 
   @override
   String? get currentUserId => _auth.currentUser?.id;
+
+  @override
+  String? get currentEmail => _auth.currentUser?.email;
 
   @override
   Stream<void> get sessionExpired => _auth.onAuthStateChange

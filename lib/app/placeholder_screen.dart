@@ -54,7 +54,7 @@ class PlaceholderScreen extends StatelessWidget {
             ),
             if (showDebugRoutes && kDebugMode) ...[
               const SizedBox(height: AppSpace.s24),
-              const _DebugRouteList(),
+              const DebugRouteList(),
             ],
           ],
         ),
@@ -63,8 +63,10 @@ class PlaceholderScreen extends StatelessWidget {
   }
 }
 
-class _DebugRouteList extends StatelessWidget {
-  const _DebugRouteList();
+/// Tombol ke semua rute (hanya build debug), supaya rute yang belum punya
+/// layar bisa dicoba di HP.
+class DebugRouteList extends StatelessWidget {
+  const DebugRouteList({super.key});
 
   static final List<String> _routes = [
     AppRoutes.katalog,

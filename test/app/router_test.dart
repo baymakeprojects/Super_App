@@ -69,7 +69,7 @@ void main() {
     AppRoutes.keuanganTransaksi('x1'): 'Ubah transaksi',
     AppRoutes.lainnya: 'Lainnya',
     AppRoutes.pengaturan: 'Pengaturan',
-    AppRoutes.pengaturanPin: 'Atur PIN cadangan',
+    AppRoutes.pengaturanPin: 'Buat PIN cadangan',
   };
 
   testWidgets('app mulai di Beranda dengan Bottom Nav', (tester) async {

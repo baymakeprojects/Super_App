@@ -5,10 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:super_app/core/db/database_provider.dart';
 import 'package:super_app/core/storage/key_value_store.dart';
+import 'package:super_app/core/sync/sync_controller.dart';
 import 'package:super_app/features/auth/application/current_user_id_provider.dart';
 import 'package:super_app/features/auth/data/auth_repository.dart';
 import 'package:super_app/features/auth/data/dev_account_adoption.dart';
 import 'package:super_app/features/auth/data/device_lock.dart';
+import 'package:super_app/features/auth/data/local_data_wipe.dart';
 import 'package:super_app/features/auth/data/pin_store.dart';
 
 /// Login lewat Supabase. `null` = app dijalankan tanpa file env (login dan
@@ -148,6 +150,29 @@ class SessionController extends Notifier<SessionState> {
     state = SessionState.unlocked(userId);
   }
 
+  /// P38 "Keluar": kirim perubahan terakhir, keluar dari Supabase, lalu
+  /// hapus salinan data di HP kalau semuanya sudah terkirim (F-55). PIN,
+  /// pilihan kunci sidik jari, dan id akun terakhir ikut dihapus, jadi app
+  /// kembali ke Intro (bukan G1).
+  Future<void> signOut() async {
+    await ref.read(syncControllerProvider.notifier).syncNow();
+    await ref.read(authRepositoryProvider)?.signOut();
+    await wipeLocalDataIfSynced(ref.read(appDatabaseProvider));
+    final store = ref.read(keyValueStoreProvider);
+    for (final key in [
+      StoreKeys.lastUserId,
+      StoreKeys.pin,
+      StoreKeys.biometricLock,
+      StoreKeys.lastSyncedAt,
+    ]) {
+      await store.delete(key);
+    }
+    ref
+      ..invalidate(hasPinProvider)
+      ..invalidate(biometricLockProvider);
+    state = const SessionState.signedOut();
+  }
+
   /// Sidik jari atau PIN cocok.
   void unlock() {
     final userId = state.userId;
@@ -195,3 +220,9 @@ class BiometricLockController extends AsyncNotifier<bool> {
 final hasPinProvider = FutureProvider<bool>(
   (ref) => ref.watch(pinStoreProvider).hasPin(),
 );
+
+/// Email akun yang login, `null` tanpa Supabase (akun `dev-lokal`).
+final accountEmailProvider = Provider<String?>((ref) {
+  ref.watch(sessionControllerProvider.select((s) => s.userId));
+  return ref.watch(authRepositoryProvider)?.currentEmail;
+});
