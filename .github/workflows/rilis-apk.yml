@@ -1,0 +1,151 @@
+# Bangun APK release dan lampirkan ke GitHub Release setiap kali tag v* didorong.
+#
+# Contoh: git tag v0.4.0 && git push origin v0.4.0
+#
+# Semua kunci dibaca dari GitHub Secrets (Settings → Secrets and variables →
+# Actions), tidak pernah dari file di repo. Daftar secret: docs/rilis.md.
+
+name: Rilis APK
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write # untuk membuat Release dan mengunggah APK
+
+concurrency:
+  group: rilis-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  apk:
+    name: Build dan rilis APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    env:
+      TAG: ${{ github.ref_name }}
+
+    steps:
+      - name: Ambil kode
+        uses: actions/checkout@v4
+
+      - name: Cek tag cocok dengan versi di pubspec.yaml
+        run: |
+          pubspec_version="$(grep -E '^version:' pubspec.yaml | sed -E 's/version:[[:space:]]*//; s/\+.*//')"
+          if [ "v${pubspec_version}" != "${TAG}" ]; then
+            echo "::error::Tag ${TAG} tidak cocok dengan version di pubspec.yaml (${pubspec_version}). Naikkan versi dulu, commit, lalu buat tag v${pubspec_version}."
+            exit 1
+          fi
+          echo "Versi ${pubspec_version} cocok dengan tag ${TAG}."
+
+      - name: Cek catatan rilis ada
+        run: |
+          notes="docs/catatan-rilis/${TAG}.md"
+          if [ ! -f "${notes}" ]; then
+            echo "::error::File ${notes} belum ada. Salin docs/catatan-rilis/TEMPLATE.md jadi ${notes}, isi, commit, lalu buat ulang tag."
+            exit 1
+          fi
+
+      - name: Cek semua secret sudah diisi
+        env:
+          SUPABASE_PROD_URL: ${{ secrets.SUPABASE_PROD_URL }}
+          SUPABASE_PROD_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PROD_PUBLISHABLE_KEY }}
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          missing=0
+          for name in SUPABASE_PROD_URL SUPABASE_PROD_PUBLISHABLE_KEY \
+                      ANDROID_KEYSTORE_BASE64 ANDROID_KEYSTORE_PASSWORD \
+                      ANDROID_KEY_ALIAS ANDROID_KEY_PASSWORD; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Secret ${name} belum diisi (lihat docs/rilis.md)."
+              missing=1
+            fi
+          done
+          # Hanya publishable key yang boleh ada di app.
+          case "${SUPABASE_PROD_PUBLISHABLE_KEY}" in
+            sb_secret_*)
+              echo "::error::SUPABASE_PROD_PUBLISHABLE_KEY berisi secret key. Pakai publishable key (sb_publishable_...)."
+              missing=1
+              ;;
+          esac
+          exit "${missing}"
+
+      - name: Pasang Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Pasang Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.50.x
+          cache: true
+
+      - name: Pasang paket
+        run: flutter pub get
+
+      - name: Buat kode turunan
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      # Golden test tidak dijalankan di sini: hasil render di Linux sedikit
+      # berbeda dari Windows. Jalankan `flutter test` di laptop sebelum memberi tag.
+      - name: Cek kode
+        run: flutter analyze
+
+      - name: Build APK release
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_PROD_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PROD_PUBLISHABLE_KEY }}
+        run: |
+          flutter build apk --release \
+            --dart-define=SUPABASE_URL="${SUPABASE_URL}" \
+            --dart-define=SUPABASE_PUBLISHABLE_KEY="${SUPABASE_PUBLISHABLE_KEY}"
+
+      # Gradle masih menandatangani dengan kunci debug. Di sini APK ditandatangani
+      # ulang dengan keystore release dari GitHub Secrets, tanpa mengubah android/.
+      - name: Tanda tangani APK dengan keystore release
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          build_tools="$(ls -d "${ANDROID_HOME}"/build-tools/* | sort -V | tail -n 1)"
+          keystore="${RUNNER_TEMP}/release.jks"
+          echo "${ANDROID_KEYSTORE_BASE64}" | base64 --decode > "${keystore}"
+
+          mkdir -p dist
+          apk_out="dist/super-app-${TAG}.apk"
+          "${build_tools}/zipalign" -p -f 4 \
+            build/app/outputs/flutter-apk/app-release.apk \
+            "${RUNNER_TEMP}/aligned.apk"
+          "${build_tools}/apksigner" sign \
+            --ks "${keystore}" \
+            --ks-key-alias "${ANDROID_KEY_ALIAS}" \
+            --ks-pass env:ANDROID_KEYSTORE_PASSWORD \
+            --key-pass env:ANDROID_KEY_PASSWORD \
+            --out "${apk_out}" \
+            "${RUNNER_TEMP}/aligned.apk"
+          rm -f "${keystore}"
+
+          "${build_tools}/apksigner" verify --print-certs "${apk_out}"
+          (cd dist && sha256sum "super-app-${TAG}.apk" > "super-app-${TAG}.apk.sha256")
+
+      - name: Buat GitHub Release dan lampirkan APK
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Super App ${{ github.ref_name }}
+          body_path: docs/catatan-rilis/${{ github.ref_name }}.md
+          files: |
+            dist/super-app-${{ github.ref_name }}.apk
+            dist/super-app-${{ github.ref_name }}.apk.sha256
+          fail_on_unmatched_files: true

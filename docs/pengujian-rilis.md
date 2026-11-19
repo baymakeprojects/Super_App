@@ -35,6 +35,8 @@ Golden test untuk komponen `core/ui` menangkap perubahan tampilan yang tidak dis
 
 ## Checklist rilis Android
 
+APK untuk Releases dibangun dan ditandatangani oleh GitHub Actions saat tag `v*` didorong; langkah dan daftar GitHub Secrets ada di [`rilis.md`](rilis.md).
+
 - [ ] Naikkan versi di `pubspec.yaml`, misalnya `0.3.0+12` (versi + nomor build).
 - [ ] Pastikan app memakai proyek Supabase prod.
 - [ ] Build `flutter build apk --release` untuk dipasang langsung, atau `flutter build appbundle` untuk Google Play.
