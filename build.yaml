@@ -1,0 +1,8 @@
+targets:
+  $default:
+    builders:
+      drift_dev:
+        options:
+          # Simpan tanggal sebagai teks ISO 8601 (bukan angka detik), supaya
+          # mudah dibaca dan dipetakan ke timestamptz Supabase saat sinkron.
+          store_date_time_values_as_text: true
