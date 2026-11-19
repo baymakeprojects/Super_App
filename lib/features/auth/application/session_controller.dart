@@ -47,14 +47,22 @@ enum SessionStatus {
 class SessionState {
   const SessionState.signedOut()
     : status = SessionStatus.signedOut,
-      userId = null;
+      userId = null,
+      needsSetup = false;
   const SessionState.expired(String this.userId)
-    : status = SessionStatus.expired;
-  const SessionState.locked(String this.userId) : status = SessionStatus.locked;
-  const SessionState.unlocked(String this.userId)
+    : status = SessionStatus.expired,
+      needsSetup = false;
+  const SessionState.locked(String this.userId)
+    : status = SessionStatus.locked,
+      needsSetup = false;
+  const SessionState.unlocked(String this.userId, {this.needsSetup = false})
     : status = SessionStatus.unlocked;
 
   final SessionStatus status;
+
+  /// Login pertama akun ini di HP: Setup awal 01a–01c belum dilewati atau
+  /// diselesaikan (navigasi.md › Alur saat app dibuka).
+  final bool needsSetup;
 
   /// Akun pemilik data di HP; `null` hanya saat belum pernah login.
   final String? userId;
@@ -64,13 +72,17 @@ class SessionState {
 
   @override
   bool operator ==(Object other) =>
-      other is SessionState && other.status == status && other.userId == userId;
+      other is SessionState &&
+      other.status == status &&
+      other.userId == userId &&
+      other.needsSetup == needsSetup;
 
   @override
-  int get hashCode => Object.hash(status, userId);
+  int get hashCode => Object.hash(status, userId, needsSetup);
 
   @override
-  String toString() => 'SessionState($status, $userId)';
+  String toString() =>
+      'SessionState($status, $userId${needsSetup ? ', setup' : ''})';
 }
 
 /// Menentukan keadaan login saat app dibuka.
@@ -84,7 +96,12 @@ Future<SessionState> readInitialSession({
         : const SessionState.signedOut();
   }
   final userId = auth.currentUserId;
-  if (userId != null) return SessionState.locked(userId);
+  if (userId != null) {
+    // Kunci sidik jari dimatikan di 01c: app langsung terbuka.
+    return await isBiometricLockOn(store)
+        ? SessionState.locked(userId)
+        : SessionState.unlocked(userId);
+  }
   final lastUserId = await store.read(StoreKeys.lastUserId);
   return lastUserId == null
       ? const SessionState.signedOut()
@@ -114,8 +131,20 @@ class SessionController extends Notifier<SessionState> {
   /// Kode verifikasi cocok. Data akun sementara `dev-lokal` dipindahkan ke
   /// akun ini, lalu app terbuka tanpa kunci (baru saja membuktikan diri).
   Future<void> signedIn(String userId) async {
+    final store = ref.read(keyValueStoreProvider);
     await adoptDevLocalRows(ref.read(appDatabaseProvider), userId);
-    await ref.read(keyValueStoreProvider).write(StoreKeys.lastUserId, userId);
+    await store.write(StoreKeys.lastUserId, userId);
+    final setupDone = await store.read(StoreKeys.setupDone(userId)) != null;
+    state = SessionState.unlocked(userId, needsSetup: !setupDone);
+  }
+
+  /// "Lewati" atau "Selesai, ke Beranda" di Setup awal.
+  Future<void> finishSetup() async {
+    final userId = state.userId;
+    if (userId == null) return;
+    await ref
+        .read(keyValueStoreProvider)
+        .write(StoreKeys.setupDone(userId), 'ya');
     state = SessionState.unlocked(userId);
   }
 
@@ -136,3 +165,33 @@ final sessionSyncUserIdProvider = Provider<String?>((ref) {
       session.status == SessionStatus.unlocked;
   return active && session.hasRealAccount ? session.userId : null;
 });
+
+/// Kunci sidik jari aktif (switch di 01c). Bawaan aktif.
+Future<bool> isBiometricLockOn(KeyValueStore store) async =>
+    await store.read(StoreKeys.biometricLock) != 'mati';
+
+/// Nilai switch "Kunci sidik jari" (01c, nanti juga 14 Pengaturan).
+final biometricLockProvider =
+    AsyncNotifierProvider<BiometricLockController, bool>(
+      BiometricLockController.new,
+    );
+
+class BiometricLockController extends AsyncNotifier<bool> {
+  @override
+  Future<bool> build() => isBiometricLockOn(ref.watch(keyValueStoreProvider));
+
+  Future<void> set({required bool on}) async {
+    state = AsyncData(on);
+    final store = ref.read(keyValueStoreProvider);
+    if (on) {
+      await store.delete(StoreKeys.biometricLock);
+    } else {
+      await store.write(StoreKeys.biometricLock, 'mati');
+    }
+  }
+}
+
+/// PIN cadangan sudah diatur (baris "PIN cadangan" di 01c dan 14).
+final hasPinProvider = FutureProvider<bool>(
+  (ref) => ref.watch(pinStoreProvider).hasPin(),
+);

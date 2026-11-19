@@ -62,4 +62,10 @@ abstract final class StoreKeys {
 
   /// Waktu sinkron terakhir yang berhasil (ISO), untuk baris status G1.
   static const String lastSyncedAt = 'sync.last_synced_at';
+
+  /// `mati` = kunci sidik jari dimatikan di 01c; tidak ada = aktif.
+  static const String biometricLock = 'auth.biometric_lock';
+
+  /// Ada = Setup awal 01a–01c akun ini sudah dilewati atau selesai.
+  static String setupDone(String userId) => 'setup.done.$userId';
 }

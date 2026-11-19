@@ -19,6 +19,7 @@ import 'package:super_app/features/keuangan/presentation/transaction_form_screen
 import 'package:super_app/features/kuliah/presentation/course_detail_screen.dart';
 import 'package:super_app/features/kuliah/presentation/course_form_screen.dart';
 import 'package:super_app/features/kuliah/presentation/kuliah_screen.dart';
+import 'package:super_app/features/setup/presentation/setup_screens.dart';
 import 'package:super_app/features/tugas/presentation/task_detail_screen.dart';
 import 'package:super_app/features/tugas/presentation/task_form_screen.dart';
 import 'package:super_app/features/tugas/presentation/tugas_screen.dart';
@@ -57,9 +58,13 @@ String? sessionRedirect(SessionState session, String location) {
       // "Lupa PIN?" boleh masuk ulang dengan email.
       return at(AppRoutes.kunci) || onLogin ? null : AppRoutes.kunci;
     case SessionStatus.unlocked:
-      return at(AppRoutes.intro) || onLogin || at(AppRoutes.kunci)
-          ? AppRoutes.beranda
-          : null;
+      if (at(AppRoutes.intro) || onLogin || at(AppRoutes.kunci)) {
+        // Login pertama → Setup awal 01a (W4-01).
+        return session.needsSetup ? AppRoutes.setupJadwal : AppRoutes.beranda;
+      }
+      // "Lewati" atau "Selesai, ke Beranda": setup hanya sekali.
+      if (!session.needsSetup && at('/setup')) return AppRoutes.beranda;
+      return null;
   }
 }
 
@@ -153,9 +158,18 @@ GoRouter buildAppRouter({
           GoRoute(path: 'pin', builder: (context, state) => const PinScreen()),
         ],
       ),
-      topLevel(AppRoutes.setupJadwal, 'Jadwal semester'),
-      topLevel(AppRoutes.setupDompet, 'Dompet & saldo awal'),
-      topLevel(AppRoutes.setupKeamanan, 'Keamanan'),
+      GoRoute(
+        path: AppRoutes.setupJadwal,
+        builder: (context, state) => const SetupScheduleScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.setupDompet,
+        builder: (context, state) => const SetupWalletScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.setupKeamanan,
+        builder: (context, state) => const SetupSecurityScreen(),
+      ),
       topLevel(
         AppRoutes.pengaturan,
         'Pengaturan',

@@ -65,6 +65,13 @@ void main() {
     expect(sessionRedirect(open, AppRoutes.kunci), AppRoutes.beranda);
     expect(sessionRedirect(open, AppRoutes.masuk), AppRoutes.beranda);
     expect(sessionRedirect(open, AppRoutes.tugasBaru), isNull);
+    const firstLogin = SessionState.unlocked(realUserId, needsSetup: true);
+    expect(
+      sessionRedirect(firstLogin, AppRoutes.masukKode),
+      AppRoutes.setupJadwal,
+    );
+    expect(sessionRedirect(firstLogin, AppRoutes.setupDompet), isNull);
+    expect(sessionRedirect(open, AppRoutes.setupKeamanan), AppRoutes.beranda);
   });
 
   test('login pertama memindahkan data dev-lokal ke akun asli', () async {
@@ -87,9 +94,10 @@ void main() {
         .read(sessionControllerProvider.notifier)
         .signedIn(realUserId);
 
+    // Login pertama akun ini di HP → Setup awal (W4-01).
     expect(
       container.read(sessionControllerProvider),
-      const SessionState.unlocked(realUserId),
+      const SessionState.unlocked(realUserId, needsSetup: true),
     );
     final task = await (db.select(
       db.tasks,

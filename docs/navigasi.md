@@ -42,7 +42,7 @@ Lima tab Bottom Nav memakai `StatefulShellRoute.indexedStack` supaya posisi guli
 | `/pengaturan/pin` | H05 Atur PIN cadangan | 14 › PIN cadangan; 01c › PIN cadangan | Tidak |
 | `/katalog` | Katalog komponen `core/ui` — **hanya build debug**, tidak ada di rilis (disetujui Bayu, W1-09) | Daftar "Rute debug" di tab Lainnya (debug) | Tidak |
 
-Status W1-10: semua rute di atas sudah ada. `/intro` (00d), `/masuk`, `/masuk/kode`, `/kunci`, dan `/kunci/pin` sudah berupa layar asli. Pengalihan mengikuti sesi: belum pernah login → `/intro`; sudah login → `/kunci`; sesi berakhir → G1 di `/kunci` (F-51); kunci terbuka → `/beranda`. `/masuk` juga boleh dibuka dari 01/H06 ("Lupa PIN?") dan G1. Login pertama langsung ke Beranda sampai Setup awal dibuat (W4-01). App tanpa file env (build debug) tetap langsung ke Beranda dengan akun `dev-lokal`.
+Status W1-10: semua rute di atas sudah ada. `/intro` (00d), `/masuk`, `/masuk/kode`, `/kunci`, dan `/kunci/pin` sudah berupa layar asli. Pengalihan mengikuti sesi: belum pernah login → `/intro`; sudah login → `/kunci`; sesi berakhir → G1 di `/kunci` (F-51); kunci terbuka → `/beranda`. `/masuk` juga boleh dibuka dari 01/H06 ("Lupa PIN?") dan G1. Login pertama akun di HP → `/setup/jadwal` (W4-01); "Lewati" atau "Selesai, ke Beranda" menandai setup selesai untuk akun itu, lalu rute `/setup/*` dialihkan ke `/beranda`. Switch "Kunci sidik jari" di 01c mati = app langsung terbuka tanpa 01. App tanpa file env (build debug) tetap langsung ke Beranda dengan akun `dev-lokal`.
 
 ## Pop-up (bukan rute)
 

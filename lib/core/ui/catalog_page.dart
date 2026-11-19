@@ -313,6 +313,23 @@ class _CatalogPageState extends State<CatalogPage> {
             ),
             const SizedBox(height: AppSpace.s16),
             AppKeypad(onDigit: (_) {}, onDelete: () {}, onFingerprint: () {}),
+            const _Section('List Row'),
+            const AppListRow(
+              icon: AppIcons.lock,
+              title: 'PIN cadangan',
+              subtitle: 'Belum diatur · dipakai kalau sidik jari gagal',
+            ),
+            AppListRow(
+              icon: AppIcons.fingerprint,
+              title: 'Kunci sidik jari',
+              subtitle: 'Diminta setiap app dibuka',
+              trailing: AppListRowSwitch(value: true, onChanged: (_) {}),
+            ),
+            const AppListRow(
+              icon: AppIcons.refresh,
+              title: 'Sinkron terakhir',
+              trailing: AppListRowValue('08.12'),
+            ),
           ],
         ),
       ),

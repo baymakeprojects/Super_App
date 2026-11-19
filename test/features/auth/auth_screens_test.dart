@@ -8,7 +8,6 @@ import 'package:super_app/app/routes.dart';
 import 'package:super_app/core/storage/key_value_store.dart';
 import 'package:super_app/features/auth/application/session_controller.dart';
 import 'package:super_app/features/auth/data/device_lock.dart';
-import 'package:super_app/features/beranda/presentation/beranda_screen.dart';
 
 import 'auth_fakes.dart';
 
@@ -184,7 +183,9 @@ void main() {
       expect(find.textContaining('kedaluwarsa'), findsNothing);
     });
 
-    testWidgets('memeriksa kode, lalu masuk ke Beranda', (tester) async {
+    testWidgets('memeriksa kode, lalu login pertama ke Setup awal', (
+      tester,
+    ) async {
       final auth = FakeAuth();
       final app = await _openCode(tester, auth: auth);
       await _typeCode(tester, validCode);
@@ -198,9 +199,12 @@ void main() {
 
       auth.hold!.complete();
       await tester.pumpAndSettle();
-      expect(app.session, const SessionState.unlocked(realUserId));
+      expect(
+        app.session,
+        const SessionState.unlocked(realUserId, needsSetup: true),
+      );
       expect(await app.store.read(StoreKeys.lastUserId), realUserId);
-      expect(find.byType(BerandaScreen), findsOneWidget);
+      expect(_location(app), AppRoutes.setupJadwal);
     });
 
     testWidgets('Ganti email kembali ke 00e', (tester) async {

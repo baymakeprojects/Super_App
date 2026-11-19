@@ -87,6 +87,32 @@ void main() {
     );
   });
 
+  testWidgets('List Row Chevron, Switch, Value (node 21:99)', (tester) async {
+    Widget row(Widget trailing) => SizedBox(
+      width: 372,
+      child: AppListRow(
+        icon: AppIcons.lock,
+        title: 'Kunci sidik jari',
+        subtitle: 'Minta sidik jari saat app dibuka',
+        trailing: trailing,
+      ),
+    );
+
+    await _golden(
+      tester,
+      'app_list_row',
+      const Size(412, 240),
+      Column(
+        spacing: AppSpace.s8,
+        children: [
+          row(const AppListRowChevron()),
+          row(AppListRowSwitch(value: true, onChanged: (_) {})),
+          row(const AppListRowValue('08.12')),
+        ],
+      ),
+    );
+  });
+
   testWidgets('Keypad mengirim angka, hapus, dan sidik jari', (tester) async {
     final typed = <String>[];
     var deleted = 0;

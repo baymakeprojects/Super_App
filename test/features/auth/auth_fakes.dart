@@ -134,6 +134,7 @@ Future<AuthHarness> pumpAuthApp(
   FakeDeviceLock? lock,
   Map<String, String>? store,
   String? profileName,
+  Future<void> Function(AppDatabase db)? seed,
   bool settle = true,
 }) async {
   tester.view
@@ -156,6 +157,8 @@ Future<AuthHarness> pumpAuthApp(
           ),
         );
   }
+
+  await seed?.call(database);
 
   final fakeAuth = auth ?? FakeAuth();
   final fakeLock = lock ?? FakeDeviceLock();
