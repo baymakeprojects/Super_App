@@ -259,6 +259,38 @@ class _CatalogPageState extends State<CatalogPage> {
               secondaryLabel: 'Hapus',
               onSecondaryPressed: () {},
             ),
+            const _Section('Keuangan · Banner'),
+            const Row(
+              spacing: AppSpace.s12,
+              children: [
+                AppWalletCard(label: 'Tunai', amount: 'Rp150.000'),
+                AppWalletCard(label: 'Bank', amount: 'Rp1.250.000'),
+              ],
+            ),
+            const SizedBox(height: AppSpace.s16),
+            const AppTransactionItem(
+              title: 'Makan siang',
+              meta: 'Tunai · Makan · 12.30',
+              amount: 'Rp25.000',
+              type: AppTransactionType.expense,
+            ),
+            const AppTransactionItem(
+              title: 'Uang saku',
+              meta: 'Bank · Kiriman · 08.00',
+              amount: 'Rp500.000',
+              type: AppTransactionType.income,
+            ),
+            const SizedBox(height: AppSpace.s16),
+            for (final type in AppBannerType.values) ...[
+              AppBanner(
+                type: type,
+                title: 'Kamu sedang offline',
+                body: '3 perubahan akan disinkron saat online',
+                actionLabel: 'Coba lagi',
+                onAction: () {},
+              ),
+              const SizedBox(height: AppSpace.s12),
+            ],
           ],
         ),
       ),

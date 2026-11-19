@@ -42,7 +42,7 @@ Node id frame ada di `figma-frames.md`.
 
 | ID | Tugas | Acuan | Skill | Selesai bila | Status |
 | --- | --- | --- | --- | --- | --- |
-| W3-01 | Wallet Card, Transaction Item, Banner | Components [06], [11] | komponen-ui | Golden test | Belum |
+| W3-01 | Wallet Card, Transaction Item, Banner | Components [06], [11] | komponen-ui | Golden test | Selesai |
 | W3-02 | Repository dompet, kategori (kategori bawaan seperti di 17), transaksi; hitung saldo | spesifikasi-teknis › Model data | — | Unit test saldo dan ringkasan bulan | Belum |
 | W3-03 | 05 Keuangan (MVP: tanpa chip, Tagihan terdekat, dan ikon Statistik) dan E3 | 05, E3, design-notes §7 | flutter-screen | Kriteria PRD Keuangan poin 2 | Belum |
 | W3-04 | 17 Transaksi baru dengan P06, P07, P01, P02 | 17, P06, P07 | flutter-screen | Transaksi tersimpan kurang dari 10 detik | Belum |
@@ -70,4 +70,4 @@ Tunda dulu, sesuai urutan: W4-06 Pencarian, W4-03 Intro 00a–00c, W4-01 Setup a
 
 Fase 1 paling berat karena hampir semua komponen dibuat di sana. Kalau terasa terlalu lama sebelum ada layar yang bisa dilihat, komponen yang belum dipakai boleh dipindah ke fase saat layarnya dibuat.
 
-Posisi saat ini (19 Nov 2026): Fase 2 selesai sampai W2-10 (W1-07 tinggal aktifkan email OTP; W1-10 menunggu desain layar masuk email, F-12); berikutnya W3-01. Sebelum login ada, build debug memakai akun sementara `dev-lokal`. Login diganti dari Google ke email + kode verifikasi.
+Posisi saat ini (19 Nov 2026): Fase 2 selesai, W3-01 selesai (W1-07 tinggal aktifkan email OTP; W1-10 menunggu desain layar masuk email, F-12); berikutnya W3-02. Sebelum login ada, build debug memakai akun sementara `dev-lokal`. Login diganti dari Google ke email + kode verifikasi.
