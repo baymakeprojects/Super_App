@@ -37,6 +37,7 @@ Golden test untuk komponen `core/ui` menangkap perubahan tampilan yang tidak dis
 
 Langkah lengkapnya (proyek prod, keystore, build, pasang) ada di `docs/rilis-android.md`.
 
+APK untuk Releases dibangun dan ditandatangani oleh GitHub Actions saat tag `v*` didorong; langkah dan daftar GitHub Secrets ada di [`rilis.md`](rilis.md).
 
 - [ ] Naikkan versi di `pubspec.yaml`, misalnya `0.3.0+12` (versi + nomor build).
 - [ ] Pastikan app memakai proyek Supabase prod.
