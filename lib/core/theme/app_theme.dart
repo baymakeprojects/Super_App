@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import 'package:super_app/core/theme/app_colors.dart';
+import 'package:super_app/core/theme/app_motion.dart';
 import 'package:super_app/core/theme/app_text.dart';
 
 /// Tema app. Hanya mode gelap; tidak ada tema terang.
@@ -65,6 +66,16 @@ abstract final class AppTheme {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       hoverColor: Colors.transparent,
+      // Transisi layar geser + pudar yang sama di semua platform.
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: AppPageTransitionsBuilder(),
+          TargetPlatform.iOS: AppPageTransitionsBuilder(),
+          TargetPlatform.windows: AppPageTransitionsBuilder(),
+          TargetPlatform.macOS: AppPageTransitionsBuilder(),
+          TargetPlatform.linux: AppPageTransitionsBuilder(),
+        },
+      ),
     );
   }
 }

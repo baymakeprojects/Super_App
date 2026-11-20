@@ -26,8 +26,9 @@ dan sambil belajar Flutter, jadi jelaskan keputusan teknis dengan singkat dan je
 - Sebelum membuat atau mengubah layar, ambil frame-nya dengan
   get_design_context dan get_screenshot (Figma MCP). Node id ada di docs/figma-frames.md.
 - Jangan menambah elemen, teks, warna, ikon, animasi, atau layar
-  yang tidak ada di Figma. Kalau desain tidak jelas, saling bertentangan,
-  atau tampak salah, berhenti dan tanya. Jangan menebak.
+  yang tidak ada di Figma (gerak yang sudah disetujui: design-notes §9).
+  Kalau desain tidak jelas, saling bertentangan, atau tampak salah,
+  berhenti dan tanya. Jangan menebak.
 - Elemen yang ditandai "Perlu keputusan" di docs: tanya dulu.
 - Setiap menemukan desain Figma yang salah, kurang, tidak konsisten, atau
   tidak ada (termasuk keadaan atau varian yang belum didesain), catat di

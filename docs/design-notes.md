@@ -184,5 +184,17 @@ Bentuk MVP layar 06 dan 20 ada di section "MVP · layar yang disederhanakan (06,
 - [ ] Mengganti ikon dengan Material Icons.
 - [ ] Font diunduh saat jalan, atau Doto dipakai untuk teks biasa.
 - [ ] Label tombol dan kolom tidak kapital, atau letter spacing-nya hilang.
-- [ ] Menambah layar, tombol, animasi, atau teks yang tidak ada di Figma.
+- [ ] Menambah layar, tombol, animasi, atau teks yang tidak ada di Figma (kecuali gerak di §9).
 - [ ] Lupa keadaan kosong, memuat, dan gagal pada layar yang punya frame-nya.
+
+## 9. Gerak (animasi)
+
+Figma belum punya animasi. Bayu menyetujui pengecualian ini (21 Nov 2026); nilainya di `lib/core/theme/app_motion.dart` (`AppMotion`) dan tidak dibuat ulang per layar:
+
+| Saat | Gerak | Di kode |
+| --- | --- | --- |
+| App dibuka | Splash native (hitam) memudar ke layar pertama, 300 ms | `AppFadeIn` di `lib/app/app.dart` |
+| Membuka atau menutup layar penuh (form, detail, pengaturan, intro → masuk) | Layar baru bergeser 6% dari kanan sambil memudar, 250 ms; layar di bawahnya diam | `AppPageTransitionsBuilder` di tema |
+| Pindah tab Bottom Nav | Isi tab memudar masuk, 200 ms; posisi gulir tab tetap | `AppFadeIn` di `_TabShell` (`router.dart`) |
+
+Semua memakai kurva `easeOutCubic` dan mati kalau "Hapus animasi" di pengaturan HP aktif. Geser antarhalaman intro (00a–00d) bawaan `PageView`. Pop-up bawah memakai animasi bawaan bottom sheet. Gerak baru di luar tabel ini tetap harus didesain di Figma dulu atau ditanyakan ke Bayu.

@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 
 import 'package:super_app/app/router.dart';
 import 'package:super_app/core/theme/theme.dart';
+import 'package:super_app/core/ui/ui.dart';
 
 /// Akar aplikasi Super App: tema gelap dari token dan router dari
 /// `docs/navigasi.md`.
@@ -29,7 +30,12 @@ class SuperApp extends ConsumerWidget {
       routerConfig: ref.watch(appRouterProvider),
       builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
         value: _systemBars,
-        child: child ?? const SizedBox.shrink(),
+        // Splash native (latar hitam) memudar ke layar pertama.
+        child: AppFadeIn(
+          duration: AppMotion.launch,
+          animateFirst: true,
+          child: child ?? const SizedBox.shrink(),
+        ),
       ),
     );
   }

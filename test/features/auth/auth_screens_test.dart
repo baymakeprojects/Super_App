@@ -106,6 +106,9 @@ void main() {
 
   group('00e Masuk dengan email', () {
     testWidgets('default', (tester) async {
+      // Kursor selalu tampil (seperti di Figma), tidak bergantung waktu kedip.
+      EditableText.debugDeterministicCursor = true;
+      addTearDown(() => EditableText.debugDeterministicCursor = false);
       final app = await pumpAuthApp(tester, session: _signedOut);
       app.router.go(AppRoutes.masuk);
       await tester.pumpAndSettle();

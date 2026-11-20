@@ -5,6 +5,7 @@ import 'package:material_ui/material_ui.dart';
 
 import 'package:super_app/app/placeholder_screen.dart';
 import 'package:super_app/app/routes.dart';
+import 'package:super_app/core/theme/theme.dart';
 import 'package:super_app/core/ui/catalog_page.dart';
 import 'package:super_app/core/ui/ui.dart';
 import 'package:super_app/features/auth/application/session_controller.dart';
@@ -276,7 +277,12 @@ class _TabShell extends StatelessWidget {
         if (!didPop) navigationShell.goBranch(_berandaIndex);
       },
       child: Scaffold(
-        body: navigationShell,
+        // Pudar singkat saat pindah tab (design-notes §9).
+        body: AppFadeIn(
+          duration: AppMotion.tab,
+          trigger: index,
+          child: navigationShell,
+        ),
         bottomNavigationBar: AppBottomNav(
           currentIndex: index,
           // Mengetuk tab yang sedang aktif kembali ke halaman awal tab itu.

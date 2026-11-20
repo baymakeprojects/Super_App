@@ -22,6 +22,7 @@ export 'package:super_app/core/ui/app_day_cell.dart';
 export 'package:super_app/core/ui/app_day_pill.dart';
 export 'package:super_app/core/ui/app_empty_state.dart';
 export 'package:super_app/core/ui/app_fab.dart';
+export 'package:super_app/core/ui/app_fade_in.dart';
 export 'package:super_app/core/ui/app_icon.dart';
 export 'package:super_app/core/ui/app_illustration.dart';
 export 'package:super_app/core/ui/app_input.dart';

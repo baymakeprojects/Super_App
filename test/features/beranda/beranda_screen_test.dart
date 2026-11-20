@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
-
 import 'package:super_app/app/app.dart';
 import 'package:super_app/app/router.dart';
 import 'package:super_app/app/routes.dart';
@@ -16,6 +15,7 @@ import 'package:super_app/core/db/enums.dart';
 import 'package:super_app/core/sync/sync_controller.dart';
 import 'package:super_app/core/sync/sync_engine.dart';
 import 'package:super_app/core/sync/sync_status.dart';
+import 'package:super_app/core/theme/theme.dart';
 import 'package:super_app/core/ui/ui.dart';
 import 'package:super_app/core/utils/clock.dart';
 import 'package:super_app/features/auth/application/current_user_id_provider.dart';
@@ -96,7 +96,9 @@ Future<GoRouter> _pump(
     UncontrolledProviderScope(container: container, child: const SuperApp()),
   );
   if (loading) {
+    // Kerangka memuat beranimasi terus; cukup tunggu pudar pembukaan app.
     await tester.pump();
+    await tester.pump(AppMotion.launch);
   } else {
     await tester.pumpAndSettle();
   }
