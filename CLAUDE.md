@@ -16,6 +16,8 @@ dan sambil belajar Flutter, jadi jelaskan keputusan teknis dengan singkat dan je
 - docs/catatan-figma.md — desain Figma yang salah/kurang/tidak ada, untuk diperbaiki nanti.
 - docs/setup-supabase.md — proyek Supabase dev, db push, uji RLS, dan setup login email + kode.
 - docs/pengujian-rilis.md — definition of done dan checklist rilis.
+- docs/pengembangan.md — cara menjalankan proyek dan perintah sehari-hari.
+  README.md hanya penjelasan app untuk GitHub; jangan menaruh detail teknis di sana.
 
 ## Desain: Figma adalah sumber kebenaran
 - File: https://www.figma.com/design/kK09B05WOCxXSf5dvukX41

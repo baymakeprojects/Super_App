@@ -1,61 +1,78 @@
+<div align="center">
+
 # Super App
 
-App Flutter pribadi untuk kuliah, tugas, dan keuangan. Android dulu, Windows di Tahap 2. Backend Supabase, database lokal drift, offline-first.
+**Kuliah, tugas, dan keuangan dalam satu app Android.**
+Tetap jalan tanpa internet, tersinkron ke cloud saat online lagi.
 
-Desain: [Figma Super App](https://www.figma.com/design/kK09B05WOCxXSf5dvukX41) · Rencana: folder `docs/`.
+[![Rilis terbaru](https://img.shields.io/github/v/release/baymakeprojects/Super_App?label=rilis&color=e8590c)](https://github.com/baymakeprojects/Super_App/releases/latest)
+[![Lisensi MIT](https://img.shields.io/github/license/baymakeprojects/Super_App?label=lisensi)](LICENSE)
+![Android](https://img.shields.io/badge/platform-Android-3ddc84)
+![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white)
 
-## Prasyarat
+**[⬇ Download APK](https://github.com/baymakeprojects/Super_App/releases/latest)**
 
-| Alat | Versi / catatan |
-| --- | --- |
-| Flutter SDK | 3.50 stable (Dart 3.14), dipasang di `C:\dev\flutter`; cek dengan `flutter doctor` |
-| Android Studio | Untuk Android SDK dan emulator |
-| VS Code | Ekstensi Flutter dan Dart |
-| Git + akun GitHub | Repo pribadi |
-| Node.js | Untuk Supabase CLI lewat `npx supabase` |
-| Akun Supabase | Proyek `superapp-dev` (paket gratis) |
-| Google Cloud Console | OAuth client untuk login Google |
-| Claude Code | Dengan plugin Figma (lihat `START-HERE.md`) |
+</div>
 
-## Langkah pertama kali
+## Tentang
 
-1. **Ambil kode:** `git clone https://github.com/baymakeprojects/Super_App.git super_app` lalu `cd super_app`. Simpan di path tanpa spasi (misalnya `C:\dev\super_app`) supaya build native tidak bermasalah.
-2. **Pasang paket:** `flutter pub get`.
-3. **Buat kode turunan** (drift, freezed, json): `dart run build_runner build --delete-conflicting-outputs`.
-4. **Siapkan Supabase dev:**
-   - Buat proyek `superapp-dev` di dashboard Supabase.
-   - Aktifkan provider Google di Authentication. Buat dua OAuth client di Google Cloud: tipe Web (Client ID-nya dipakai Supabase dan app) dan tipe Android (isi package name dan SHA-1 keystore debug dari `cd android && ./gradlew signingReport`).
-   - Hubungkan repo: `npx supabase login`, lalu `npx supabase link --project-ref <ref-proyek>`.
-   - Jalankan migrasi: `npx supabase db push`.
-5. **Isi kunci lokal:** salin `env/dev.example.json` jadi `env/dev.json` lalu isi (folder `env/` tidak masuk Git).
-6. **Jalankan app** di HP (USB debugging aktif) atau emulator: `flutter run --dart-define-from-file=env/dev.json`.
+Jadwal kuliah, tugas, dan uang saku biasanya tersebar di grup chat, kalender, catatan, dan ingatan. Super App menyatukannya dalam satu app, dengan satu pertanyaan utama: *apa yang harus aku kerjakan hari ini?*
 
-## Perintah sehari-hari
+App ini dibuat oleh Bayu dengan Flutter, sambil belajar Flutter. Tampilannya hanya mode gelap, dalam Bahasa Indonesia, dan tanpa fitur AI.
 
-| Keperluan | Perintah |
-| --- | --- |
-| Jalankan app (dev) | `flutter run --dart-define-from-file=env/dev.json` |
-| Format kode | `dart format .` |
-| Cek kode | `flutter analyze` |
-| Semua tes | `flutter test` |
-| Perbarui golden test setelah perubahan desain yang disengaja | `flutter test --update-goldens` |
-| Tes integrasi di HP | `flutter test integration_test` |
-| Buat kode turunan saat tabel atau model berubah | `dart run build_runner build --delete-conflicting-outputs` |
-| Migrasi database baru | `npx supabase migration new <nama>`, isi SQL-nya, lalu `npx supabase db push` |
-| Build APK release | `flutter build apk --release --dart-define-from-file=env/prod.json` |
+## Screenshot
 
-## Yang tidak boleh masuk Git
+<table>
+  <tr>
+    <td align="center"><img src="test/features/beranda/goldens/beranda_02.png" width="200" alt="Beranda"><br>Beranda</td>
+    <td align="center"><img src="test/features/tugas/presentation/goldens/tugas_03.png" width="200" alt="Tugas"><br>Tugas</td>
+    <td align="center"><img src="test/features/kuliah/presentation/goldens/kuliah_04.png" width="200" alt="Kuliah"><br>Kuliah</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="test/features/keuangan/presentation/goldens/keuangan_05.png" width="200" alt="Keuangan"><br>Keuangan</td>
+    <td align="center"><img src="test/features/auth/goldens/auth_00e_masuk.png" width="200" alt="Masuk dengan email"><br>Masuk dengan email</td>
+    <td align="center"><img src="test/features/auth/goldens/auth_01_kunci.png" width="200" alt="Kunci sidik jari"><br>Kunci sidik jari</td>
+  </tr>
+</table>
 
-`env/`, `*.jks`, `*.keystore`, `android/key.properties`, `.dart_tool/`, `build/` (sudah ada di `.gitignore`).
+<sub>Screenshot memakai data contoh.</sub>
 
-Keystore release dan sandinya disimpan di luar repo dengan cadangan (misalnya pengelola sandi + Google Drive pribadi). Kalau hilang, update app tidak bisa dipasang di atas versi lama.
+## Fitur
 
-## Masalah yang sering muncul
+- 🏠 **Beranda:** kelas berikutnya, tugas hari ini dan yang terlambat, total saldo, dan transaksi terakhir dalam satu layar.
+- ✅ **Tugas:** deadline, mata kuliah, prioritas, sub-tugas, dan filter per deadline. Tugas yang lewat deadline ditandai merah, dan hapus atau tandai selesai bisa diurungkan.
+- 🎓 **Kuliah:** jadwal mingguan per hari, mata kuliah dengan dosen dan ruang, serta detail mata kuliah beserta tugasnya.
+- 💸 **Keuangan:** catat pemasukan dan pengeluaran dalam hitungan detik, dengan kategori dan dompet (tunai, bank, e-wallet). Saldo dan ringkasan bulan ini dihitung otomatis.
+- ✉️ **Masuk tanpa password:** cukup email dan kode 6 digit yang dikirim ke email.
+- 🔒 **Kunci sidik jari:** app meminta sidik jari setiap dibuka, dengan PIN cadangan.
+- 📶 **Tetap jalan offline:** semua catatan disimpan dulu di HP, lalu tersinkron otomatis saat internet kembali.
 
-| Gejala | Penyebab biasa | Solusi |
-| --- | --- | --- |
-| Login Google gagal dengan error 10 atau developer error | SHA-1 di OAuth client Android tidak cocok | Ambil ulang SHA-1 dengan `signingReport`, perbarui di Google Cloud |
-| App tidak bisa terhubung ke Supabase | Proyek dev dijeda setelah 7 hari tidak aktif | Buka dashboard Supabase dan lanjutkan proyeknya |
-| Error tabel atau kolom tidak ditemukan | Migrasi belum dijalankan atau kode turunan basi | `npx supabase db push`, lalu `build_runner build` |
-| Golden test gagal setelah mengubah komponen | Tampilan berubah | Cek dengan Figma dulu; kalau memang disengaja, jalankan `--update-goldens` |
-| Font tampil berbeda | Font belum terdaftar di `pubspec.yaml` | Daftarkan Doto, Geist, dan Geist Mono di bagian `fonts` |
+## Download & pasang
+
+1. Buka **[halaman Releases](https://github.com/baymakeprojects/Super_App/releases/latest)** dari HP Android, lalu unduh `super-app-vX.Y.Z.apk` di bagian **Assets**.
+2. Ketuk file yang sudah diunduh.
+3. Kalau muncul pesan bahwa HP tidak diizinkan menginstal aplikasi tidak dikenal, ketuk **Setelan**, aktifkan **Izinkan dari sumber ini** untuk browser atau app File, lalu kembali.
+4. Ketuk **Instal**. Kalau Google Play Protect memberi peringatan, pilih **Detail lainnya → Tetap instal**.
+5. Setelah terpasang, matikan lagi **Izinkan dari sumber ini**.
+
+Nama menu bisa sedikit berbeda di tiap merek HP; cari *"instal aplikasi tidak dikenal"* di Setelan.
+
+**Update:** pasang APK versi baru di atas versi lama; datamu tidak hilang. Selalu ambil APK dari halaman Releases ini, karena APK dari tempat lain tidak bisa dipasang di atas versi resmi.
+
+> Sejak September 2026, Android di Indonesia mewajibkan [verifikasi developer](https://support.google.com/android-developer-console/answer/16561738) untuk app di luar Play Store. Kalau HP menolak memasang APK, kemungkinan verifikasi itu belum selesai.
+
+## Dibangun dengan
+
+Flutter dan Dart · Supabase · SQLite (drift) · Riverpod · go_router
+
+## Status
+
+Super App masih dalam pengembangan (versi 0.x). Modul Tugas, Kuliah, Keuangan, Beranda, login, kunci sidik jari, dan sinkron offline sudah jadi. Yang sedang dikerjakan: setup awal, pengaturan, dan APK pertama.
+
+Setelah itu rencananya versi Windows, notifikasi, kebiasaan, catatan, dan kalender.
+
+Menemukan bug atau punya saran? Buat **[Issue](https://github.com/baymakeprojects/Super_App/issues)** dengan langkah mengulang dan screenshot.
+
+## Lisensi
+
+[MIT](LICENSE) © 2026 Bayu
