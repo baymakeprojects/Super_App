@@ -237,3 +237,33 @@ TaskRowView _doneRow(TaskListItem item) {
 String _meta(String? course, String? when) => [?course, ?when].join(' · ');
 
 DateTime _completedAt(Task task) => task.completedAt ?? task.updatedAt;
+
+/// Tugas yang judulnya memuat [query] (huruf besar/kecil sama) untuk H04
+/// Pencarian. Urutan: tugas aktif seperti layar 03, lalu semua tugas
+/// selesai. Kueri kosong = tanpa hasil.
+List<TaskRowView> searchTaskRows(
+  List<TaskListItem> items,
+  String query,
+  DateTime now,
+) {
+  final needle = query.trim().toLowerCase();
+  if (needle.isEmpty) return const [];
+  final matches = [
+    for (final item in items)
+      if (item.task.title.toLowerCase().contains(needle)) item,
+  ];
+  return [
+    for (final group in buildTaskListView(
+      matches,
+      TaskFilter.semua,
+      now,
+    ).groups)
+      if (group.kind != TaskGroupKind.selesai) ...group.rows,
+    for (final group in buildTaskListView(
+      matches,
+      TaskFilter.selesai,
+      now,
+    ).groups)
+      ...group.rows,
+  ];
+}

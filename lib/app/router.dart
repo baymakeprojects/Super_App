@@ -25,6 +25,7 @@ import 'package:super_app/features/pengaturan/presentation/pin_setup_screen.dart
 import 'package:super_app/features/setup/presentation/setup_screens.dart';
 import 'package:super_app/features/tugas/presentation/task_detail_screen.dart';
 import 'package:super_app/features/tugas/presentation/task_form_screen.dart';
+import 'package:super_app/features/tugas/presentation/task_search_screen.dart';
 import 'package:super_app/features/tugas/presentation/tugas_screen.dart';
 
 /// Router app. Rutenya persis seperti tabel di `docs/navigasi.md`.
@@ -187,7 +188,7 @@ GoRouter buildAppRouter({
             routes: [
               // 'baru' dan 'cari' sebelum ':id' supaya tidak dianggap id.
               fullScreen('baru', 'Tugas baru', screen: const TaskFormScreen()),
-              fullScreen('cari', 'Pencarian'),
+              fullScreen('cari', 'Pencarian', screen: const TaskSearchScreen()),
               GoRoute(
                 path: ':id',
                 parentNavigatorKey: rootNavigatorKey,

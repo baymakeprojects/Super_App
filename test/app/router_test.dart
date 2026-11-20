@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -57,7 +59,7 @@ void main() {
     AppRoutes.beranda: 'Halo',
     AppRoutes.tugas: 'Tugas',
     AppRoutes.tugasBaru: 'Tugas baru',
-    AppRoutes.tugasCari: 'Pencarian',
+    AppRoutes.tugasCari: 'Cari tugas',
     AppRoutes.tugasDetail('t1'): 'Detail tugas',
     AppRoutes.tugasEdit('t1'): 'Edit tugas',
     AppRoutes.kuliah: 'Kuliah',
@@ -159,8 +161,10 @@ void main() {
 
     testWidgets('panah kiri di Top App Bar sama dengan Back', (tester) async {
       final router = await _pumpApp(tester);
-      // Layar sementara (H04 Pencarian belum dibuat) punya panah kiri.
-      await _go(tester, router, AppRoutes.tugasCari);
+      // 14 Pengaturan punya panah kiri di Top App Bar.
+      await _go(tester, router, AppRoutes.tugas);
+      unawaited(router.push(AppRoutes.pengaturan));
+      await tester.pumpAndSettle();
 
       await tester.tap(find.bySemanticsLabel('Kembali'));
       await tester.pumpAndSettle();

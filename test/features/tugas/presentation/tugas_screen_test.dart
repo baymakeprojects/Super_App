@@ -239,7 +239,7 @@ void main() {
 
       await tester.tap(find.byType(AppCircleButton));
       await tester.pumpAndSettle();
-      expect(find.text('Pencarian'), findsOneWidget);
+      expect(find.text('Cari tugas'), findsOneWidget);
       app.router.pop();
       await tester.pumpAndSettle();
 
