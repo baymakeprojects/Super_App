@@ -44,6 +44,14 @@ Publishable key ada di Dashboard → Project Settings → API Keys. Kunci servic
 
 APK rilis harus ditandatangani dengan kunci milik Bayu sendiri. Kalau keystore atau sandinya hilang, versi baru tidak bisa dipasang di atas versi lama, jadi **buat cadangan** (misalnya di password manager dan penyimpanan cloud pribadi).
 
+Cara paling mudah: jalankan skrip ini sekali dari folder proyek. Skrip menanyakan sandi di terminal, membuat keystore di `%USERPROFILE%\keystore\super_app.jks`, lalu menulis `android/key.properties`. Sandi tidak dikirim ke mana pun.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tool\buat-keystore.ps1
+```
+
+Atau secara manual:
+
 1. Buat keystore di luar folder proyek (jalankan sekali). `keytool` ikut terpasang bersama Android Studio (folder `jbr\bin`):
 
 ```powershell
