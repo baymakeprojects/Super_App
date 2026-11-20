@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Unduh Super App untuk Android</title>
+    <meta name="description" content="Unduh file APK Super App dan pasang di HP Android dalam tiga langkah." />
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="../../fonts/Geist-Variable.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="stylesheet" href="../../css/styles.css" />
+  </head>
+  <!-- data-auto-download: di tampilan HP, unduhan APK dimulai otomatis (frame 177:1338). -->
+  <body data-auto-download>
+    <header class="nav">
+      <a class="logo" href="../../" aria-label="Super App, beranda">
+        <span class="logo__mark" aria-hidden="true">S</span>
+        <span class="logo__name">Super App</span>
+      </a>
+      <nav class="nav__links label-medium" aria-label="Bagian beranda">
+        <a href="../../#fitur">Fitur</a>
+        <a href="../../#cara-instal">Cara instal</a>
+        <a href="../../#faq">FAQ</a>
+      </nav>
+      <a class="button nav__cta" href="./">Unduh APK</a>
+      <button class="nav__menu" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="menu" data-menu-open>
+        <img src="../../assets/icons/menu.svg" width="24" height="24" alt="" />
+      </button>
+    </header>
+
+    <div class="menu" id="menu" hidden>
+      <div class="nav">
+        <a class="logo" href="../../" aria-label="Super App, beranda">
+          <span class="logo__mark" aria-hidden="true">S</span>
+          <span class="logo__name">Super App</span>
+        </a>
+        <button class="nav__menu" type="button" aria-label="Tutup menu" data-menu-close>
+          <img src="../../assets/icons/close.svg" width="24" height="24" alt="" />
+        </button>
+      </div>
+      <nav class="menu__links" aria-label="Menu">
+        <a class="menu__link heading-medium" href="../../#fitur">Fitur <img src="../../assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+        <a class="menu__link heading-medium" href="../../#cara-instal">Cara instal <img src="../../assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+        <a class="menu__link heading-medium" href="../../#faq">FAQ <img src="../../assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+        <a class="menu__link menu__link--minor body-large" href="https://github.com/baymakeprojects/Super_App/releases">Catatan rilis <img src="../../assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+        <a class="menu__link menu__link--minor body-large" href="https://github.com/baymakeprojects/Super_App/issues/new">Laporkan masalah <img src="../../assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+      </nav>
+      <div class="menu__actions">
+        <a class="button button--block" href="./">Unduh untuk Android</a>
+      </div>
+    </div>
+
+    <main>
+      <!-- Desktop 177:1279: APK tidak bisa dipasang di laptop, jadi tawarkan QR dan salin link. -->
+      <section class="unduh-main only-desktop">
+        <div class="unduh-main__text">
+          <p class="label-medium c-accent">Unduh untuk Android</p>
+          <h1 class="heading-xl">Pasang dari HP kamu.</h1>
+          <p class="body-large c-light">
+            File APK hanya bisa dipasang di Android. Pindai kode di samping dengan kamera HP, atau kirim link halaman ini ke HP kamu.
+          </p>
+          <div class="unduh-main__actions">
+            <button class="button" type="button" data-copy-link>Salin link</button>
+            <a class="button button--ghost" href="https://github.com/baymakeprojects/Super_App/releases/latest" data-apk>Tetap unduh di laptop</a>
+          </div>
+          <p class="label-small c-gray"><span data-apk-name>super-app-v0.1.0.apk</span> · Versi <span data-version>0.1.0</span></p>
+        </div>
+        <div class="qr-card">
+          <div class="qr qr--large">
+            <img src="../../assets/qr-unduh-android.svg" width="208" height="208" alt="Kode QR ke halaman ini" />
+          </div>
+          <p class="label-medium c-light">Pindai dengan kamera HP</p>
+        </div>
+      </section>
+
+      <!-- HP 177:1346 -->
+      <section class="unduh-main only-mobile">
+        <span class="icon-wrap icon-wrap--large"><img src="../../assets/icons/download.svg" width="24" height="24" alt="" /></span>
+        <h1 class="display-medium">Unduhan dimulai</h1>
+        <p class="body-large c-light">
+          <span data-apk-name>super-app-v0.1.0.apk</span> sedang diunduh. Kalau tidak mulai dalam beberapa detik, ketuk Unduh ulang.
+        </p>
+        <div class="unduh-main__actions">
+          <a class="button button--block" href="https://github.com/baymakeprojects/Super_App/releases/latest" data-apk>Unduh ulang</a>
+          <a class="button button--ghost button--block" href="../../">Kembali ke beranda</a>
+        </div>
+        <p class="label-small c-gray">Versi <span data-version>0.1.0</span> · Android</p>
+      </section>
+
+      <!-- Langkah: 177:1294 / 177:1358 -->
+      <section class="section section--langkah" aria-labelledby="langkah-judul">
+        <p class="label-medium c-accent" id="langkah-judul">
+          <span class="only-desktop">Setelah APK terunduh di HP</span><span class="only-mobile">Setelah terunduh</span>
+        </p>
+        <ol class="steps list-reset" role="list">
+          <li class="step-card">
+            <span class="step-card__number display-medium">01</span>
+            <h2 class="heading-small">Buka file APK</h2>
+            <p class="body-medium c-light">Ketuk notifikasi unduhan, atau cari di folder Download.</p>
+          </li>
+          <li class="step-card">
+            <span class="step-card__number display-medium">02</span>
+            <h2 class="heading-small">Izinkan pemasangan</h2>
+            <p class="body-medium c-light">
+              <span class="only-desktop">Android bertanya karena app ini bukan dari Play Store. Pilih Izinkan dari sumber ini.</span>
+              <span class="only-mobile">Pilih Izinkan dari sumber ini saat Android bertanya.</span>
+            </p>
+          </li>
+          <li class="step-card">
+            <span class="step-card__number display-medium">03</span>
+            <h2 class="heading-small">Masuk dengan email</h2>
+            <p class="body-medium c-light">
+              <span class="only-desktop">Isi email dan kode 6 digit dari email, lalu atur jadwal dan saldo awal, atau lewati dulu.</span>
+              <span class="only-mobile">Isi email dan kode dari email, lalu atur jadwal atau lewati dulu.</span>
+            </p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Kendala: 177:1309 / 177:1373 -->
+      <section class="section section--kendala">
+        <div class="section-header">
+          <p class="label-medium c-accent">Kendala</p>
+          <h2 class="section-header__title">Kalau pemasangan gagal.</h2>
+        </div>
+        <div class="faq-items">
+          <div class="faq-item">
+            <h3 class="heading-small">Diblokir Play Protect</h3>
+            <p class="body-large c-light">Ketuk Detail lainnya, lalu Tetap instal. Peringatan ini muncul karena app belum terdaftar di Play Store.</p>
+          </div>
+          <div class="faq-item">
+            <h3 class="heading-small">Muncul tulisan "Aplikasi tidak terpasang"</h3>
+            <p class="body-large c-light">
+              Biasanya masih ada versi lama dengan tanda tangan berbeda. Hapus Super App lama, lalu pasang lagi. Data yang sudah tersinkron tetap ada di akun.
+            </p>
+          </div>
+          <div class="faq-item">
+            <h3 class="heading-small">File APK tidak ketemu</h3>
+            <p class="body-large c-light">Ketuk notifikasi unduhan, atau buka aplikasi Files lalu folder Download.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__row">
+        <div class="footer__brand">
+          <a class="logo" href="../../" aria-label="Super App, beranda">
+            <span class="logo__mark" aria-hidden="true">S</span>
+            <span class="logo__name">Super App</span>
+          </a>
+          <p class="body-medium c-light">Dibuat oleh Bayu untuk dipakai bareng teman kuliah.</p>
+        </div>
+        <nav class="footer__links label-medium" aria-label="Tautan lain">
+          <a href="https://github.com/baymakeprojects/Super_App/issues/new">Laporkan masalah</a>
+          <a href="https://github.com/baymakeprojects/Super_App/releases">Catatan rilis</a>
+        </nav>
+      </div>
+      <p class="label-small c-gray">© 2026 Super App · Versi <span data-version>0.1.0</span></p>
+    </footer>
+
+    <script src="../../js/site.js" defer></script>
+  </body>
+</html>

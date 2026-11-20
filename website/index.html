@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Super App — Kuliah beres di satu app</title>
+    <meta
+      name="description"
+      content="Tugas, jadwal kuliah, dan keuangan dalam satu app Android. Tetap jalan tanpa internet, tersinkron ke cloud saat online lagi. Gratis, tanpa iklan."
+    />
+    <meta name="theme-color" content="#000000" />
+    <meta property="og:title" content="Super App — Kuliah beres di satu app" />
+    <meta
+      property="og:description"
+      content="Tugas, jadwal kuliah, dan keuangan dalam satu app Android. Gratis, tanpa iklan."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="fonts/Geist-Variable.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="fonts/Doto-Variable.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="nav">
+      <a class="logo" href="./" aria-label="Super App, beranda">
+        <span class="logo__mark" aria-hidden="true">S</span>
+        <span class="logo__name">Super App</span>
+      </a>
+      <nav class="nav__links label-medium" aria-label="Bagian halaman">
+        <a href="#fitur">Fitur</a>
+        <a href="#cara-instal">Cara instal</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="button nav__cta" href="unduh/android/">Unduh APK</a>
+      <button class="nav__menu" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="menu" data-menu-open>
+        <img src="assets/icons/menu.svg" width="24" height="24" alt="" />
+      </button>
+    </header>
+
+    <div class="menu" id="menu" hidden>
+      <div class="nav">
+        <a class="logo" href="./" aria-label="Super App, beranda">
+          <span class="logo__mark" aria-hidden="true">S</span>
+          <span class="logo__name">Super App</span>
+        </a>
+        <button class="nav__menu" type="button" aria-label="Tutup menu" data-menu-close>
+          <img src="assets/icons/close.svg" width="24" height="24" alt="" />
+        </button>
+      </div>
+      <nav class="menu__links" aria-label="Menu">
+        <a class="menu__link heading-medium" href="#fitur">Fitur <img src="assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+        <a class="menu__link heading-medium" href="#cara-instal">Cara instal <img src="assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+        <a class="menu__link heading-medium" href="#faq">FAQ <img src="assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+        <a class="menu__link menu__link--minor body-large" href="https://github.com/baymakeprojects/Super_App/releases">Catatan rilis <img src="assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+        <a class="menu__link menu__link--minor body-large" href="https://github.com/baymakeprojects/Super_App/issues/new">Laporkan masalah <img src="assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+      </nav>
+      <div class="menu__actions">
+        <a class="button button--block" href="unduh/android/">Unduh untuk Android</a>
+      </div>
+    </div>
+
+    <main>
+      <!-- Hero: 161:16 (desktop), 187:1741 (HP) -->
+      <section class="hero">
+        <div class="hero__text">
+          <p class="eyebrow">
+            <img src="assets/hero/dot.svg" width="6" height="6" alt="" />
+            <span class="label-medium only-desktop">Versi awal · Gratis untuk teman kuliah</span>
+            <span class="label-medium only-mobile">Versi awal · Gratis</span>
+          </p>
+          <h1 class="hero__headline">Kuliah beres di <em>satu app</em></h1>
+          <p class="body-large c-light">
+            Tugas, jadwal kuliah, dan keuangan dalam satu tempat. Tetap jalan tanpa internet, tersinkron ke cloud saat online lagi.
+          </p>
+          <div class="hero__cta">
+            <a class="button" href="unduh/android/">Unduh untuk Android</a>
+          </div>
+          <p class="label-small c-gray only-desktop">Gratis · Tanpa iklan · Android</p>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <img class="hero-visual__glow only-desktop" src="assets/hero/glow.svg" width="780" height="780" alt="" />
+          <img class="hero-visual__glow only-mobile" src="assets/hero/glow-hp.svg" width="520" height="520" alt="" />
+          <div class="hero-visual__phone">
+            <div class="phone">
+              <div class="phone__screen">
+                <div class="phone__status">
+                  <span>07.35</span>
+                  <img src="assets/hero/indicators.svg" width="31.2" height="7.2" alt="" />
+                </div>
+                <div class="phone__content">
+                  <div class="phone__header">
+                    <div class="phone__greeting">
+                      <span class="m6 c-gray">Jumat, 6 November</span>
+                      <span class="phone__hello">Halo, Bayu</span>
+                    </div>
+                    <div class="phone__actions">
+                      <span class="phone__circle phone__circle--outline"><img src="assets/hero/bell.svg" width="12" height="12" alt="" /></span>
+                      <span class="phone__circle phone__circle--avatar">B</span>
+                    </div>
+                  </div>
+                  <div class="phone__next">
+                    <div class="phone__next-top">
+                      <span class="m6">Kelas berikutnya · 25 menit lagi</span>
+                      <img src="assets/hero/arrow-up-right.svg" width="12" height="12" alt="" />
+                    </div>
+                    <span class="phone__next-title">Pemrograman Mobile</span>
+                    <span class="phone__next-meta">08.00–09.40 · Ruang 301 · Bu Rina</span>
+                  </div>
+                  <div class="phone__stats">
+                    <div class="phone__stat">
+                      <span class="m6 c-gray">Tugas aktif</span>
+                      <span class="phone__stat-value">5</span>
+                      <span class="phone__stat-sub">2 jatuh tempo hari ini</span>
+                    </div>
+                    <div class="phone__stat">
+                      <span class="m6 c-gray">Saldo</span>
+                      <span class="phone__stat-value">Rp1,25jt</span>
+                      <span class="phone__stat-sub">−Rp340rb minggu ini</span>
+                    </div>
+                  </div>
+                  <div class="phone__block">
+                    <div class="phone__block-head">
+                      <span class="phone__block-title">Tugas hari ini</span>
+                      <span class="m6 c-accent">Lihat semua →</span>
+                    </div>
+                    <div class="phone__list">
+                      <div class="phone__task">
+                        <span class="phone__check"></span>
+                        <span class="phone__item-text">
+                          <span class="phone__item-title">Revisi proposal penelitian</span>
+                          <span class="phone__item-meta">Metodologi Penelitian · kemarin</span>
+                        </span>
+                        <span class="phone__badge phone__badge--danger"><span class="m6">Terlambat</span></span>
+                      </div>
+                      <div class="phone__task">
+                        <span class="phone__check"></span>
+                        <span class="phone__item-text">
+                          <span class="phone__item-title">Laporan praktikum modul 5</span>
+                          <span class="phone__item-meta">Pemrograman Mobile · 23.59</span>
+                        </span>
+                        <span class="phone__badge phone__badge--warning"><span class="m6">Hari ini</span></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="phone__block phone__block--tx">
+                    <div class="phone__block-head">
+                      <span class="phone__block-title">Transaksi terakhir</span>
+                      <span class="m6 c-accent">Lihat semua →</span>
+                    </div>
+                    <div class="phone__tx">
+                      <span class="phone__tx-icon"><img src="assets/hero/tx-out.svg" width="12" height="12" alt="" /></span>
+                      <span class="phone__item-text">
+                        <span class="phone__item-title">Sarapan</span>
+                        <span class="m6 c-gray">Tunai · Makan · 07.10</span>
+                      </span>
+                      <span class="phone__tx-amount">−Rp15.000</span>
+                    </div>
+                    <div class="phone__tx">
+                      <span class="phone__tx-icon"><img src="assets/hero/tx-in.svg" width="12" height="12" alt="" /></span>
+                      <span class="phone__item-text">
+                        <span class="phone__item-title">Uang saku</span>
+                        <span class="m6 c-gray">Bank · Pemasukan · 1 Nov</span>
+                      </span>
+                      <span class="phone__tx-amount c-success">+Rp1.500.000</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="phone__tabs">
+                  <span class="phone__tab phone__tab--active"><img src="assets/hero/nav-home.svg" width="14.4" height="14.4" alt="" /><span class="m6">Beranda</span></span>
+                  <span class="phone__tab"><img src="assets/hero/nav-task.svg" width="14.4" height="14.4" alt="" /><span class="m6">Tugas</span></span>
+                  <span class="phone__tab"><img src="assets/hero/nav-kuliah.svg" width="14.4" height="14.4" alt="" /><span class="m6">Kuliah</span></span>
+                  <span class="phone__tab"><img src="assets/hero/nav-keuangan.svg" width="14.4" height="14.4" alt="" /><span class="m6">Keuangan</span></span>
+                  <span class="phone__tab"><img src="assets/hero/nav-lainnya.svg" width="14.4" height="14.4" alt="" /><span class="m6">Lainnya</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-visual__fade"></div>
+        </div>
+      </section>
+
+      <!-- Stats: 161:106 / 187:1787 -->
+      <section class="stats" aria-label="Sekilas">
+        <div class="stat"><span class="stat__value">5</span><span class="label-medium c-gray"><span class="only-desktop">Menu utama</span><span class="only-mobile">Menu</span></span></div>
+        <div class="stat"><span class="stat__value">3</span><span class="label-medium c-gray"><span class="only-desktop">Jenis dompet</span><span class="only-mobile">Dompet</span></span></div>
+        <div class="stat"><span class="stat__value">0</span><span class="label-medium c-gray">Password</span></div>
+        <div class="stat"><span class="stat__value">0</span><span class="label-medium c-gray">Iklan</span></div>
+      </section>
+
+      <!-- Fitur: 162:407 / 187:1800 -->
+      <section class="section section--fitur" id="fitur">
+        <div class="section-header">
+          <p class="label-medium c-accent">Fitur</p>
+          <h2 class="section-header__title only-desktop">Yang biasanya tersebar di lima app, sekarang di satu tempat.</h2>
+          <h2 class="section-header__title only-mobile">Lima app jadi satu tempat.</h2>
+          <p class="body-large c-light only-desktop">
+            Beranda, Tugas, Kuliah, dan Keuangan ada di menu bawah layar. Semuanya tetap jalan tanpa internet.
+          </p>
+        </div>
+
+        <div class="feature-grid only-desktop">
+          <article class="feature-card">
+            <span class="icon-wrap"><img src="assets/icons/task.svg" width="24" height="24" alt="" /></span>
+            <div class="feature-card__text">
+              <h3 class="heading-small">Tugas &amp; deadline</h3>
+              <p class="body-medium c-light">Deadline, prioritas, dan sub-tugas per mata kuliah. Yang lewat deadline ditandai merah.</p>
+            </div>
+          </article>
+          <article class="feature-card">
+            <span class="icon-wrap"><img src="assets/icons/calendar.svg" width="24" height="24" alt="" /></span>
+            <div class="feature-card__text">
+              <h3 class="heading-small">Jadwal kuliah</h3>
+              <p class="body-medium c-light">Jadwal mingguan per hari, lengkap dengan dosen, ruang, dan tugas tiap mata kuliah.</p>
+            </div>
+          </article>
+          <article class="feature-card">
+            <span class="icon-wrap"><img src="assets/icons/wallet.svg" width="24" height="24" alt="" /></span>
+            <div class="feature-card__text">
+              <h3 class="heading-small">Keuangan</h3>
+              <p class="body-medium c-light">Catat pemasukan dan pengeluaran dalam hitungan detik. Saldo dan ringkasan bulan ini dihitung otomatis.</p>
+            </div>
+          </article>
+          <article class="feature-card">
+            <span class="icon-wrap"><img src="assets/icons/lock.svg" width="24" height="24" alt="" /></span>
+            <div class="feature-card__text">
+              <h3 class="heading-small">Masuk tanpa password</h3>
+              <p class="body-medium c-light">Cukup email dan kode 6 digit yang dikirim ke email itu.</p>
+            </div>
+          </article>
+          <article class="feature-card">
+            <span class="icon-wrap"><img src="assets/icons/fingerprint.svg" width="24" height="24" alt="" /></span>
+            <div class="feature-card__text">
+              <h3 class="heading-small">Kunci sidik jari</h3>
+              <p class="body-medium c-light">App meminta sidik jari setiap dibuka, dengan PIN cadangan.</p>
+            </div>
+          </article>
+          <article class="feature-card">
+            <span class="icon-wrap"><img src="assets/icons/refresh.svg" width="24" height="24" alt="" /></span>
+            <div class="feature-card__text">
+              <h3 class="heading-small">Tetap jalan offline</h3>
+              <p class="body-medium c-light">Semua catatan disimpan dulu di HP, lalu tersinkron otomatis saat internet kembali.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="rows only-mobile">
+          <div class="feature-row">
+            <span class="icon-wrap icon-wrap--small"><img src="assets/icons/task.svg" width="20" height="20" alt="" /></span>
+            <div class="row-text"><h3 class="title-medium">Tugas &amp; deadline</h3><p class="body-medium c-light">Deadline, prioritas, sub-tugas.</p></div>
+          </div>
+          <div class="feature-row">
+            <span class="icon-wrap icon-wrap--small"><img src="assets/icons/calendar.svg" width="20" height="20" alt="" /></span>
+            <div class="row-text"><h3 class="title-medium">Jadwal kuliah</h3><p class="body-medium c-light">Jadwal mingguan, dosen, dan ruang.</p></div>
+          </div>
+          <div class="feature-row">
+            <span class="icon-wrap icon-wrap--small"><img src="assets/icons/wallet.svg" width="20" height="20" alt="" /></span>
+            <div class="row-text"><h3 class="title-medium">Keuangan</h3><p class="body-medium c-light">Pemasukan, pengeluaran, saldo dompet.</p></div>
+          </div>
+          <div class="feature-row">
+            <span class="icon-wrap icon-wrap--small"><img src="assets/icons/lock.svg" width="20" height="20" alt="" /></span>
+            <div class="row-text"><h3 class="title-medium">Masuk tanpa password</h3><p class="body-medium c-light">Cukup email dan kode 6 digit.</p></div>
+          </div>
+          <div class="feature-row">
+            <span class="icon-wrap icon-wrap--small"><img src="assets/icons/fingerprint.svg" width="20" height="20" alt="" /></span>
+            <div class="row-text"><h3 class="title-medium">Kunci sidik jari</h3><p class="body-medium c-light">Sidik jari tiap dibuka, PIN cadangan.</p></div>
+          </div>
+          <div class="feature-row">
+            <span class="icon-wrap icon-wrap--small"><img src="assets/icons/refresh.svg" width="20" height="20" alt="" /></span>
+            <div class="row-text"><h3 class="title-medium">Tetap jalan offline</h3><p class="body-medium c-light">Tersinkron otomatis saat online lagi.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cara instal: 163:745 / 188:1550 -->
+      <section class="section" id="cara-instal">
+        <div class="section-header">
+          <p class="label-medium c-accent">Cara instal</p>
+          <h2 class="section-header__title">Pasang dalam tiga langkah.</h2>
+          <p class="body-large c-light only-desktop">
+            Super App belum ada di Play Store, jadi dipasang langsung dari file APK. Cukup dua menit.
+          </p>
+        </div>
+
+        <ol class="steps list-reset only-desktop" role="list">
+          <li class="step-card">
+            <span class="step-card__number display-medium">01</span>
+            <h3 class="heading-small">Unduh file APK</h3>
+            <p class="body-medium c-light">Buka halaman ini dari HP, lalu ketuk Unduh untuk Android.</p>
+          </li>
+          <li class="step-card">
+            <span class="step-card__number display-medium">02</span>
+            <h3 class="heading-small">Izinkan pemasangan</h3>
+            <p class="body-medium c-light">Android bertanya karena app ini bukan dari Play Store. Pilih Izinkan dari sumber ini.</p>
+          </li>
+          <li class="step-card">
+            <span class="step-card__number display-medium">03</span>
+            <h3 class="heading-small">Masuk dengan email</h3>
+            <p class="body-medium c-light">Isi email, lalu ketik kode 6 digit yang dikirim ke email itu. Tanpa password.</p>
+          </li>
+        </ol>
+        <div class="banner only-desktop" role="note">
+          <img class="banner__icon" src="assets/icons/banner-info.svg" width="20" height="20" alt="" />
+          <div class="banner__text">
+            <p class="body-medium c-white">Diblokir Play Protect?</p>
+            <p class="body-small c-light">Ketuk Detail lainnya, lalu Tetap instal. Peringatan ini muncul karena app belum terdaftar di Play Store.</p>
+          </div>
+        </div>
+
+        <ol class="rows list-reset only-mobile" role="list">
+          <li class="step-row">
+            <span class="step-row__number display-small">01</span>
+            <div class="row-text"><h3 class="title-medium">Unduh file APK</h3><p class="body-medium c-light">Ketuk Unduh untuk Android di halaman ini.</p></div>
+          </li>
+          <li class="step-row">
+            <span class="step-row__number display-small">02</span>
+            <div class="row-text"><h3 class="title-medium">Izinkan pemasangan</h3><p class="body-medium c-light">Pilih Izinkan dari sumber ini saat Android bertanya.</p></div>
+          </li>
+          <li class="step-row">
+            <span class="step-row__number display-small">03</span>
+            <div class="row-text"><h3 class="title-medium">Masuk dengan email</h3><p class="body-medium c-light">Isi email, lalu kode 6 digit dari email.</p></div>
+          </li>
+        </ol>
+        <p class="body-medium c-gray only-mobile">Kalau Play Protect memberi peringatan, ketuk Detail lainnya, lalu Tetap instal.</p>
+      </section>
+
+      <!-- Unduh: 163:772 / 188:1571 -->
+      <section class="section" id="unduh" aria-label="Unduh">
+        <div class="download-card">
+          <div class="download-card__heading">
+            <h2 class="display-large only-desktop">Siap dicoba?</h2>
+            <h2 class="display-medium only-mobile">Siap dicoba?</h2>
+            <p class="body-large only-desktop">Gratis dan tanpa iklan. Pasang di HP Android-mu, cukup dua menit.</p>
+            <p class="body-medium only-mobile">Gratis dan tanpa iklan.</p>
+          </div>
+
+          <div class="download-options only-desktop">
+            <div class="download-option">
+              <div class="download-option__text">
+                <h3 class="heading-small c-white">Android</h3>
+                <p class="label-small c-gray">APK · Versi <span data-version>0.1.0</span></p>
+              </div>
+              <a class="button" href="https://github.com/baymakeprojects/Super_App/releases/latest" data-apk>Unduh APK</a>
+            </div>
+            <div class="download-option">
+              <div class="download-option__text download-option__text--hug">
+                <h3 class="heading-small c-white">Buka di HP</h3>
+                <p class="label-small c-gray">Pindai dengan kamera HP</p>
+              </div>
+              <div class="qr">
+                <img src="assets/qr-unduh-android.svg" width="96" height="96" alt="Kode QR ke halaman unduh Android" />
+              </div>
+            </div>
+          </div>
+
+          <div class="download-row only-mobile">
+            <div class="download-row__text">
+              <h3 class="title-medium c-white">Android</h3>
+              <p class="label-small c-gray">APK · Versi <span data-version>0.1.0</span></p>
+            </div>
+            <a class="button" href="https://github.com/baymakeprojects/Super_App/releases/latest" data-apk>Unduh APK</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ: 163:796 / 188:1588 -->
+      <section class="section" id="faq">
+        <div class="faq-layout only-desktop">
+          <div class="section-header">
+            <p class="label-medium c-accent">FAQ</p>
+            <h2 class="section-header__title">Pertanyaan yang sering muncul.</h2>
+            <p class="body-large c-light">Ada yang belum terjawab? Kirim lewat Laporkan masalah di bagian bawah halaman.</p>
+          </div>
+          <div class="faq-items">
+            <div class="faq-item">
+              <h3 class="heading-small">Benar-benar gratis?</h3>
+              <p class="body-large c-light">Gratis dan tanpa iklan.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="heading-small">Kenapa tidak ada di Play Store?</h3>
+              <p class="body-large c-light">Ini masih versi awal yang dipakai sendiri dan bareng teman-teman, jadi dibagikan sebagai file APK.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="heading-small">Bisa dipakai di iPhone atau Mac?</h3>
+              <p class="body-large c-light">Belum. Untuk sekarang hanya Android.</p>
+            </div>
+            <div class="faq-item">
+              <h3 class="heading-small">Data saya disimpan di mana?</h3>
+              <p class="body-large c-light">Di akun kamu, disinkronkan lewat server. Saat offline, data tetap tersimpan di HP dan dikirim begitu online lagi.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-header only-mobile">
+          <p class="label-medium c-accent">FAQ</p>
+          <h2 class="section-header__title">Pertanyaan umum.</h2>
+        </div>
+        <div class="rows rows--end only-mobile">
+          <details class="faq-row" open>
+            <summary><span class="title-medium">Benar-benar gratis?</span><img src="assets/icons/chevron-down.svg" width="24" height="24" alt="" /></summary>
+            <p class="body-medium c-light">Gratis dan tanpa iklan.</p>
+          </details>
+          <details class="faq-row">
+            <summary><span class="title-medium">Kenapa tidak ada di Play Store?</span><img src="assets/icons/chevron-down.svg" width="24" height="24" alt="" /></summary>
+            <p class="body-medium c-light">Ini masih versi awal yang dipakai sendiri dan bareng teman-teman, jadi dibagikan sebagai file APK.</p>
+          </details>
+          <details class="faq-row">
+            <summary><span class="title-medium">Bisa dipakai di iPhone atau Mac?</span><img src="assets/icons/chevron-down.svg" width="24" height="24" alt="" /></summary>
+            <p class="body-medium c-light">Belum. Untuk sekarang hanya Android.</p>
+          </details>
+          <details class="faq-row">
+            <summary><span class="title-medium">Data saya disimpan di mana?</span><img src="assets/icons/chevron-down.svg" width="24" height="24" alt="" /></summary>
+            <p class="body-medium c-light">Di akun kamu, disinkronkan lewat server. Saat offline, data tetap tersimpan di HP dan dikirim begitu online lagi.</p>
+          </details>
+        </div>
+        <p class="lapor body-medium only-mobile">
+          <span class="c-gray">Belum terjawab?</span>
+          <a class="inline-link" href="https://github.com/baymakeprojects/Super_App/issues/new">Laporkan masalah</a>
+        </p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__row">
+        <div class="footer__brand">
+          <a class="logo" href="./" aria-label="Super App, beranda">
+            <span class="logo__mark" aria-hidden="true">S</span>
+            <span class="logo__name">Super App</span>
+          </a>
+          <p class="body-medium c-light">Dibuat oleh Bayu untuk dipakai bareng teman kuliah.</p>
+        </div>
+        <nav class="footer__links label-medium" aria-label="Tautan lain">
+          <a href="https://github.com/baymakeprojects/Super_App/issues/new">Laporkan masalah</a>
+          <a href="https://github.com/baymakeprojects/Super_App/releases">Catatan rilis</a>
+        </nav>
+      </div>
+      <p class="label-small c-gray">© 2026 Super App · Versi <span data-version>0.1.0</span></p>
+    </footer>
+
+    <script src="js/site.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Halaman tidak ada — Super App</title>
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#000000" />
+    <!--
+      GitHub Pages menampilkan file ini untuk alamat apa pun yang tidak ada,
+      jadi semua tautan memakai jalur absolut dari akar situs proyek.
+    -->
+    <base href="/Super_App/" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="nav">
+      <a class="logo" href="./" aria-label="Super App, beranda">
+        <span class="logo__mark" aria-hidden="true">S</span>
+        <span class="logo__name">Super App</span>
+      </a>
+      <nav class="nav__links label-medium" aria-label="Bagian beranda">
+        <a href="./#fitur">Fitur</a>
+        <a href="./#cara-instal">Cara instal</a>
+        <a href="./#faq">FAQ</a>
+      </nav>
+      <a class="button nav__cta" href="unduh/android/">Unduh APK</a>
+      <button class="nav__menu" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="menu" data-menu-open>
+        <img src="assets/icons/menu.svg" width="24" height="24" alt="" />
+      </button>
+    </header>
+
+    <div class="menu" id="menu" hidden>
+      <div class="nav">
+        <a class="logo" href="./" aria-label="Super App, beranda">
+          <span class="logo__mark" aria-hidden="true">S</span>
+          <span class="logo__name">Super App</span>
+        </a>
+        <button class="nav__menu" type="button" aria-label="Tutup menu" data-menu-close>
+          <img src="assets/icons/close.svg" width="24" height="24" alt="" />
+        </button>
+      </div>
+      <nav class="menu__links" aria-label="Menu">
+        <a class="menu__link heading-medium" href="./#fitur">Fitur <img src="assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+        <a class="menu__link heading-medium" href="./#cara-instal">Cara instal <img src="assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+        <a class="menu__link heading-medium" href="./#faq">FAQ <img src="assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+        <a class="menu__link menu__link--minor body-large" href="https://github.com/baymakeprojects/Super_App/releases">Catatan rilis <img src="assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+        <a class="menu__link menu__link--minor body-large" href="https://github.com/baymakeprojects/Super_App/issues/new">Laporkan masalah <img src="assets/icons/chevron-right.svg" width="24" height="24" alt="" /></a>
+      </nav>
+      <div class="menu__actions">
+        <a class="button button--block" href="unduh/android/">Unduh untuk Android</a>
+      </div>
+    </div>
+
+    <!-- 182:1678 (desktop) / 182:1710 (HP) -->
+    <main class="not-found">
+      <p class="display-xl c-accent" aria-hidden="true">404</p>
+      <h1 class="heading-xl only-desktop">Halamannya tidak ada.</h1>
+      <h1 class="heading-large only-mobile">Halamannya tidak ada.</h1>
+      <p class="not-found__body body-large c-light">Mungkin link-nya salah ketik, atau halamannya sudah dipindah.</p>
+      <div class="not-found__actions">
+        <a class="button" href="./">Ke beranda</a>
+        <a class="button button--ghost" href="unduh/android/">Unduh APK</a>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__row">
+        <div class="footer__brand">
+          <a class="logo" href="./" aria-label="Super App, beranda">
+            <span class="logo__mark" aria-hidden="true">S</span>
+            <span class="logo__name">Super App</span>
+          </a>
+          <p class="body-medium c-light">Dibuat oleh Bayu untuk dipakai bareng teman kuliah.</p>
+        </div>
+        <nav class="footer__links label-medium" aria-label="Tautan lain">
+          <a href="https://github.com/baymakeprojects/Super_App/issues/new">Laporkan masalah</a>
+          <a href="https://github.com/baymakeprojects/Super_App/releases">Catatan rilis</a>
+        </nav>
+      </div>
+      <p class="label-small c-gray">© 2026 Super App · Versi <span data-version>0.1.0</span></p>
+    </footer>
+
+    <script src="js/site.js" defer></script>
+  </body>
+</html>

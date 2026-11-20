@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- LP / Logo › Mark (160:225): kotak oranye sudut 10 dengan huruf S. -->
+  <rect width="32" height="32" rx="10" fill="#E85002"/>
+  <text x="16" y="22.5" text-anchor="middle" font-family="Geist, system-ui, sans-serif" font-weight="700" font-size="18" fill="#000">S</text>
+</svg>

@@ -13,7 +13,7 @@ Node id tiap frame ada di `figma-frames.md`. Token ada di `design-tokens.md`.
 | Screens — Mobile (4:3) | Layar HP 412×917 | Nama frame berawalan kode, misalnya "03 Tugas" |
 | Screens — Desktop (34:2) | Layar 1440×900 | Tahap 2, belum dikerjakan |
 | Pop-up & Input (50:180) | Bottom sheet P, halaman penuh H, dialog desktop DP | Label di atas tiap frame ("Dari: …") menyebut tombol yang membukanya |
-| Landing Page (161:2) | Situs unduhan | Bukan bagian app; abaikan |
+| Landing Page (161:2) | Situs unduhan | Bukan bagian app Flutter. Dibangun sebagai HTML/CSS statis di `website/` (lihat `pengembangan.md`); frame-nya di `figma-frames.md` |
 
 - Frame specimen di halaman Components hanya peraga. Yang dibangun adalah komponennya, bukan kotak peraga, label abu, atau teks penjelasannya.
 - Semua isi layar adalah **data contoh**: nama "Bayu", mata kuliah, dosen, nominal, tanggal Jumat 6 Nov 2026, jam 07.35. Di kode semuanya diambil dari database atau jam HP; jangan pernah ditulis langsung.

@@ -61,6 +61,17 @@ App hanya memegang **publishable key** Supabase. Kunci lain (service role, SMTP)
 | Migrasi database baru | `npx supabase migration new <nama>`, isi SQL-nya, lalu `npx supabase db push` |
 | Build APK release di laptop | `flutter build apk --release --dart-define-from-file=env/prod.json` |
 
+## Situs unduhan (`website/`)
+
+Landing page untuk membagikan APK, dibuat dari halaman Figma Landing Page (161:2). Isinya HTML, CSS, dan sedikit JavaScript biasa, tanpa build dan tanpa paket.
+
+- **Lihat di laptop:** `python -m http.server 8765 --directory website`, lalu buka http://localhost:8765. Di Claude Code tersedia konfigurasi `website` di `.claude/launch.json`.
+- **Terbit otomatis:** setiap perubahan `website/` yang masuk `main` diterbitkan workflow `.github/workflows/website.yml` ke https://baymakeprojects.github.io/Super_App/.
+- **Sekali saja di GitHub:** Settings → Pages → Build and deployment → Source: **GitHub Actions**.
+- Tombol unduh membaca rilis terbaru lewat GitHub API, jadi situs tidak perlu diubah saat rilis baru. Tanpa internet/API, tombolnya membuka halaman Releases.
+- Token warna, teks, dan font sama dengan app (`design-tokens.md`); font disalin ke `website/fonts`. Kalau token berubah, ubah juga `website/css/styles.css`.
+- Kode QR (`website/assets/qr-unduh-android.svg`) dibuat sekali. Kalau alamat situs berubah, buat ulang: `npx qrcode@1.5.4 -t svg -e M -q 0 -d "#000000" -l "#0000" -o website/assets/qr-unduh-android.svg "<alamat>/unduh/android/"`.
+
 ## Yang tidak boleh masuk Git
 
 `env/`, `*.jks`, `*.keystore`, `android/key.properties`, `.dart_tool/`, `build/` (sudah ada di `.gitignore`).

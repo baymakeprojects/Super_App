@@ -15,6 +15,7 @@ Node id dicatat 19 Nov 2026. Kalau sebuah id tidak ditemukan, cari frame dengan 
 | Screens — Mobile | 4:3 |
 | Screens — Desktop (Tahap 2) | 34:2 |
 | Pop-up & Input | 50:180 |
+| Landing Page (situs unduhan, `website/`) | 161:2 |
 
 ## Komponen (halaman Components)
 
@@ -140,3 +141,17 @@ Frame keadaan yang ditambahkan dari `catatan-figma.md`. Letaknya di section "Rev
 | P47 | Hapus pemasukan | 242:8384 |
 | H02 | Ubah jadwal · Isian salah | 242:8480, 242:8574 |
 | — | Catatan · pop-up (P03, P05, P07, P20, H02, H06) | 242:8677 |
+
+## Situs unduhan (halaman Landing Page 161:2)
+
+Bukan layar app. Dibangun di `website/` (HTML/CSS statis). Desktop dipakai mulai lebar 1024 px.
+
+| Halaman situs | Desktop 1440 | HP 412 | File |
+| --- | --- | --- | --- |
+| Landing | 161:3 | 164:777 | `website/index.html` |
+| Unduh Android | 177:1266 | 177:1338 | `website/unduh/android/index.html` |
+| 404 | 182:1665 | 182:1702 | `website/404.html` |
+| Menu terbuka | — | 183:1805 | menu di semua halaman |
+| Unduh Windows, Catatan rilis, Laporkan masalah, Laporan terkirim, Kebijakan privasi | 178:1340, 179:1409, 180:1490, 182:1594, 183:1686 | 178:1409, 179:1491, 180:1580, 182:1633, 183:1754 | Belum dibangun (F-64) |
+
+Komponen situs ada di halaman Components: LP / Nav (176:1329, 176:1348), LP / Footer (176:1344, 176:1361), LP / Logo (160:224), LP / Stat (160:228), LP / Feature Card (160:235), LP / Feature Row (186:240), LP / Step Card (160:242), LP / Step Row (186:247), LP / FAQ Item (160:246), LP / FAQ Row (186:264).
