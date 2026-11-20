@@ -10,7 +10,7 @@ Status 20 Nov 2026: **sudah dibuat** lewat Claude Code (biaya $0/bulan, disetuju
 | --- | --- | --- | --- |
 | `superapp-prod` | `omogcmwhzsqotsgvbfwu` | ap-southeast-1 (Singapura) | `https://omogcmwhzsqotsgvbfwu.supabase.co` |
 
-Sudah: migrasi `mvp_tables` diterapkan, uji RLS dua akun **LULUS**, pemeriksaan keamanan Supabase (advisor) tanpa temuan. Belum (bagian Bayu): langkah 3–5 di bawah.
+Sudah: migrasi `mvp_tables` diterapkan, uji RLS dua akun **LULUS**, pemeriksaan keamanan Supabase (advisor) tanpa temuan. Login email (20 Nov 2026, lewat Chrome): provider Email aktif, Confirm email aktif, OTP 6 digit, berlaku 600 detik. Belum (bagian Bayu): SMTP (langkah 4), lalu template (langkah 3), dan `env/prod.json` (langkah 5).
 
 Setelah proyek prod ada:
 
@@ -27,8 +27,8 @@ npx supabase migration repair --status applied 20261118234355
 ```
 
 2. Uji RLS dua akun sudah LULUS di prod (20 Nov 2026). Ulangi setiap ada tabel baru.
-3. Atur login email + kode persis seperti dev (`docs/setup-supabase.md` §3): provider Email, OTP 6 digit, 600 detik, template berisi `{{ .Token }}`.
-4. Pasang SMTP sendiri (misalnya Resend atau Brevo) di Authentication → Emails → SMTP Settings. Layanan email bawaan Supabase hanya mengirim ke anggota tim dan sangat terbatas.
+3. Template email berisi kode `{{ .Token }}` (`docs/setup-supabase.md` §3). **Template hanya bisa diubah setelah SMTP sendiri terpasang** (langkah 4). Template bawaan hanya mengirim tautan "Sign in", tanpa kode, jadi tanpa SMTP login dengan kode di app belum bisa jalan.
+4. **Wajib:** pasang SMTP sendiri (misalnya Resend atau Brevo, ada paket gratis) di Authentication → Emails → SMTP Settings: daftar di layanan itu, buat API key, isi host, port, user, dan API key, lalu simpan. Setelah itu kerjakan langkah 3.
 5. Buat `env/prod.json` (sudah di `.gitignore`):
 
 ```json
