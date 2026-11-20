@@ -11,7 +11,17 @@ enum AppIllustrations {
   /// Glow 340×340 di 00d Intro 4 (63:2015).
   introGlow('intro_glow', 340),
 
-  /// Cincin progres titik oranye 306×306 di 00d Intro 4 (63:2016).
+  /// Cincin progres 306×306 di 00a Intro 1 (63:1690): 12 dari 48 titik
+  /// oranye.
+  introRing1('intro_ring_1', 306),
+
+  /// Cincin progres 00b Intro 2 (63:1798): 24 titik oranye.
+  introRing2('intro_ring_2', 306),
+
+  /// Cincin progres 00c Intro 3 (63:1908): 36 titik oranye.
+  introRing3('intro_ring_3', 306),
+
+  /// Cincin progres titik oranye 306×306 di 00d Intro 4 (63:2016): penuh.
   introRing('intro_ring', 306),
 
   /// Ikon sidik jari 56×56 di 00d Intro 4 (63:2066). Garisnya tetap 1,5

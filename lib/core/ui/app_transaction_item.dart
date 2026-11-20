@@ -24,6 +24,7 @@ class AppTransactionItem extends StatelessWidget {
     required this.amount,
     required this.type,
     this.onTap,
+    this.showDivider = true,
   });
 
   // Ukuran tetap dari Figma (bukan variabel Figma).
@@ -42,6 +43,10 @@ class AppTransactionItem extends StatelessWidget {
   final AppTransactionType type;
   final VoidCallback? onTap;
 
+  /// Garis bawah Dark Gray antarbaris. Mati kalau item dibungkus kartu
+  /// (ilustrasi 00c Intro 3).
+  final bool showDivider;
+
   @override
   Widget build(BuildContext context) {
     final income = type == AppTransactionType.income;
@@ -53,14 +58,16 @@ class AppTransactionItem extends StatelessWidget {
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: AppSpace.s12),
-          decoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: AppColors.darkGray,
-                width: _borderWidth,
-              ),
-            ),
-          ),
+          decoration: showDivider
+              ? const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: AppColors.darkGray,
+                      width: _borderWidth,
+                    ),
+                  ),
+                )
+              : null,
           child: Row(
             spacing: AppSpace.s12,
             children: [

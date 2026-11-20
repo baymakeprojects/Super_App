@@ -5,7 +5,7 @@ Semua layar MVP, rute `go_router`-nya, tombol yang membukanya, dan ke mana layar
 ## Alur saat app dibuka
 
 1. **Splash (00)** — splash native Android, lalu app memeriksa sesi.
-2. **Belum pernah login** → Intro (00a–00d). Tombol "Mulai sekarang" di 00d membuka Masuk dengan email → Masukkan kode (6 digit dari email). Kalau 00a–00c belum dibuat, intro langsung mulai dari 00d.
+2. **Belum pernah login** → Intro (00a–00d). Tombol "Mulai sekarang" di 00d membuka Masuk dengan email → Masukkan kode (6 digit dari email). "Lanjut →" di 00a–00c pindah halaman (juga bisa digeser); "Lewati" langsung membuka Masuk dengan email.
 3. **Login pertama berhasil** (akun baru) → Nama kamu (00g, boleh dikosongkan) → Setup awal 01a → 01b → 01c → Beranda. "Lewati" di langkah mana pun langsung ke Beranda.
 4. **Sudah login** → Kunci sidik jari (01) → Beranda. Sidik jari gagal 3 kali atau "Pakai PIN" → Masukkan PIN (H06).
 5. **Sesi berakhir** (token tidak bisa diperbarui) → G1, tombol "Masuk lagi" membuka Masuk dengan email; data di HP tetap ada.

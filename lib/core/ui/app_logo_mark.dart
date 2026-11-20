@@ -10,6 +10,10 @@ enum AppLogoMarkSize {
 
   /// 56×56, sudut 16, huruf Geist Mono SemiBold 26/36 (H06, node 56:2607).
   large,
+
+  /// 96×96: logo kecil diperbesar 3,43× di tengah ilustrasi 00a Intro 1
+  /// (node 63:1739). Sudut 27,43, huruf 44,57/61,71.
+  hero,
 }
 
 /// Logo "S" putih-hitam di kotak oranye.
@@ -28,6 +32,15 @@ class AppLogoMark extends StatelessWidget {
     letterSpacing: 2,
   );
 
+  /// Skala 00a: logo 28 diperbesar jadi 96 (Figma menskalakan instance).
+  static const double _heroScale = 96 / _smallSide;
+
+  /// Huruf logo 00a: Label/Large ikut diskalakan [_heroScale] (F-59).
+  static final TextStyle _heroLetter = AppText.labelLarge.copyWith(
+    fontSize: 13 * _heroScale,
+    letterSpacing: 1 * _heroScale,
+  );
+
   final AppLogoMarkSize size;
 
   @override
@@ -35,6 +48,11 @@ class AppLogoMark extends StatelessWidget {
     final (side, radius, style) = switch (size) {
       AppLogoMarkSize.small => (_smallSide, _smallRadius, AppText.labelLarge),
       AppLogoMarkSize.large => (_largeSide, AppRadius.item, _largeLetter),
+      AppLogoMarkSize.hero => (
+        _smallSide * _heroScale,
+        _smallRadius * _heroScale,
+        _heroLetter,
+      ),
     };
     return Container(
       width: side,

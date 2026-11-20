@@ -8,13 +8,20 @@ import 'package:super_app/core/theme/theme.dart';
 /// Varian Figma per 10 hanya peraga; di kode nilainya bebas 0–100.
 /// Lebar mengikuti induk.
 class AppProgressBar extends StatelessWidget {
-  const AppProgressBar({super.key, required this.value});
+  const AppProgressBar({
+    super.key,
+    required this.value,
+    this.color = AppColors.brandingOrange,
+  });
 
   /// Tinggi tetap di Figma.
   static const double height = 6;
 
   /// Persentase 0–100. Nilai di luar rentang dipotong.
   final double value;
+
+  /// Warna isi. Bawaan oranye; Budget Item memakai kuning/merah.
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +43,7 @@ class AppProgressBar extends StatelessWidget {
             widthFactor: percent / 100,
             heightFactor: 1,
             child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: AppColors.brandingOrange,
-                borderRadius: radius,
-              ),
+              decoration: BoxDecoration(color: color, borderRadius: radius),
             ),
           ),
         ),

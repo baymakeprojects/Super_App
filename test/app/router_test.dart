@@ -48,7 +48,7 @@ Future<void> _pressBack(WidgetTester tester) async {
 void main() {
   // Semua rute di tabel docs/navigasi.md beserta judul layarnya.
   final routes = <String, String>{
-    AppRoutes.intro: 'MULAI SEKARANG →',
+    AppRoutes.intro: 'Semua urusan kuliah\ndi satu app',
     AppRoutes.masuk: 'AKUN BARU DIBUAT OTOMATIS',
     AppRoutes.masukKode: 'KODE VERIFIKASI',
     AppRoutes.kunci: 'PAKAI PIN PERANGKAT',

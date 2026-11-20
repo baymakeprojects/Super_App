@@ -57,7 +57,7 @@ Node id frame ada di `figma-frames.md`.
 | --- | --- | --- | --- | --- | --- |
 | W4-01 | Setup awal 01a–01c (tanpa grup Pengingat) | 01a–01c, P20 | flutter-screen | Login pertama → setup → Beranda | Selesai |
 | W4-02 | E1 Beranda kosong dengan checklist Siapkan Super App | E1 | flutter-screen | Checklist tercentang otomatis dan hilang setelah selesai | Selesai |
-| W4-03 | Splash native, ikon app adaptif, Intro 00a–00c | 00, Ikon app, 00a–00c | flutter-screen | Tampil di HP sesuai frame | Jalan (splash dan ikon selesai; Intro 00a–00c ditunda, keputusan Bayu 20 Nov 2026) |
+| W4-03 | Splash native, ikon app adaptif, Intro 00a–00c | 00, Ikon app, 00a–00c | flutter-screen | Tampil di HP sesuai frame | Selesai (splash dan ikon 20 Nov; Intro 00a–00c 21 Nov 2026, Lewati → Masuk dengan email) |
 | W4-04 | 06 Lainnya (MVP), 14 Pengaturan (MVP), P37, P38, H05 | Frame "06 Lainnya (MVP)", 14, P37, P38, H05 | flutter-screen | Keluar akun dan ganti PIN berjalan | Selesai |
 | W4-05 | E7 memuat pada layar yang membaca data | E7 | flutter-screen | Tampil saat data belum siap | Selesai |
 | W4-06 | H04 Pencarian tugas (kalau sempat) | H04 | flutter-screen | Cari judul tugas | Selesai |

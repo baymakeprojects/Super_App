@@ -53,12 +53,44 @@ Future<void> _typeCode(WidgetTester tester, String code) async {
 
 void main() {
   group('alur saat app dibuka', () {
-    testWidgets('belum login → 00d Intro', (tester) async {
+    testWidgets('belum login → Intro 00a–00d, Lanjut lalu Mulai sekarang', (
+      tester,
+    ) async {
       final app = await pumpAuthApp(tester, session: _signedOut);
       expect(_location(app), AppRoutes.intro);
+      expect(find.text('Semua urusan kuliah\ndi satu app'), findsOneWidget);
+      await _golden(tester, 'auth_00a_intro');
+
+      await tester.tap(find.text('LANJUT →'));
+      await tester.pumpAndSettle();
+      expect(find.text('Jadwal dan deadline\ntidak kelewat'), findsOneWidget);
+      await _golden(tester, 'auth_00b_intro');
+
+      await tester.tap(find.text('LANJUT →'));
+      await tester.pumpAndSettle();
+      expect(find.text('Uang bulanan\ntetap terkendali'), findsOneWidget);
+      await _golden(tester, 'auth_00c_intro');
+
+      await tester.tap(find.text('LANJUT →'));
+      await tester.pumpAndSettle();
+      expect(find.text('LEWATI'), findsNothing);
       await _golden(tester, 'auth_00d_intro');
 
       await tester.tap(find.text('MULAI SEKARANG →'));
+      await tester.pumpAndSettle();
+      expect(_location(app), AppRoutes.masuk);
+    });
+
+    testWidgets('Intro: geser ke halaman berikutnya', (tester) async {
+      await pumpAuthApp(tester, session: _signedOut);
+      await tester.fling(find.byType(PageView), const Offset(-300, 0), 1000);
+      await tester.pumpAndSettle();
+      expect(find.text('Jadwal dan deadline\ntidak kelewat'), findsOneWidget);
+    });
+
+    testWidgets('Intro: Lewati membuka Masuk dengan email', (tester) async {
+      final app = await pumpAuthApp(tester, session: _signedOut);
+      await tester.tap(find.text('LEWATI'));
       await tester.pumpAndSettle();
       expect(_location(app), AppRoutes.masuk);
     });

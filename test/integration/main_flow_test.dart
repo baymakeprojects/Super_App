@@ -67,7 +67,11 @@ void main() {
       ],
     );
 
-    // 1. Intro → Masuk dengan email → kode → Setup awal.
+    // 1. Intro 1–4 → Masuk dengan email → kode → Setup awal.
+    for (var i = 0; i < 3; i++) {
+      await tester.tap(find.text('LANJUT →'));
+      await tester.pumpAndSettle();
+    }
     await tester.tap(find.text('MULAI SEKARANG →'));
     await tester.pumpAndSettle();
     await tester.enterText(find.byType(TextField), 'bayu@email.com');
