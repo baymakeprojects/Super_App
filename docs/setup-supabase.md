@@ -7,7 +7,7 @@ Langkah yang dikerjakan Bayu sendiri di dashboard. Claude Code tidak boleh memba
 | Lingkungan | Nama | Ref | Region |
 | --- | --- | --- | --- |
 | Dev | `superapp-dev` | `nyzktdlyfuqjxumlicgf` | ap-southeast-1 (Singapura) |
-| Prod | `superapp-prod` | belum dibuat | — |
+| Prod | `superapp-prod` | `omogcmwhzsqotsgvbfwu` | ap-southeast-1 (Singapura) |
 
 URL API dev: `https://nyzktdlyfuqjxumlicgf.supabase.co`
 

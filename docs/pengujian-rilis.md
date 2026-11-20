@@ -35,6 +35,9 @@ Golden test untuk komponen `core/ui` menangkap perubahan tampilan yang tidak dis
 
 ## Checklist rilis Android
 
+Langkah lengkapnya (proyek prod, keystore, build, pasang) ada di `docs/rilis-android.md`.
+
+
 - [ ] Naikkan versi di `pubspec.yaml`, misalnya `0.3.0+12` (versi + nomor build).
 - [ ] Pastikan app memakai proyek Supabase prod.
 - [ ] Build `flutter build apk --release` untuk dipasang langsung, atau `flutter build appbundle` untuk Google Play.
