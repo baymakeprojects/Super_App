@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'package:super_app/app/routes.dart';
 import 'package:super_app/core/theme/theme.dart';
 import 'package:super_app/core/ui/ui.dart';
 import 'package:super_app/features/auth/application/session_controller.dart';
@@ -72,9 +74,7 @@ class SetupScaffold extends ConsumerWidget {
                               const Text(' ', style: AppText.labelMedium)
                             else
                               GestureDetector(
-                                onTap: () => ref
-                                    .read(sessionControllerProvider.notifier)
-                                    .finishSetup(),
+                                onTap: () => finishSetupAndGoHome(context, ref),
                                 child: AppLabelText(
                                   'Lewati',
                                   style: AppText.labelMedium.copyWith(
@@ -138,4 +138,12 @@ class SetupScaffold extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// "Lewati" atau "Selesai, ke Beranda": tandai setup selesai untuk akun
+/// ini, lalu ke Beranda. Layar setup tetap bisa dibuka lagi, misalnya dari
+/// E3 "Atau isi lewat setup awal".
+Future<void> finishSetupAndGoHome(BuildContext context, WidgetRef ref) async {
+  await ref.read(sessionControllerProvider.notifier).finishSetup();
+  if (context.mounted) context.go(AppRoutes.beranda);
 }

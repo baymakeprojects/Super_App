@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
@@ -145,6 +146,7 @@ Future<AuthHarness> pumpAuthApp(
   Map<String, String>? store,
   String? profileName,
   Future<void> Function(AppDatabase db)? seed,
+  List<Override> extraOverrides = const [],
   bool settle = true,
 }) async {
   tester.view
@@ -182,6 +184,7 @@ Future<AuthHarness> pumpAuthApp(
       deviceLockProvider.overrideWithValue(fakeLock),
       keyValueStoreProvider.overrideWithValue(memory),
       clockProvider.overrideWithValue(clock.call),
+      ...extraOverrides,
     ],
   );
   addTearDown(container.dispose);

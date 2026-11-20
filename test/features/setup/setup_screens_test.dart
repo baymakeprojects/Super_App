@@ -138,6 +138,18 @@ void main() {
     expect(app.session.needsSetup, isFalse);
   });
 
+  testWidgets('E3 "Atau isi lewat setup awal" membuka 01b', (tester) async {
+    final app = await pumpAuthApp(
+      tester,
+      session: const SessionState.unlocked(realUserId),
+    );
+    app.router.go(AppRoutes.keuangan);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('ATAU ISI LEWAT SETUP AWAL'));
+    await tester.pumpAndSettle();
+    expect(_location(app), AppRoutes.setupDompet);
+  });
+
   test('kunci sidik jari mati: app terbuka tanpa 01', () async {
     final auth = FakeAuth()..currentUserId = realUserId;
     final store = MemoryKeyValueStore();

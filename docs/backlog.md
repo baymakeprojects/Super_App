@@ -61,7 +61,7 @@ Node id frame ada di `figma-frames.md`.
 | W4-04 | 06 Lainnya (MVP), 14 Pengaturan (MVP), P37, P38, H05 | Frame "06 Lainnya (MVP)", 14, P37, P38, H05 | flutter-screen | Keluar akun dan ganti PIN berjalan | Selesai |
 | W4-05 | E7 memuat pada layar yang membaca data | E7 | flutter-screen | Tampil saat data belum siap | Selesai |
 | W4-06 | H04 Pencarian tugas (kalau sempat) | H04 | flutter-screen | Cari judul tugas | Selesai |
-| W4-07 | Uji integrasi alur utama, uji RLS, cek visual semua layar MVP terhadap Figma | pengujian-rilis | cek-desain | Semua lulus, selisih desain dicatat dan diperbaiki | Belum |
+| W4-07 | Uji integrasi alur utama, uji RLS, cek visual semua layar MVP terhadap Figma | pengujian-rilis | cek-desain | Semua lulus, selisih desain dicatat dan diperbaiki | Selesai (laporan di docs/cek-visual-w4-07.md; uji di HP asli menunggu email OTP aktif) |
 | W4-08 | Proyek Supabase prod, keystore, build APK release, pasang di HP | pengujian-rilis › Checklist rilis Android | — | MVP terpasang di HP dan dipakai sehari-hari | Belum |
 
 ## Kalau ingin memakai app lebih cepat
@@ -70,4 +70,4 @@ Tunda dulu, sesuai urutan: W4-06 Pencarian, W4-03 Intro 00a–00c, W4-01 Setup a
 
 Fase 1 paling berat karena hampir semua komponen dibuat di sana. Kalau terasa terlalu lama sebelum ada layar yang bisa dilihat, komponen yang belum dipakai boleh dipindah ke fase saat layarnya dibuat.
 
-Posisi saat ini (20 Nov 2026): Fase 1–3 selesai, termasuk login W1-10 (W1-07 tinggal aktifkan email OTP di dashboard); W4-01 dan W4-02 selesai, W4-03 splash dan ikon selesai (intro 00a–00c ditunda), W4-04 sampai W4-06 selesai; berikutnya W4-07. Tanpa file env, build debug memakai akun sementara `dev-lokal`; datanya dipindahkan ke akun asli saat login pertama. Login diganti dari Google ke email + kode verifikasi.
+Posisi saat ini (20 Nov 2026): Fase 1–3 selesai, termasuk login W1-10 (W1-07 tinggal aktifkan email OTP di dashboard); W4-01 dan W4-02 selesai, W4-03 splash dan ikon selesai (intro 00a–00c ditunda), W4-04 sampai W4-07 selesai; berikutnya W4-08 (rilis, butuh proyek Supabase prod dan keystore dari Bayu). Tanpa file env, build debug memakai akun sementara `dev-lokal`; datanya dipindahkan ke akun asli saat login pertama. Login diganti dari Google ke email + kode verifikasi.

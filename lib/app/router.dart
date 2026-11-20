@@ -66,8 +66,6 @@ String? sessionRedirect(SessionState session, String location) {
         // Login pertama → Setup awal 01a (W4-01).
         return session.needsSetup ? AppRoutes.setupJadwal : AppRoutes.beranda;
       }
-      // "Lewati" atau "Selesai, ke Beranda": setup hanya sekali.
-      if (!session.needsSetup && at('/setup')) return AppRoutes.beranda;
       return null;
   }
 }

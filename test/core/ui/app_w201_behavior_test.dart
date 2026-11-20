@@ -11,7 +11,7 @@ Widget _wide(Widget child) => wrapForTest(SizedBox(width: 372, child: child));
 void main() {
   group('ukuran sama dengan Figma', () {
     testWidgets('Task 76, Class 76/102, Day Pill 66, Segmented 50, '
-        'Select 82, Checklist 40, Action Bar 89, Overlay 76, Option 68/70, '
+        'Select 82, Checklist 40, Action Bar 89, Overlay 76, Option 70/70, '
         'Snackbar 46', (tester) async {
       Future<double> heightOf(Widget child, Type type) async {
         await tester.pumpWidget(_wide(child));
@@ -90,7 +90,7 @@ void main() {
         ),
         76,
       );
-      for (final (selected, height) in [(false, 68.0), (true, 70.0)]) {
+      for (final (selected, height) in [(false, 70.0), (true, 70.0)]) {
         expect(
           await heightOf(
             AppOptionItem(

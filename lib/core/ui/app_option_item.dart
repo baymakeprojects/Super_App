@@ -51,16 +51,15 @@ class AppOptionItem extends StatelessWidget {
             horizontal: AppSpace.s16,
             vertical: AppSpace.s12,
           ),
-          // Figma: hanya Selected yang punya garis, jadi tingginya 2px lebih
-          // besar dari Default (F-18).
+          // Default juga bergaris 1px (transparan), jadi tinggi Default dan
+          // Selected sama dan daftar tidak bergeser (F-18, diubah di Figma
+          // 20 Nov 2026).
           decoration: BoxDecoration(
             color: selected ? AppColors.surfaceCard : null,
-            border: selected
-                ? Border.all(
-                    color: AppColors.brandingOrange,
-                    width: _borderWidth,
-                  )
-                : null,
+            border: Border.all(
+              color: selected ? AppColors.brandingOrange : Colors.transparent,
+              width: _borderWidth,
+            ),
             borderRadius: BorderRadius.circular(AppRadius.item),
           ),
           child: Row(

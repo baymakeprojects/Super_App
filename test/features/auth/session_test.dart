@@ -71,7 +71,8 @@ void main() {
       AppRoutes.setupJadwal,
     );
     expect(sessionRedirect(firstLogin, AppRoutes.setupDompet), isNull);
-    expect(sessionRedirect(open, AppRoutes.setupKeamanan), AppRoutes.beranda);
+    // Setup boleh dibuka lagi (misalnya dari E3).
+    expect(sessionRedirect(open, AppRoutes.setupDompet), isNull);
   });
 
   test('login pertama memindahkan data dev-lokal ke akun asli', () async {

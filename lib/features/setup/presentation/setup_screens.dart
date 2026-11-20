@@ -248,8 +248,7 @@ class SetupSecurityScreen extends ConsumerWidget {
           'Kunci app dengan sidik jari, lalu pilih pengingat yang mau kamu '
           'terima.',
       actionLabel: 'Selesai, ke Beranda →',
-      onAction: () =>
-          ref.read(sessionControllerProvider.notifier).finishSetup(),
+      onAction: () => finishSetupAndGoHome(context, ref),
       children: [
         Column(
           children: [
