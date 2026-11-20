@@ -22,29 +22,25 @@ Buka repo di GitHub → **Settings → Secrets and variables → Actions → New
 
 | Nama secret | Isi | Dari mana |
 | --- | --- | --- |
-| `SUPABASE_PROD_URL` | `https://<ref-prod>.supabase.co` | Dashboard Supabase → proyek **superapp-prod** → Project Settings → API |
+| `SUPABASE_PROD_URL` | `https://omogcmwhzsqotsgvbfwu.supabase.co` | Dashboard Supabase → proyek **superapp-prod** → Project Settings → API |
 | `SUPABASE_PROD_PUBLISHABLE_KEY` | `sb_publishable_...` | Dashboard → superapp-prod → Project Settings → API Keys. **Bukan** secret key / service role |
 | `ANDROID_KEYSTORE_BASE64` | Isi file keystore `.jks` dalam bentuk base64 | Lihat perintah di bawah |
 | `ANDROID_KEYSTORE_PASSWORD` | Sandi keystore | Yang kamu buat saat membuat keystore |
-| `ANDROID_KEY_ALIAS` | Alias kunci, misalnya `superapp` | Yang kamu pakai di `-alias` saat membuat keystore |
-| `ANDROID_KEY_PASSWORD` | Sandi kunci (sering sama dengan sandi keystore) | Yang kamu buat saat membuat keystore |
+| `ANDROID_KEY_ALIAS` | Alias kunci: `super_app` | Yang kamu pakai di `-alias` saat membuat keystore |
+| `ANDROID_KEY_PASSWORD` | Sandi kunci (sama dengan sandi keystore, karena PKCS12) | Yang kamu buat saat membuat keystore |
 
 ### Membuat keystore (sekali seumur app, bagian W4-08)
 
-Simpan keystore **di luar folder repo**, misalnya `C:\kunci\`. Perintah ini menanyakan sandi dan nama:
+Sudah dibuat 20 Nov 2026 dengan `tool\buat-keystore.ps1` (lihat `rilis-android.md` §2): file `%USERPROFILE%\keystore\super_app.jks`, alias `super_app`, format PKCS12 (sandi keystore = sandi kunci). Buat cadangan keystore dan sandinya (pengelola sandi + Google Drive pribadi). Build di laptop dan build di GitHub **harus memakai keystore yang sama**; kalau berbeda atau hilang, update tidak bisa dipasang di atas versi lama.
 
-```powershell
-keytool -genkeypair -v -keystore C:\kunci\super-app-release.jks -keyalg RSA -keysize 2048 -validity 10000 -alias superapp
-```
-
-Buat cadangan keystore dan sandinya (pengelola sandi + Google Drive pribadi). Build di laptop dan build di GitHub **harus memakai keystore yang sama**; kalau berbeda atau hilang, update tidak bisa dipasang di atas versi lama.
+Sidik SHA-256 sertifikatnya `fa9cfb63b260a8b89c82510d2ff509ab47a0b0f6a479fa61f40728c8de1c5149` (`CN=bayu, O=Super App, C=ID`). Workflow mencetak sidik APK di langkah "Tanda tangani APK"; angkanya harus sama.
 
 ### Mengubah keystore jadi base64 untuk secret
 
 Perintah ini menyalin isi base64 ke clipboard, lalu tempel sebagai nilai `ANDROID_KEYSTORE_BASE64`:
 
 ```powershell
-[Convert]::ToBase64String([IO.File]::ReadAllBytes("C:\kunci\super-app-release.jks")) | Set-Clipboard
+[Convert]::ToBase64String([IO.File]::ReadAllBytes("$env:USERPROFILE\keystore\super_app.jks")) | Set-Clipboard
 ```
 
 ## Langkah merilis versi baru
@@ -88,4 +84,6 @@ Rilis pertama yang layak pakai menunggu **W4-08**:
 1. Buat proyek Supabase **superapp-prod**, jalankan migrasi ke prod, aktifkan login email + kode dengan template yang sama seperti dev, dan pasang SMTP sendiri (layanan email bawaan Supabase hanya mengirim ke anggota tim proyek). Lihat `setup-supabase.md`.
 2. Buat keystore release dan cadangannya.
 3. Isi keenam GitHub Secrets di atas.
-4. Ikuti "Langkah merilis versi baru" dengan versi pertama, misalnya `v0.4.0`.
+4. Ikuti "Langkah merilis versi baru" dengan versi pertama `v0.1.0` (`pubspec.yaml` 0.1.0+1, catatan `docs/catatan-rilis/v0.1.0.md`).
+
+Status 20 Nov 2026: langkah 1 dan 2 selesai, catatan rilis v0.1.0 sudah ada.
