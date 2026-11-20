@@ -57,6 +57,7 @@ Node id tiap frame ada di `figma-frames.md`. Token ada di `design-tokens.md`.
 | Class Item | Upcoming, Now, Done | Kolom jam di kiri. Now: garis oranye + badge "Sedang berlangsung" |
 | Day Pill | Default, Selected | Hari singkat + tanggal; Selected = isi oranye |
 | Wallet Card | — | Nama dompet kapital + saldo |
+| Module Tile | Default, Segera | Kotak ikon 40 + judul + caption. Segera (MVP, F-66): ikon dan judul Gray, Badge Neutral "Segera" menggantikan caption, tidak bisa diketuk |
 | Segmented Control | First, Second | Dua pilihan, misalnya Pengeluaran / Pemasukan |
 | Select, List Row, Checklist Item | Select: Filled, Empty, Disabled, Error | Select membuka bottom sheet pilihan, bukan dropdown Material. Disabled = nilai "—" abu, tidak bisa diketuk |
 | Action Bar | Single, Double | Bar tombol di bawah form dan detail. Double: kiri Ghost, kanan Primary |
@@ -125,7 +126,7 @@ Komponen Habit Item, Note Card, Project Card, Step Item, Bill Item, Budget Item,
 
 ### 06 Lainnya dan 14 Pengaturan
 
-- Lainnya: grid Module Tile. Di MVP grid dan label jumlah modul disembunyikan (frame "06 Lainnya (MVP)"); tile ditambahkan satu per satu saat modulnya selesai. Ikon User di kanan atas membuka Pengaturan (sama dengan avatar di Beranda).
+- Lainnya: grid Module Tile. Di MVP semua modul tampil sebagai Module Tile keadaan Segera (ikon dan judul Gray, Badge Neutral "Segera", tidak bisa diketuk) dan label jumlah modul disembunyikan (frame "06 Lainnya (MVP, modul segera)" 257:6514, F-66). Saat modul selesai, tile-nya berganti ke keadaan normal. Ikon User di kanan atas membuka Pengaturan (sama dengan avatar di Beranda).
 - Pengaturan: daftar List Row; tanpa pilihan tema. Di MVP tampilkan hanya kartu akun dan grup keamanan (lihat `navigasi.md`).
 
 ### 15 Tugas baru, H01 Edit tugas
@@ -170,7 +171,7 @@ Beberapa layar MVP sudah menggambar elemen dari modul Tahap 2–3. Selama moduln
 | P07 Dompet baru | Baris "Hitung di total saldo" (model dompet belum punya kolomnya) | Sembunyikan (F-43) |
 | 16 Detail tugas | Baris pengingat; bagian Lampiran (Scan PDF, Pilih file) | Sembunyikan |
 | 20 Detail mata kuliah | Kartu Kehadiran; tab Pertemuan | Sembunyikan Stat Card, Segmented Control, daftar Pertemuan, dan FAB; tampilkan label "Tugas aktif · n" + Task Item mata kuliah itu. Acuan: frame "20 Detail Mata Kuliah (MVP)" |
-| 06 Lainnya | 10 Module Tile (semua modul Tahap 2–3) | Sembunyikan grid dan label jumlah modul; tile muncul satu per satu saat modulnya selesai. Acuan: frame "06 Lainnya (MVP)" |
+| 06 Lainnya | 10 Module Tile (semua modul Tahap 2–3) | Tampilkan tile keadaan Segera (tidak bisa diketuk) dan sembunyikan label jumlah modul; tile berganti ke keadaan normal saat modulnya selesai. Acuan: frame "06 Lainnya (MVP, modul segera)" 257:6514 (F-66) |
 | 14 Pengaturan | Grup Notifikasi, Data | Tampilkan hanya kartu akun dan grup keamanan |
 
 Bentuk MVP layar 06 dan 20 ada di section "MVP · layar yang disederhanakan (06, 20)" di halaman Screens — Mobile. Untuk layar itu, frame MVP yang diikuti, bukan frame aslinya.

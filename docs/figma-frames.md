@@ -43,6 +43,7 @@ Komponen baru dan varian yang ditambahkan saat revisi 20 Nov 2026 (`catatan-figm
 | Input State=Filled | 235:235 |
 | Button Danger × Hover, Pressed, Disabled | 235:228, 235:230, 235:232 |
 | Foundations › Radius/Item · 16 | 236:13601 |
+| Module Tile (set, 21 Nov 2026, F-66): State=Default 9:87, State=Segera | 257:252 (9:87, 257:243) |
 
 ## Layar HP MVP
 
@@ -64,7 +65,8 @@ Komponen baru dan varian yang ditambahkan saat revisi 20 Nov 2026 (`catatan-figm
 | 03 | Tugas | 14:127 |
 | 04 | Kuliah | 15:218 |
 | 05 | Keuangan | 16:300 |
-| 06 | Lainnya (MVP) — **pakai ini** | 158:15114 |
+| 06 | Lainnya (MVP, modul segera) — **pakai ini** (F-66) | 257:6514 |
+| 06 | Lainnya (MVP) — versi kosong v0.1.0, tidak dipakai lagi | 158:15114 |
 | 14 | Pengaturan | 27:1092 |
 | 15 | Tambah Tugas | 30:1381 |
 | 16 | Detail Tugas | 30:1472 |

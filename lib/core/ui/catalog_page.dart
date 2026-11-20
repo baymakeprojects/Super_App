@@ -160,6 +160,28 @@ class _CatalogPageState extends State<CatalogPage> {
                 ),
               ],
             ),
+            const _Section('Module Tile'),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: AppSpace.s12,
+              children: [
+                Expanded(
+                  child: AppModuleTile(
+                    icon: AppIcons.learn,
+                    title: 'Belajar',
+                    caption: 'Roadmap Flutter · 42%',
+                    onTap: () {},
+                  ),
+                ),
+                const Expanded(
+                  child: AppModuleTile(
+                    icon: AppIcons.learn,
+                    title: 'Belajar',
+                    state: AppModuleTileState.segera,
+                  ),
+                ),
+              ],
+            ),
             const _Section('Progress Bar'),
             for (final value in const [0.0, 30.0, 60.0, 100.0]) ...[
               AppProgressBar(value: value),

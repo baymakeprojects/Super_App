@@ -30,6 +30,7 @@ export 'package:super_app/core/ui/app_keypad.dart';
 export 'package:super_app/core/ui/app_label_text.dart';
 export 'package:super_app/core/ui/app_list_row.dart';
 export 'package:super_app/core/ui/app_logo_mark.dart';
+export 'package:super_app/core/ui/app_module_tile.dart';
 export 'package:super_app/core/ui/app_nav_item.dart';
 export 'package:super_app/core/ui/app_notification_item.dart';
 export 'package:super_app/core/ui/app_option_item.dart';

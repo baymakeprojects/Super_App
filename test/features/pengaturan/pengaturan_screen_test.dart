@@ -50,6 +50,31 @@ void main() {
     expect(_location(app), AppRoutes.pengaturan);
   });
 
+  testWidgets('06 Lainnya (MVP, F-66): 10 modul tampil sebagai Segera', (
+    tester,
+  ) async {
+    final app = await _openAt(tester, AppRoutes.lainnya);
+    final tiles = tester.widgetList<AppModuleTile>(find.byType(AppModuleTile));
+    expect(tiles.map((t) => t.title), [
+      'Fokus',
+      'Kebiasaan',
+      'Catatan',
+      'Skripsi',
+      'Belajar',
+      'Proyek',
+      'Statistik',
+      'Kalender',
+      'Nilai & IPK',
+      'KKN',
+    ]);
+    expect(tiles.every((t) => t.state == AppModuleTileState.segera), isTrue);
+    expect(find.text('SEGERA'), findsNWidgets(10));
+
+    await tester.tap(find.text('Fokus'));
+    await tester.pumpAndSettle();
+    expect(_location(app), AppRoutes.lainnya);
+  });
+
   testWidgets('14 Pengaturan (MVP): kartu akun dan grup Keamanan', (
     tester,
   ) async {
