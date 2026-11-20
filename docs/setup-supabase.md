@@ -56,7 +56,7 @@ Dashboard → **superapp-dev** → Authentication → Sign In / Providers → **
 
 Secara bawaan Supabase mengirim **tautan**. Supaya yang dikirim **kode**, template harus memakai `{{ .Token }}`.
 
-**Penting (dicek 20 Nov 2026):** di paket gratis, template email hanya bisa diubah setelah SMTP sendiri dipasang (Authentication → Emails → SMTP Settings). Tanpa SMTP, email berisi tautan "Sign in" saja, tanpa kode, sehingga layar 00f tidak bisa dipakai. Pasang SMTP dulu (lihat "Batas pengiriman email" di bawah), baru ubah template.
+**Penting (dicek 20 Nov 2026):** di paket gratis, template email hanya bisa diubah setelah SMTP sendiri dipasang (Authentication → Emails → SMTP Settings). Tanpa SMTP, email berisi tautan "Sign in" saja, tanpa kode, sehingga layar 00f tidak bisa dipakai. Pasang SMTP dulu (lihat "Batas pengiriman email" di bawah), baru ubah template. Di `superapp-prod` keduanya sudah selesai 20 Nov 2026 (SMTP Brevo, lihat `docs/rilis-android.md`). `superapp-dev` masih memakai email bawaan, jadi belum mengirim kode.
 
 Dashboard → Authentication → **Emails** → Templates. Ubah dua template ini (akun baru memakai *Confirm signup*, akun lama memakai *Magic Link*):
 

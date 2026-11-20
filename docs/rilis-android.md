@@ -10,7 +10,7 @@ Status 20 Nov 2026: **sudah dibuat** lewat Claude Code (biaya $0/bulan, disetuju
 | --- | --- | --- | --- |
 | `superapp-prod` | `omogcmwhzsqotsgvbfwu` | ap-southeast-1 (Singapura) | `https://omogcmwhzsqotsgvbfwu.supabase.co` |
 
-Sudah: migrasi `mvp_tables` diterapkan, uji RLS dua akun **LULUS**, pemeriksaan keamanan Supabase (advisor) tanpa temuan. Login email (20 Nov 2026, lewat Chrome): provider Email aktif, Confirm email aktif, OTP 6 digit, berlaku 600 detik. Belum (bagian Bayu): SMTP (langkah 4), lalu template (langkah 3), dan `env/prod.json` (langkah 5).
+Sudah: migrasi `mvp_tables` diterapkan, uji RLS dua akun **LULUS**, pemeriksaan keamanan Supabase (advisor) tanpa temuan. Login email (20 Nov 2026, lewat Chrome): provider Email aktif, Confirm email aktif, OTP 6 digit, berlaku 600 detik. SMTP sendiri lewat **Brevo** (paket gratis 300 email/hari, pengirim Gmail Bayu yang sudah diverifikasi di Brevo, nama pengirim "Super App") **sudah aktif**, dan template *Confirm sign up* serta *Magic link or OTP* sudah berisi kode `{{ .Token }}`. SMTP key hanya ada di Supabase dan password manager Bayu. Belum (bagian Bayu): `env/prod.json` (langkah 5).
 
 Setelah proyek prod ada:
 
@@ -28,7 +28,7 @@ npx supabase migration repair --status applied 20261118234355
 
 2. Uji RLS dua akun sudah LULUS di prod (20 Nov 2026). Ulangi setiap ada tabel baru.
 3. Template email berisi kode `{{ .Token }}` (`docs/setup-supabase.md` §3). **Template hanya bisa diubah setelah SMTP sendiri terpasang** (langkah 4). Template bawaan hanya mengirim tautan "Sign in", tanpa kode, jadi tanpa SMTP login dengan kode di app belum bisa jalan.
-4. **Wajib:** pasang SMTP sendiri (misalnya Resend atau Brevo, ada paket gratis) di Authentication → Emails → SMTP Settings: daftar di layanan itu, buat API key, isi host, port, user, dan API key, lalu simpan. Setelah itu kerjakan langkah 3.
+4. **Wajib:** pasang SMTP sendiri di Authentication → Emails → SMTP Settings, lalu kerjakan langkah 3. **Sudah (20 Nov 2026):** Brevo, host `smtp-relay.brevo.com`, port `587`, username = Login SMTP di Brevo (SMTP & API → SMTP), password = SMTP key Brevo. Kalau SMTP key bocor atau diganti: buat key baru di Brevo, tempel di kolom Password Supabase, simpan, lalu hapus key lama di Brevo. Brevo memperingatkan pengirim Gmail ("Freemail domain is not recommended"): email tetap terkirim tapi bisa masuk Spam; kalau nanti punya domain sendiri, ganti pengirimnya ke domain itu.
 5. Buat `env/prod.json` (sudah di `.gitignore`):
 
 ```json
